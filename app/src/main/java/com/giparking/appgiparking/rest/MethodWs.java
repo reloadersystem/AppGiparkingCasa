@@ -24,4 +24,15 @@ public interface MethodWs {
                                      @Query("COD_CAJA") String cod_caja,
                                      @Query("CAJA_NOMBRE") String caja_nombre);
 
+
+    @GET("CONTROLAutoIngresoGrabar/")
+    Call<ResponseBody> ControlIngresoGrabar(@Query("COD_CORPEMPRESA") String cod_corpempresa,
+                                     @Query("COD_SUCURSAL") String cod_sucursal,
+                                     @Query("COD_USUARIO") String cod_usuario,
+                                     @Query("COD_CEFECTIVO") String cod_cefectivo,
+                                     @Query("NRO_PLACA") String nro_placa);
+
+
+
+
 }

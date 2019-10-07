@@ -1,0 +1,44 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.giparking.appgiparking.fragment.ControlFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Control Automatico"
+        android:textSize="20dp"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/btn_ingreso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorGreen"
+        android:text="Ingreso"/>
+
+    <Button
+        android:id="@+id/btn_salida_qr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorWhite"
+        android:text="Salida QR"/>
+
+    <Button
+        android:id="@+id/btn_salida_manual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorWhite"
+        android:text="Salida Manual"/>
+
+</LinearLayout>

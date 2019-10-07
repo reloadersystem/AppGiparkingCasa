@@ -5,34 +5,35 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_control"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Control" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_control_manual"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Control Manual" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_reimprimir_comprobante"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="Reimprimir Comprobante" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_anulacion"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Anulacion" />
+        <item
+            android:id="@+id/nav_movimiento"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Movimiento" />
+        <item
+            android:id="@+id/nav_cierre_caja"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Cierre Caja" />
+        <item
+            android:id="@+id/nav_salir"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Salir Caja" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+
 
 </menu>
