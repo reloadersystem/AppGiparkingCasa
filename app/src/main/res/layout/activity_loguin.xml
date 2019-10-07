@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/fondorombos_1"
+    tools:context="com.giparking.appgiparking.view.LoguinActivity">
+
+    <ImageView
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/logo"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlack"
+        android:textSize="18dp"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:text="@string/loguin_activity_titulo"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/edt_llave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/vector"
+        android:textSize="14dp"
+        android:textColor="@color/colorBlack"
+        android:padding="8dp"
+        android:text="11"
+        android:hint="@string/loguin_activity_llave"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/icon_user"/>
+
+    <EditText
+        android:id="@+id/edt_usuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/vector"
+        android:textSize="14dp"
+        android:textColor="@color/colorBlack"
+        android:padding="8dp"
+        android:layout_marginTop="10dp"
+        android:text="carlos"
+        android:hint="@string/loguin_activity_usuario"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/icon_user"/>
+
+    <EditText
+        android:id="@+id/edt_contrasenia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/vector"
+        android:textSize="14dp"
+        android:textColor="@color/colorBlack"
+        android:layout_marginTop="10dp"
+        android:padding="8dp"
+        android:text="carlos"
+        android:hint="@string/loguin_activity_contrasenia"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/icon_user"/>
+
+        <Button
+            android:id="@+id/btn_ingresar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="40dp"
+            android:textAllCaps="false"
+            android:text="@string/loguin_activity_ingresar"/>
+
+    </LinearLayout>
+
+</LinearLayout>

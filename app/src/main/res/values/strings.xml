@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AppGiParking</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="loguin_activity_usuario">Ingrese su usuario</string>
+    <string name="loguin_activity_contrasenia">Ingrese su contraseña</string>
+    <string name="loguin_activity_llave">Ingrese su llave</string>
+    <string name="loguin_activity_titulo">Gestion Integral de Parking</string>
+    <string name="loguin_activity_ingresar">Ingresar</string>
+</resources>
