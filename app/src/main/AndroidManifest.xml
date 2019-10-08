@@ -35,7 +35,8 @@
             android:name=".MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ConverterToPDF.ViewPDF" />
-        <activity android:name=".ConverterToPDF.PrintActivity"></activity>
+        <activity android:name=".ConverterToPDF.PrintActivity" />
+        <activity android:name=".view.SalidaVehiculoActivity"></activity>
     </application>
 
 </manifest>

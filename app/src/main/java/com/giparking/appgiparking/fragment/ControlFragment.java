@@ -82,6 +82,7 @@ public class ControlFragment extends Fragment {
     @OnClick(R.id.btn_salida_qr)
     public void salidaQr(){
 
+
     }
 
     @OnClick(R.id.btn_salida_manual)

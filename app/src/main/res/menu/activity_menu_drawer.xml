@@ -13,10 +13,6 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Control Manual" />
         <item
-            android:id="@+id/nav_reimprimir_comprobante"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Reimprimir Comprobante" />
-        <item
             android:id="@+id/nav_anulacion"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Anulacion" />

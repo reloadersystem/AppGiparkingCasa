@@ -85,8 +85,6 @@ public class MenuActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_control_manual) {
 
-        } else if (id == R.id.nav_reimprimir_comprobante) {
-
         } else if (id == R.id.nav_anulacion) {
 
         } else if (id == R.id.nav_movimiento) {
