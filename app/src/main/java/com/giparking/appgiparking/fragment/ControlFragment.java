@@ -1,13 +1,16 @@
 package com.giparking.appgiparking.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.giparking.appgiparking.ConverterToPDF.PrintActivity;
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.rest.HelperWs;
 import com.giparking.appgiparking.rest.MethodWs;
@@ -16,6 +19,7 @@ import com.giparking.appgiparking.view.LoguinActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -28,6 +32,10 @@ public class ControlFragment extends Fragment {
     private str_global a_str_global = str_global.getInstance();
     SweetAlertDialog pd;
 
+    private Unbinder unbinder;
+
+
+
     public ControlFragment() {
         // Required empty public constructor
     }
@@ -38,7 +46,10 @@ public class ControlFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_control, container, false);
-        ButterKnife.bind(this,view);
+
+        unbinder = ButterKnife.bind(this,view);
+
+
 
 
        /* pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.PROGRESS_TYPE);
@@ -59,8 +70,11 @@ public class ControlFragment extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.btn_ingresar)
+    @OnClick(R.id.btn_ingreso)
     public void ingresar(){
+
+        Intent intent = new Intent(getActivity(), PrintActivity.class);
+        getActivity().startActivity(intent);
 
 
     }
@@ -75,4 +89,9 @@ public class ControlFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.giparking.appgiparking"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -43,4 +43,18 @@ dependencies {
 
     //SweetAlert
     implementation 'com.github.f0ris.sweetalert:library:1.5.1'
+
+    // QR VISOR
+    implementation 'com.google.android.gms:play-services-vision:15.0.1'
+
+    //QR Creator Printer
+
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+
+    implementation 'com.itextpdf:itextg:5.5.10'
+
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.1'
+
+
 }
