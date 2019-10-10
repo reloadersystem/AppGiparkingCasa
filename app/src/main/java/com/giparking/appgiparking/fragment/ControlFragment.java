@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,9 +75,22 @@ public class ControlFragment extends Fragment {
     @OnClick(R.id.btn_ingreso)
     public void ingresar(){
 
-        Intent intent = new Intent(getActivity(), PrintActivity.class);
-        getActivity().startActivity(intent);
+        Fragment fragment = new IngresoPrintFragment();
+        FragmentManager fmanager = getActivity().getSupportFragmentManager();
+        if (fmanager != null) {
 
+            Bundle args = new Bundle();
+            args.putString("ACCESO", "Placa");
+            fragment.setArguments(args);
+
+
+            FragmentTransaction ftransaction = fmanager.beginTransaction();
+            if (ftransaction != null) {
+                ftransaction.replace(R.id.contenedor, fragment);
+                ftransaction.addToBackStack("");
+                ftransaction.commit();
+            }
+        }
 
     }
 

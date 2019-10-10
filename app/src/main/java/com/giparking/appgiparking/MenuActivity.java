@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,9 +16,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
 
 import com.giparking.appgiparking.fragment.ControlFragment;
+import com.giparking.appgiparking.fragment.IngresoPrintFragment;
+import com.giparking.appgiparking.fragment.ValidacionManualFragment;
 import com.giparking.appgiparking.view.LoguinActivity;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +46,9 @@ public class MenuActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        TextView txtMovil = navigationView.getHeaderView(0).findViewById(R.id.txt_movil);
+        txtMovil.setText("CAJA MOVIL 02");
     }
 
     @Override
@@ -84,6 +95,23 @@ public class MenuActivity extends AppCompatActivity
             insertarFragmento();
 
         } else if (id == R.id.nav_control_manual) {
+
+            Fragment fragment = new ValidacionManualFragment();
+            FragmentManager fmanager = this.getSupportFragmentManager();
+            if (fmanager != null) {
+
+                Bundle args = new Bundle();
+                args.putString("ACCESO", "Placa");
+                fragment.setArguments(args);
+
+
+                FragmentTransaction ftransaction = fmanager.beginTransaction();
+                if (ftransaction != null) {
+                    ftransaction.replace(R.id.contenedor, fragment);
+                    ftransaction.addToBackStack("");
+                    ftransaction.commit();
+                }
+            }
 
         } else if (id == R.id.nav_anulacion) {
 

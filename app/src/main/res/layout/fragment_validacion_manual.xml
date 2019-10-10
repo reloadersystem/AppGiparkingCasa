@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context="com.giparking.appgiparking.fragment.ValidacionManualFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/title_Placa"
+        android:text="Placa:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/edt_numPlaca"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/title_Placa"
+        android:hint="ABC123" />
+
+    <TextView
+        android:id="@+id/txt_Fecha"
+        android:layout_width="wrap_content"
+        android:text="12/12/2019"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_numPlaca"/>
+
+    <TextView
+        android:id="@+id/txt_Reloj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/edt_numPlaca"
+        android:layout_alignParentRight="true"
+        android:text="22:02:00" />
+
+</RelativeLayout>
