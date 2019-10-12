@@ -2,12 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.giparking.appgiparking.fragment.VisorQRFragment">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <Button
@@ -27,6 +29,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_gravity="center_horizontal">
 
         <LinearLayout
@@ -60,8 +63,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@string/promo"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/salida_qr"
             android:textColor="@android:color/black" />
 
         <SurfaceView
@@ -85,6 +89,7 @@
 
     <ListView
         android:id="@+id/list"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></ListView>
 

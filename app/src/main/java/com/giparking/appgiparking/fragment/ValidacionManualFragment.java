@@ -84,7 +84,7 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
 
             }
         }, yy, mm, dd);
-
+        datePicker.getDatePicker().setMinDate(System.currentTimeMillis());
         datePicker.show();
     }
 

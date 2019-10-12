@@ -5,43 +5,70 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.giparking.appgiparking.ConverterToPDF.TemplatePDF;
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.util.Save;
+import com.giparking.appgiparking.view.LoguinActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.Max;
+import com.mobsandgeeks.saripaar.annotation.Min;
+import com.mobsandgeeks.saripaar.annotation.Or;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class IngresoPrintFragment extends Fragment {
+public class IngresoPrintFragment extends Fragment implements Validator.ValidationListener {
 
     View rootview;
+
+    @Length(max = 10, min = 6)
     EditText edTexto;
+
     Button btnGerar, btnPrint;
     ImageView ivQRCode;
     Bitmap bitmap;
-    Button btn_pdfView;
+    TextView txtVistaPrevia;
     private TemplatePDF templatePDF;
+
 
     private String shorText = "Hola";
     private String longText = "iOS Studio";
+
+    protected Validator validator;
+    protected boolean validated;
+
 
     int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1;
 
@@ -55,12 +82,16 @@ public class IngresoPrintFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootview= inflater.inflate(R.layout.fragment_ingreso_print, container, false);
+        rootview = inflater.inflate(R.layout.fragment_ingreso_print, container, false);
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
 
         edTexto = rootview.findViewById(R.id.edTexto);
         btnGerar = rootview.findViewById(R.id.btnGerar);
         ivQRCode = rootview.findViewById(R.id.ivQRCode);
-        btn_pdfView = rootview.findViewById(R.id.pdfView);
+        txtVistaPrevia = rootview.findViewById(R.id.txtPreview);
 
 
         int verificarPermisoWrite = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -74,14 +105,12 @@ public class IngresoPrintFragment extends Fragment {
         btnGerar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                gerarQRCode();
-
+                validator.validate();
             }
         });
 
 
-        btn_pdfView.setOnClickListener(new View.OnClickListener() {
+        txtVistaPrevia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -102,21 +131,39 @@ public class IngresoPrintFragment extends Fragment {
 
         String texto = edTexto.getText().toString();
 
+        Calendar cal = Calendar.getInstance();
+        String hour= String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
+        String minute = String.valueOf(cal.get(Calendar.MINUTE));
+        String second = String.valueOf(cal.get(Calendar.SECOND));
+
+        String horaActual= String.format("%s:%s:%s", hour, minute,second);
+
+        String year = String.valueOf(cal.get(Calendar.YEAR));
+        String moth = String.valueOf(cal.get(Calendar.MONTH)+1);
+        String dayofmonth = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+
+        String fechaActual= String.format("%s/%s/%s", dayofmonth,moth,year);
+
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(texto, BarcodeFormat.QR_CODE, 2000, 2000);
+
+            String dataInfoQR = String.format("%s ,%s ,%s", horaActual, fechaActual, texto); // QR contiene fecha, hora, Placa
+            BitMatrix bitMatrix = multiFormatWriter.encode(dataInfoQR, BarcodeFormat.QR_CODE, 2000, 2000);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(bitMatrix);
             ivQRCode.setImageBitmap(bitmap);
 
+
 // MARK : guarda imagen
             Save save = new Save();
             save.SaveImage(getContext(), bitmap);
+            txtVistaPrevia.setTextColor(getResources().getColor(R.color.colorBlack));
+            txtVistaPrevia.setEnabled(true);
 
         } catch (WriterException e) {
-            e.printStackTrace();
+            Log.i("error", e.toString());
         }
 
     }
@@ -148,4 +195,39 @@ public class IngresoPrintFragment extends Fragment {
     }
 
 
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+
+        validated = false;
+
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = "ingrese datos correctos";
+
+
+            // Display error messages
+            if (view instanceof Spinner) {
+                Spinner sp = (Spinner) view;
+                view = ((LinearLayout) sp.getSelectedView()).getChildAt(0);        // we are actually interested in the text view spinner has
+            }
+
+            if (view instanceof TextView) {
+                TextView et = (TextView) view;
+                et.setError(message);
+            }
+        }
+    }
+
+
+    protected boolean validate() {
+        if (validator != null)
+            validator.validate();
+        return validated;           // would be set in one of the callbacks below
+    }
+
+    @Override
+    public void onValidationSucceeded() {
+        validated = true;
+        gerarQRCode();
+    }
 }

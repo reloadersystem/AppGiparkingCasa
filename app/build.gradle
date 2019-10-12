@@ -59,4 +59,8 @@ dependencies {
     // Image
 
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    //Validator
+    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
+
 }

@@ -63,7 +63,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btn_ingresar"
+                android:id="@+id/btnGerar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border"
@@ -74,33 +74,14 @@
                 android:textAllCaps="false"
                 android:text="Imprimir Ticket"/>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/txtPreview"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <Button
-                    android:id="@+id/btnGerar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="Generar QR Code" />
-
-
-                <Button
-                    android:id="@+id/pdfView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:text="PDF" />
-
-
-            </LinearLayout>
-
-
+                android:enabled="false"
+                android:text="Vista Previa" />
 
         </LinearLayout>
 

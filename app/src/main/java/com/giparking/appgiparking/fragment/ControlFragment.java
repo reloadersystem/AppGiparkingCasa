@@ -36,6 +36,7 @@ public class ControlFragment extends Fragment {
 
     private Unbinder unbinder;
 
+    Fragment fragment;
 
 
     public ControlFragment() {
@@ -74,29 +75,18 @@ public class ControlFragment extends Fragment {
 
     @OnClick(R.id.btn_ingreso)
     public void ingresar(){
-
-        Fragment fragment = new IngresoPrintFragment();
-        FragmentManager fmanager = getActivity().getSupportFragmentManager();
-        if (fmanager != null) {
-
-            Bundle args = new Bundle();
-            args.putString("ACCESO", "Placa");
-            fragment.setArguments(args);
-
-
-            FragmentTransaction ftransaction = fmanager.beginTransaction();
-            if (ftransaction != null) {
-                ftransaction.replace(R.id.contenedor, fragment);
-                ftransaction.addToBackStack("");
-                ftransaction.commit();
-            }
-        }
+        fragment = new IngresoPrintFragment();
+        changeFragment();
 
     }
+
+
 
     @OnClick(R.id.btn_salida_qr)
     public void salidaQr(){
 
+        fragment = new VisorQRFragment();
+        changeFragment();
 
     }
 
@@ -110,4 +100,23 @@ public class ControlFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    private void changeFragment() {
+
+        FragmentManager fmanager = getActivity().getSupportFragmentManager();
+        if (fmanager != null) {
+
+            Bundle args = new Bundle();
+            args.putString("ACCESO", "Placa");
+            fragment.setArguments(args);
+
+            FragmentTransaction ftransaction = fmanager.beginTransaction();
+            if (ftransaction != null) {
+                ftransaction.replace(R.id.contenedor, fragment);
+                ftransaction.addToBackStack("");
+                ftransaction.commit();
+            }
+        }
+    }
+
 }

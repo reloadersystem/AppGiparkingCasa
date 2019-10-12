@@ -15,5 +15,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-    <string name="promo">Escanea el CODIGO QR, para registrarte </string>
+    <string name="salida_qr">Escanea el CODIGO QR para registrar tu salida</string>
 </resources>
