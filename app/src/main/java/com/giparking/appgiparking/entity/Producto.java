@@ -10,6 +10,9 @@ public class Producto {
     private String nombre_producto;
     private String tiene_convenio;
 
+
+
+
     public String getCod_producto() {
         return cod_producto;
     }
