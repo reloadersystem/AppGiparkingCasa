@@ -102,34 +102,98 @@
 </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:weightSum="1"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Serie"
-            android:textSize="14dp"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/colorBlack"
-            android:gravity="center"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="[Info]"
-            android:textSize="14dp"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/colorBlack"
-            android:gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Serie"
+                android:textSize="14dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Info]"
+                android:layout_marginLeft="10dp"
+                android:textSize="14dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_weight="0.34"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Número:"
+                android:textSize="14dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Info]"
+                android:layout_marginLeft="10dp"
+                android:textSize="14dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_weight="0.309"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Monto"
+                android:textSize="14dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Info]"
+                android:layout_marginLeft="10dp"
+                android:textSize="14dp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/colorBlack"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 
     <Spinner
-        android:id="@+id/sp_producto"
+        android:id="@+id/sp_convenio"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
@@ -181,21 +245,30 @@
             android:layout_height="50dp"
             android:orientation="horizontal">
 
-            <RadioButton
+            <RadioGroup
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Boleta"
-                android:layout_marginTop="10dp"
-                android:textSize="12dp"
-                android:textColor="@color/colorBlack"/>
+                android:layout_height="wrap_content">
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Factura"
-                android:layout_gravity="center"
-                android:textSize="12dp"
-                android:textColor="@color/colorBlack"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Boleta"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorBlack"/>
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Factura"
+                    android:layout_marginLeft="20dp"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:textColor="@color/colorBlack"/>
+
+            </RadioGroup>
+
+
         </LinearLayout>
 
 

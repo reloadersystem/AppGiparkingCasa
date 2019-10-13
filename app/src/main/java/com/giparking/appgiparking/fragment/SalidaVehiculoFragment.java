@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.entity.Producto;
@@ -82,6 +81,8 @@ public class SalidaVehiculoFragment extends Fragment {
            }
        });
 
+
+
         horaSalida.setText(HoraFechaActual.obtenerHora());
 
 
@@ -89,7 +90,7 @@ public class SalidaVehiculoFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                fragment = new VisorQRFragment();
+                fragment = new ValidacionAutomaticaFragment();
                 changeFragment();
             }
         });
@@ -104,7 +105,7 @@ public class SalidaVehiculoFragment extends Fragment {
 
             Bundle args = new Bundle();
             args.putString("ACCESO", "Placa");
-            args.putString("HoraSalida", HoraFechaActual.obtenerHora());
+            args.putString("HoraSalida", horaSalida.getText().toString());
             args.putString("ProductoSeleccionado",prodSelec);
 
             fragment.setArguments(args);

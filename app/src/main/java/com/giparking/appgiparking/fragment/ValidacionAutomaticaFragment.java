@@ -26,7 +26,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.giparking.appgiparking.R;
-import com.giparking.appgiparking.util.HoraFechaActual;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -38,7 +37,7 @@ import java.util.Set;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VisorQRFragment extends Fragment {
+public class ValidacionAutomaticaFragment extends Fragment {
     Button b_on, b_off, b_list, b_disc;
     BluetoothAdapter bluetoothAdapter;
     Fragment fragment;
@@ -58,7 +57,7 @@ public class VisorQRFragment extends Fragment {
     View rootview;
 
 
-    public VisorQRFragment() {
+    public ValidacionAutomaticaFragment() {
         // Required empty public constructor
     }
 
@@ -67,7 +66,7 @@ public class VisorQRFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootview = inflater.inflate(R.layout.fragment_visor_qr, container, false);
+        rootview = inflater.inflate(R.layout.fragment_validacion_automatica, container, false);
         getActivity().setTitle("Validación Automática");
 
         b_on = rootview.findViewById(R.id.b_on);
