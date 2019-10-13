@@ -13,8 +13,10 @@ import com.giparking.appgiparking.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ValidacionFragment extends Fragment {
+    public class ValidacionFragment extends Fragment {
 
+
+    View  rootview;
 
     public ValidacionFragment() {
         // Required empty public constructor
@@ -25,7 +27,12 @@ public class ValidacionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_validacion, container, false);
+        rootview= inflater.inflate(R.layout.fragment_validacion, container, false);
+
+        getActivity().setTitle("Validación Automática");
+
+
+        return rootview;
     }
 
 }

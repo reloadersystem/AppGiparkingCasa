@@ -9,9 +9,11 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.entity.Producto;
@@ -31,6 +33,7 @@ public class SalidaVehiculoFragment extends Fragment {
     Fragment fragment;
     TextView horaIngreso, horaSalida;
     Spinner sp_producto;
+    String prodSelec = " ";
 
 
     public SalidaVehiculoFragment() {
@@ -66,6 +69,19 @@ public class SalidaVehiculoFragment extends Fragment {
         //Cargo el spinner con los datos
         sp_producto.setAdapter(adapter);
 
+       sp_producto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+
+                prodSelec = adapterView.getSelectedItem().toString();
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> adapterView) {
+
+           }
+       });
+
         horaSalida.setText(HoraFechaActual.obtenerHora());
 
 
@@ -88,6 +104,9 @@ public class SalidaVehiculoFragment extends Fragment {
 
             Bundle args = new Bundle();
             args.putString("ACCESO", "Placa");
+            args.putString("HoraSalida", HoraFechaActual.obtenerHora());
+            args.putString("ProductoSeleccionado",prodSelec);
+
             fragment.setArguments(args);
 
             FragmentTransaction ftransaction = fmanager.beginTransaction();

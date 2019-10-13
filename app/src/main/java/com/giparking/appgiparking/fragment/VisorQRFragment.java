@@ -26,6 +26,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.giparking.appgiparking.R;
+import com.giparking.appgiparking.util.HoraFechaActual;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -51,6 +52,9 @@ public class VisorQRFragment extends Fragment {
     private String token = "";
     private String tokenanterior = "";
 
+    String placaNum,horaSalida,prodSelec;
+
+
     View rootview;
 
 
@@ -70,6 +74,18 @@ public class VisorQRFragment extends Fragment {
         b_off = rootview.findViewById(R.id.b_off);
         b_list = rootview.findViewById(R.id.b_list);
         b_disc = rootview.findViewById(R.id.b_discoverable);
+
+
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            //descrip = bundle.getString("description");
+            placaNum = bundle.getString("Placa");
+            horaSalida = bundle.getString("HoraSalida");
+            prodSelec = bundle.getString("ProductoSeleccionado");
+        }
+
+        Toast.makeText(getContext(), placaNum + horaSalida + prodSelec, Toast.LENGTH_SHORT).show();
 
         surface = (SurfaceView)  rootview.findViewById(R.id.surfaceView);
 
