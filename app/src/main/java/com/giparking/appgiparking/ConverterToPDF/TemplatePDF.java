@@ -1,12 +1,21 @@
 package com.giparking.appgiparking.ConverterToPDF;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
+import com.giparking.appgiparking.R;
+import com.giparking.appgiparking.fragment.IngresoPrintFragment;
+import com.giparking.appgiparking.fragment.VistaPreviaPrintFragment;
+import com.giparking.appgiparking.util.GeneralFragmentManager;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -132,10 +141,20 @@ public class TemplatePDF {
     }
 
 
-    public void viewPDF() {
-        Intent intent = new Intent(context, ViewPDF.class);
-        intent.putExtra("path", pdFile.getAbsolutePath());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+    public void viewPDF(Activity activity, Fragment fragment) {
+
+        Bundle args = new Bundle();
+        args.putString("path", pdFile.getAbsolutePath());
+
+        GeneralFragmentManager.setFragmentWithReplace(activity,R.id.contenedor, fragment, args);
+
+
+
+//        Intent intent = new Intent(context, ViewPDF.class);
+//        intent.putExtra("path", pdFile.getAbsolutePath());
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        context.startActivity(intent);
+
+
     }
 }

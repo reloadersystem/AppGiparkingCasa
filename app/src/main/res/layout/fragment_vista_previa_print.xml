@@ -1,20 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.giparking.appgiparking.ConverterToPDF.ViewPDF">
+    tools:context="com.giparking.appgiparking.fragment.VistaPreviaPrintFragment">
 
     <Button
         android:id="@+id/btnImprimir"
-        android:layout_width="118dp"
-        android:layout_height="24dp"
-        android:layout_margin="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/border"
-        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Imprimir" />
 
     <com.github.barteksc.pdfviewer.PDFView

@@ -116,6 +116,9 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
             @Override
             public void onClick(View view) {
 
+
+                VistaPreviaPrintFragment fragmeVistaPrevia = new VistaPreviaPrintFragment();
+
                 templatePDF = new TemplatePDF(getContext(), bitmap);
                 templatePDF.openDocument();
                 templatePDF.addMetadata("Parqueando", "Resembrink", "Libros");
@@ -123,7 +126,7 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                 templatePDF.addParagraph(shorText);
                 templatePDF.addParagraph(longText);
                 templatePDF.closeDocument();
-                templatePDF.viewPDF();
+                templatePDF.viewPDF(getActivity(), fragmeVistaPrevia);
             }
         });
         return rootview;

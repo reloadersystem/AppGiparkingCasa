@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Validación Automática"
+        android:text="Tipo Validación"
         android:textSize="20dp"
         android:layout_marginTop="10dp"
         android:textColor="@color/colorBlack"
@@ -61,7 +61,36 @@
             android:gravity="center"/>
 
         <TextView
-            android:id="@+id/tv_hora_ingreso"
+            android:id="@+id/tv_fechaHoraIngreso"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="[Info]"
+            android:textSize="14dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Tarifario:"
+            android:textSize="14dp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/colorBlack"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_Tarifario"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

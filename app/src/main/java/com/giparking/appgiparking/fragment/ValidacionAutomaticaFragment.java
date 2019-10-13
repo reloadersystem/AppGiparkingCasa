@@ -48,8 +48,8 @@ public class ValidacionAutomaticaFragment extends Fragment {
 
     SurfaceView surface;
 
-    private String token = "";
-    private String tokenanterior = "";
+    private String qrResponse = "";
+    private String qrResponseAnterior = "";
 
     String placaNum,horaSalida,prodSelec;
 
@@ -199,26 +199,28 @@ public class ValidacionAutomaticaFragment extends Fragment {
                 final SparseArray<Barcode> barcode = detections.getDetectedItems();
                 if(barcode.size()>0){
 
-                    token = barcode.valueAt(0).displayValue;
+                    qrResponse = barcode.valueAt(0).displayValue;
 
-                    if(!token.equals(tokenanterior))
+                    if(!qrResponse.equals(qrResponseAnterior))
                     {
-                        tokenanterior=token;
-                        Log.i("token", token);
+                        qrResponseAnterior=qrResponse;
+                        Log.i("qrResponse", qrResponse);
 
-                        if(URLUtil.isValidUrl(token)){
+                        if(URLUtil.isValidUrl(qrResponse)){
 
-                            //un QR que tiene una direccion de URL y  segun la URL abre  la pagina...
-
-
-//                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(token));
+                            //un QR que tiene una direccion de URL y  segun la URL abre  la pagina.
+//                           Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(qrResponse));
 //                            startActivity(browserIntent);
-
                         }else
                         {
-
                             fragment = new ValidacionFragment();
                             changeFragment();
+
+//                            Intent shareIntent = new Intent();
+//                            shareIntent.setAction(Intent.ACTION_SEND);
+//                            shareIntent.putExtra(Intent.EXTRA_TEXT, qrResponse);
+//                            shareIntent.setType("text/plain");
+//                            startActivity(shareIntent);shareIntent
 
 
 
@@ -231,8 +233,8 @@ public class ValidacionAutomaticaFragment extends Fragment {
                                     synchronized (this)
                                     {
                                         wait(5000);
-                                        // limpiamos el token
-                                        tokenanterior = "";
+                                        // limpiamos el qrResponse
+                                        qrResponseAnterior = "";
 
                                     }
                                 }catch (InterruptedException e)
@@ -242,21 +244,7 @@ public class ValidacionAutomaticaFragment extends Fragment {
                                 }
                             }
                         }).start();
-
                     }
-
-
-                    /*information.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            information.setText(barcode.valueAt(0).displayValue.toString());
-
-
-
-                                Toast.makeText( PromoActivity.this,"Escaneo Exitoso",Toast.LENGTH_SHORT).show();
-                                          }
-                    });*/
                 }
             }
         });
@@ -294,7 +282,9 @@ public class ValidacionAutomaticaFragment extends Fragment {
         if (fmanager != null) {
 
             Bundle args = new Bundle();
-            args.putString("ACCESO", "Placa");
+            args.putString("QrResponse", qrResponse);
+            args.putString("ProductoSeleccionado", prodSelec);
+
             fragment.setArguments(args);
 
             FragmentTransaction ftransaction = fmanager.beginTransaction();
