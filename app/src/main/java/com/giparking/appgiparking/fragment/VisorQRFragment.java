@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -38,6 +40,7 @@ import java.util.Set;
 public class VisorQRFragment extends Fragment {
     Button b_on, b_off, b_list, b_disc;
     BluetoothAdapter bluetoothAdapter;
+    Fragment fragment;
     ListView list;
 
     private static int REQUEST_ENABLED = 0;
@@ -61,6 +64,7 @@ public class VisorQRFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootview = inflater.inflate(R.layout.fragment_visor_qr, container, false);
+        getActivity().setTitle("Validación Automática");
 
         b_on = rootview.findViewById(R.id.b_on);
         b_off = rootview.findViewById(R.id.b_off);
@@ -198,12 +202,10 @@ public class VisorQRFragment extends Fragment {
                         }else
                         {
 
-                            //si el QR es un TEXTO, lo lee y lo puede compartir...
-                            Intent shareIntent = new Intent();
-                            shareIntent.setAction(Intent.ACTION_SEND);
-                            shareIntent.putExtra(Intent.EXTRA_TEXT, token);
-                            shareIntent.setType("text/plain");
-                            startActivity(shareIntent);
+                            fragment = new ValidacionFragment();
+                            changeFragment();
+
+
 
                         }
 
@@ -269,6 +271,24 @@ public class VisorQRFragment extends Fragment {
 
 
         });
+    }
+
+    private void changeFragment() {
+
+        FragmentManager fmanager = getActivity().getSupportFragmentManager();
+        if (fmanager != null) {
+
+            Bundle args = new Bundle();
+            args.putString("ACCESO", "Placa");
+            fragment.setArguments(args);
+
+            FragmentTransaction ftransaction = fmanager.beginTransaction();
+            if (ftransaction != null) {
+                ftransaction.replace(R.id.contenedor, fragment);
+                ftransaction.addToBackStack("");
+                ftransaction.commit();
+            }
+        }
     }
 
 }

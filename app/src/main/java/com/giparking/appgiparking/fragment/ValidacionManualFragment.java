@@ -41,6 +41,7 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootview = inflater.inflate(R.layout.fragment_validacion_manual, container, false);
+        getActivity().setTitle("Validación Manual");
 
         txt_Reloj = rootview.findViewById(R.id.txt_Reloj);
         txt_Fecha = rootview.findViewById(R.id.txt_Fecha);

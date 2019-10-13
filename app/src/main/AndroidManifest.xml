@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -35,7 +36,6 @@
             android:name=".MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ConverterToPDF.ViewPDF" />
-        <activity android:name=".ConverterToPDF.PrintActivity" />
         <activity android:name=".view.SalidaVehiculoActivity"></activity>
     </application>
 

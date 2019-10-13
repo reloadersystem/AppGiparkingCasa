@@ -26,7 +26,9 @@ import android.widget.Toast;
 
 import com.giparking.appgiparking.ConverterToPDF.TemplatePDF;
 import com.giparking.appgiparking.R;
+import com.giparking.appgiparking.util.HoraFechaActual;
 import com.giparking.appgiparking.util.Save;
+import com.giparking.appgiparking.util.TimePickerDialogFragment;
 import com.giparking.appgiparking.view.LoguinActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -69,7 +71,6 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
     protected Validator validator;
     protected boolean validated;
 
-
     int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1;
 
 
@@ -84,9 +85,10 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
         // Inflate the layout for this fragment
         rootview = inflater.inflate(R.layout.fragment_ingreso_print, container, false);
 
+        getActivity().setTitle("ParkFácil");
+
         validator = new Validator(this);
         validator.setValidationListener(this);
-
 
         edTexto = rootview.findViewById(R.id.edTexto);
         btnGerar = rootview.findViewById(R.id.btnGerar);
@@ -131,19 +133,8 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
 
         String texto = edTexto.getText().toString();
 
-        Calendar cal = Calendar.getInstance();
-        String hour= String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
-        String minute = String.valueOf(cal.get(Calendar.MINUTE));
-        String second = String.valueOf(cal.get(Calendar.SECOND));
-
-        String horaActual= String.format("%s:%s:%s", hour, minute,second);
-
-        String year = String.valueOf(cal.get(Calendar.YEAR));
-        String moth = String.valueOf(cal.get(Calendar.MONTH)+1);
-        String dayofmonth = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
-
-        String fechaActual= String.format("%s/%s/%s", dayofmonth,moth,year);
-
+        String  fechaActual = HoraFechaActual.obtenerFecha();
+        String  horaActual =  HoraFechaActual.obtenerHora();
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 

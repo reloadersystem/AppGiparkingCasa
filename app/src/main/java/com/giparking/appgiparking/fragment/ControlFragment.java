@@ -1,8 +1,6 @@
 package com.giparking.appgiparking.fragment;
 
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,21 +8,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.giparking.appgiparking.ConverterToPDF.PrintActivity;
 import com.giparking.appgiparking.R;
-import com.giparking.appgiparking.rest.HelperWs;
-import com.giparking.appgiparking.rest.MethodWs;
 import com.giparking.appgiparking.util.str_global;
-import com.giparking.appgiparking.view.LoguinActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +43,7 @@ public class ControlFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this,view);
 
+        getActivity().setTitle("Control Automático");
 
 
 
@@ -85,7 +77,7 @@ public class ControlFragment extends Fragment {
     @OnClick(R.id.btn_salida_qr)
     public void salidaQr(){
 
-        fragment = new VisorQRFragment();
+        fragment = new SalidaVehiculoFragment();
         changeFragment();
 
     }
