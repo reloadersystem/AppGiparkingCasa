@@ -5,11 +5,8 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -22,14 +19,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.giparking.appgiparking.ConverterToPDF.TemplatePDF;
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.util.HoraFechaActual;
 import com.giparking.appgiparking.util.Save;
-import com.giparking.appgiparking.util.TimePickerDialogFragment;
-import com.giparking.appgiparking.view.LoguinActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -38,15 +32,8 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Length;
-import com.mobsandgeeks.saripaar.annotation.Max;
-import com.mobsandgeeks.saripaar.annotation.Min;
-import com.mobsandgeeks.saripaar.annotation.Or;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-
-import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -136,8 +123,8 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
 
         String texto = edTexto.getText().toString();
 
-        String  fechaActual = HoraFechaActual.obtenerFecha();
-        String  horaActual =  HoraFechaActual.obtenerHora();
+        String fechaActual = HoraFechaActual.obtenerFecha();
+        String horaActual = HoraFechaActual.obtenerHora();
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 

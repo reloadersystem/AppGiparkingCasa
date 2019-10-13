@@ -2,20 +2,17 @@ package com.giparking.appgiparking.ConverterToPDF;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.giparking.appgiparking.R;
-import com.giparking.appgiparking.fragment.IngresoPrintFragment;
-import com.giparking.appgiparking.fragment.VistaPreviaPrintFragment;
+import com.giparking.appgiparking.util.ConversionTitulo;
 import com.giparking.appgiparking.util.GeneralFragmentManager;
+import com.giparking.appgiparking.util.str_global;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -41,6 +38,7 @@ public class TemplatePDF {
     private PdfWriter pdfWriter;
 
     Bitmap bitmapImg;
+    ConversionTitulo conversionTitulo;
 
     private Paragraph paragraph;
 
@@ -62,7 +60,12 @@ public class TemplatePDF {
             pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(pdFile));
             document.open();
 
-            Paragraph lote = new Paragraph("N° LOTE " + "222",
+            conversionTitulo = new ConversionTitulo();
+
+            String nombreEmpresa = str_global.getInstance().getEmpresa_nombre();
+            String formatTituloEmpresa = conversionTitulo.obtenerTitulo(nombreEmpresa);
+
+            Paragraph lote = new Paragraph(formatTituloEmpresa,
                     FontFactory.getFont("arial", 22, Font.BOLD, BaseColor.BLACK));
             lote.setAlignment(Element.ALIGN_CENTER);
             document.add(lote);
@@ -71,7 +74,7 @@ public class TemplatePDF {
 
             File file = new File(file_path);
             FileInputStream fileInputStream = new FileInputStream(file);
- Bitmap bmp = BitmapFactory.decodeStream(fileInputStream);
+            Bitmap bmp = BitmapFactory.decodeStream(fileInputStream);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
             Image image = Image.getInstance(stream.toByteArray());
@@ -146,8 +149,7 @@ public class TemplatePDF {
         Bundle args = new Bundle();
         args.putString("path", pdFile.getAbsolutePath());
 
-        GeneralFragmentManager.setFragmentWithReplace(activity,R.id.contenedor, fragment, args);
-
+        GeneralFragmentManager.setFragmentWithReplace(activity, R.id.contenedor, fragment, args);
 
 
 //        Intent intent = new Intent(context, ViewPDF.class);

@@ -141,6 +141,8 @@ public class LoguinActivity extends AppCompatActivity {
                             String valores_encabezado = parts[3];
                             String[] parts_valores_encabezado = valores_encabezado.split("¦");
 
+
+
                             String cabecera_ticket = parts_valores_encabezado[0];
                             String cabecera_comprobante = parts_valores_encabezado[0];
 
