@@ -33,6 +33,11 @@ public interface MethodWs {
                                      @Query("NRO_PLACA") String nro_placa);
 
 
+    @GET("CONTROLAutoSalidaBuscar/")
+    Call<ResponseBody> ControlAutoSalidaBusca(@Query("BusCriterio") String cod_corpempresa,
+                                            @Query("COD_SUCURSAL") String cod_sucursal,
+                                            @Query("COD_MOVIMIENTO") String cod_usuario,
+                                            @Query("NRO_PLACA") String nro_placa);
 
 
 }

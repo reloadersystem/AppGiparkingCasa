@@ -30,7 +30,7 @@
         android:background="@color/colorPrimaryDark"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorWhite"
-        android:text="Salida Movil"/>
+        android:text="Salida QR"/>
 
     <Button
         android:id="@+id/btn_salida_manual"

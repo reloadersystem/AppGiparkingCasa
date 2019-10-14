@@ -77,7 +77,8 @@ public class ControlFragment extends Fragment {
     @OnClick(R.id.btn_salida_qr)
     public void salidaQr(){
 
-        fragment = new SalidaVehiculoFragment();
+        //fragment = new SalidaVehiculoFragment();
+        fragment = new ValidacionAutomaticaFragment();
         changeFragment();
 
     }
@@ -85,6 +86,8 @@ public class ControlFragment extends Fragment {
     @OnClick(R.id.btn_salida_manual)
     public void salidaManual(){
 
+        fragment = new SalidaManualFragment();
+        changeFragment();
     }
 
     @Override

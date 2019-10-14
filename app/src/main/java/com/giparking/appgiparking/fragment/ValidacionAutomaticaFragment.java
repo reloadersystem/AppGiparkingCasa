@@ -213,7 +213,8 @@ public class ValidacionAutomaticaFragment extends Fragment {
 //                            startActivity(browserIntent);
                         }else
                         {
-                            fragment = new ValidacionFragment();
+                            //fragment = new ValidacionFragment();
+                            fragment = new SalidaVehiculoFragment();
                             changeFragment();
 
 //                            Intent shareIntent = new Intent();

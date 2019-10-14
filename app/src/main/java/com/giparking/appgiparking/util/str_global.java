@@ -43,6 +43,7 @@ public class str_global {
     //Codigo apertura de caja
     String cod_cefectivo = "";
 
+
     public String getCod_cefectivo() {
         return cod_cefectivo;
     }
