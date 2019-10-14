@@ -3,12 +3,17 @@ package com.giparking.appgiparking.fragment;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +27,11 @@ import android.widget.TextView;
 
 import com.giparking.appgiparking.ConverterToPDF.TemplatePDF;
 import com.giparking.appgiparking.R;
+import com.giparking.appgiparking.rest.HelperWs;
+import com.giparking.appgiparking.rest.MethodWs;
 import com.giparking.appgiparking.util.HoraFechaActual;
 import com.giparking.appgiparking.util.Save;
+import com.giparking.appgiparking.util.str_global;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -35,12 +43,29 @@ import com.mobsandgeeks.saripaar.annotation.Length;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class IngresoPrintFragment extends Fragment implements Validator.ValidationListener {
 
     View rootview;
+
+    @BindView(R.id.cardview_grupo_reimprimir)
+    CardView cardview_grupo_reimprimir;
+
+    @BindView(R.id.tv_informacion_vehiculo)
+    TextView tv_informacion_vehiculo;
+
+    @BindView(R.id.btn_reimprimir)
+    Button btn_reimprimir;
 
     @Length(max = 10, min = 6)
     EditText edTexto;
@@ -51,6 +76,10 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
     TextView txtVistaPrevia;
     private TemplatePDF templatePDF;
 
+    SweetAlertDialog pd;
+
+    String descripcion_respuesta = "";
+    String valores_comprobante_output = "";
 
     private String shorText = "Hola";
     private String longText = "iOS Studio";
@@ -59,6 +88,8 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
     protected boolean validated;
 
     int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1;
+
+    private str_global a_str_global = str_global.getInstance();
 
 
     public IngresoPrintFragment() {
@@ -71,8 +102,29 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootview = inflater.inflate(R.layout.fragment_ingreso_print, container, false);
+        ButterKnife.bind(this,rootview);
 
         getActivity().setTitle("ParkFácil");
+
+        //Verificar si existe una preferencia
+        recuperarPreferencias();
+
+        if (valores_comprobante_output.equals("")){
+
+            cardview_grupo_reimprimir.setVisibility(View.GONE);
+
+        }else{
+
+            cardview_grupo_reimprimir.setVisibility(View.VISIBLE);
+            tv_informacion_vehiculo.setText(valores_comprobante_output);
+            btn_reimprimir.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    //TODO Reimprimir
+                }
+            });
+        }
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -209,6 +261,101 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
     @Override
     public void onValidationSucceeded() {
         validated = true;
-        gerarQRCode();
+
+        String cod_corpempresa = a_str_global.getCod_corpempresa().toString();
+        String cod_sucursal = a_str_global.getCod_sucursal().toString();
+        String cod_usuario = a_str_global.getCod_usuario().toString();
+        String cod_cefectivo = a_str_global.getCod_cefectivo().toString();
+        String nro_placa = edTexto.getText().toString();
+
+        pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
+        pd.setContentText("Por favor, espere...");
+        pd.setCancelable(false);
+        pd.show();
+
+
+        MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);
+        Call<ResponseBody> responseBodyCall = methodWs.controlIngresoGrabar(cod_corpempresa,cod_sucursal,cod_usuario,cod_cefectivo,nro_placa);
+        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if (response.isSuccessful()) {
+
+                    ResponseBody informacion = response.body();
+                    try {
+                        String cadena_respuesta = informacion.string();
+                        String[] parts = cadena_respuesta.split("¬");
+                        String respuesta_validacion = parts[0];
+
+                        String[] parts_validacion = respuesta_validacion.split("¦");
+                        String codigo_respuesta = parts_validacion[0];
+                        if (!codigo_respuesta.equals("0")) {
+                            descripcion_respuesta = parts_validacion[1];
+                        }
+
+                        if (codigo_respuesta.equals("0")) {
+
+                            //Datos que debe imprimirse en el qr
+                            String valores_comprobante = parts[1];
+                            //TODO Aca debe de mandar a imprimir [valores_comprobante]
+
+                            //Grabarlo en un sharepreferences
+                            guardarPreferencia(valores_comprobante);
+
+                            //gerarQRCode();
+                            pd.dismiss();
+                            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
+                            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                            pd.setContentText("Ingreso correcto!!");
+                            pd.setCancelable(false);
+                            pd.show();
+                            return;
+
+                        }else{
+
+                            pd.dismiss();
+                            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                            pd.setContentText(descripcion_respuesta);
+                            pd.setCancelable(false);
+                            pd.show();
+                            return;
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        pd.dismiss();
+                    }
+                } else {
+                    //ERROR
+                    pd.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("jledesma", t.getMessage().toString());
+                pd.dismiss();
+            }
+        });
     }
+
+    public void guardarPreferencia(String valores_comprobante){
+
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("Preferencia_ingreso",0).edit();
+        editor.putString("valores_comprobante",valores_comprobante);
+        editor.commit();
+
+    }
+
+    public void recuperarPreferencias(){
+
+        SharedPreferences pref = getContext().getSharedPreferences("Preferencia_ingreso", 0);
+        valores_comprobante_output = pref.getString("valores_comprobante","");
+
+
+    }
+
 }

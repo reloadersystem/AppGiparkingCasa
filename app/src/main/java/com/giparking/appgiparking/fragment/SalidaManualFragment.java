@@ -1,9 +1,12 @@
 package com.giparking.appgiparking.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -42,6 +46,8 @@ public class SalidaManualFragment extends Fragment {
     String descripcion_respuesta = "";
 
     private str_global a_str_global = str_global.getInstance();
+
+    Fragment fragment = new SalidaVehiculoFragment();
 
     public SalidaManualFragment() {
         // Required empty public constructor
@@ -87,7 +93,7 @@ public class SalidaManualFragment extends Fragment {
                     ResponseBody informacion = response.body();
                     try {
                         String cadena_respuesta = informacion.string();
-                        String[] parts = cadena_respuesta.split("©");
+                        String[] parts = cadena_respuesta.split("¬");
                         String respuesta_validacion = parts[0];
 
                         String[] parts_validacion = respuesta_validacion.split("¦");
@@ -102,6 +108,36 @@ public class SalidaManualFragment extends Fragment {
                             String valores_usuario = parts[1];
                             String[] parts_valores_usuario = valores_usuario.split("¦");
 
+                            String cod_movimiento = parts_valores_usuario[0].toString();
+                            String nro_placa = parts_valores_usuario[1].toString();;
+                            String ingreso_fecha = parts_valores_usuario[2].toString();;
+                            String hora_fecha = parts_valores_usuario[3].toString();;
+
+                            /*Bundle bundle = new Bundle();
+                            bundle.putString("cod_movimiento",cod_movimiento);
+                            bundle.putString("nro_placa",nro_placa);
+                            bundle.putString("ingreso_fecha",ingreso_fecha);
+                            bundle.putString("hora_fecha",hora_fecha);*/
+                            pd.dismiss();
+
+                            FragmentManager fmanager = getActivity().getSupportFragmentManager();
+                            if (fmanager != null) {
+
+                                Bundle args = new Bundle();
+                                args.putString("cod_movimiento",cod_movimiento);
+                                args.putString("nro_placa",nro_placa);
+                                args.putString("ingreso_fecha",ingreso_fecha);
+                                args.putString("hora_fecha",hora_fecha);
+
+                                fragment.setArguments(args);
+
+                                FragmentTransaction ftransaction = fmanager.beginTransaction();
+                                if (ftransaction != null) {
+                                    ftransaction.replace(R.id.contenedor, fragment);
+                                    ftransaction.addToBackStack("");
+                                    ftransaction.commit();
+                                }
+                            }
 
 
                         }else{
@@ -132,5 +168,6 @@ public class SalidaManualFragment extends Fragment {
             }
         });
     }
+
 
 }

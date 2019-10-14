@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        app:cardElevation="10dp"
+        app:cardElevation="2dp"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -91,11 +91,12 @@
 
 
     <android.support.v7.widget.CardView
+        android:id="@+id/cardview_grupo_reimprimir"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:layout_marginTop="20dp"
-        app:cardElevation="10dp"
+        app:cardElevation="2dp"
         app:cardCornerRadius="10dp">
 
     <LinearLayout
@@ -118,12 +119,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_informacion_vehiculo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textColor="@color/colorBlack"
@@ -131,8 +132,8 @@
 
             <Button
                 android:id="@+id/btn_reimprimir"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="@drawable/border"
                 android:textColor="@color/colorWhite"

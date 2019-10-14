@@ -22,10 +22,24 @@ import com.giparking.appgiparking.util.HoraFechaActual;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SalidaVehiculoFragment extends Fragment {
+
+    @BindView(R.id.tv_placa)
+    TextView tv_placa;
+
+    @BindView(R.id.edt_fecha_ingreso)
+    TextView edt_fecha_ingreso;
+
+    @BindView(R.id.edt_hora_ingreso)
+    TextView edt_hora_ingreso;
+
+
 
     View rootview;
     CardView crd_valAutomatica;
@@ -33,6 +47,12 @@ public class SalidaVehiculoFragment extends Fragment {
     TextView horaIngreso, horaSalida;
     Spinner sp_producto;
     String prodSelec = " ";
+
+    String cod_movimiento = "";
+    String nro_placa = "";
+    String ingreso_fecha = "";
+    String hora_fecha = "";
+
 
 
     public SalidaVehiculoFragment() {
@@ -45,12 +65,26 @@ public class SalidaVehiculoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootview = inflater.inflate(R.layout.fragment_salida_vehiculo, container, false);
+        ButterKnife.bind(this,rootview);
         getActivity().setTitle("Salida Vehículo");
 
         crd_valAutomatica = rootview.findViewById(R.id.crd_valAutomatica);
         horaIngreso = rootview.findViewById(R.id.tv_hora_ingreso);
         horaSalida = rootview.findViewById(R.id.tv_hora_salida);
         sp_producto = rootview.findViewById(R.id.sp_producto);
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            //descrip = bundle.getString("description");
+            cod_movimiento = bundle.getString("cod_movimiento");
+            nro_placa = bundle.getString("nro_placa");
+            ingreso_fecha = bundle.getString("ingreso_fecha");
+            hora_fecha = bundle.getString("hora_fecha");
+
+            tv_placa.setText(nro_placa);
+            edt_fecha_ingreso.setText(ingreso_fecha);
+            edt_hora_ingreso.setText(hora_fecha);
+        }
 
         List<Producto> arrayListProducto = (List<Producto>) ContenedorClass.getInstance().getList_producto();
 
@@ -83,7 +117,7 @@ public class SalidaVehiculoFragment extends Fragment {
 
 
 
-        horaSalida.setText(HoraFechaActual.obtenerHora());
+        //horaSalida.setText(HoraFechaActual.obtenerHora());
 
 
         crd_valAutomatica.setOnClickListener(new View.OnClickListener() {

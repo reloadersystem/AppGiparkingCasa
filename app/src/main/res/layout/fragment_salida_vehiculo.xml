@@ -60,12 +60,11 @@
             android:textColor="@color/colorBlack"
             android:gravity="center"/>
 
-        <TextView
-            android:id="@+id/tv_hora_ingreso"
+        <EditText
+            android:id="@+id/edt_fecha_ingreso"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="[Info]"
             android:textSize="14dp"
             android:layout_marginTop="20dp"
             android:textColor="@color/colorBlack"
@@ -88,12 +87,11 @@
             android:textColor="@color/colorBlack"
             android:gravity="center"/>
 
-        <TextView
-            android:id="@+id/tv_hora_salida"
+        <EditText
+            android:id="@+id/edt_hora_ingreso"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="[Info]"
             android:textSize="14dp"
             android:layout_marginTop="20dp"
             android:textColor="@color/colorBlack"
