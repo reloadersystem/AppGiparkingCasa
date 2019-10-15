@@ -15,7 +15,6 @@ import com.giparking.appgiparking.R;
 public class GeneralFragmentManager {
 
     public static void setFragmentWithReplace(Activity activity, int contenedor_id, Fragment fragment, Bundle bundle) {
-
         fragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = ((AppCompatActivity) activity).getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(contenedor_id, fragment);

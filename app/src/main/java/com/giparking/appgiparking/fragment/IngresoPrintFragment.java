@@ -31,6 +31,7 @@ import com.giparking.appgiparking.rest.HelperWs;
 import com.giparking.appgiparking.rest.MethodWs;
 import com.giparking.appgiparking.util.HoraFechaActual;
 import com.giparking.appgiparking.util.Save;
+import com.giparking.appgiparking.util.ShareDataRead;
 import com.giparking.appgiparking.util.str_global;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -122,6 +123,9 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                 public void onClick(View view) {
 
                     //TODO Reimprimir
+
+                    String shareGetPreference =  ShareDataRead.obtenerValor(getContext(), "valores_comprobante");
+                    //111019298425¦xtjlfhl¦14/10/2019¦19:45:44¦Espacios Libres: 93
                 }
             });
         }
@@ -171,19 +175,19 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
         return rootview;
     }
 
-    private void gerarQRCode() {
+    private void gerarQRCode(String valores_comprobante) {
 
-        String texto = edTexto.getText().toString();
-
-        String fechaActual = HoraFechaActual.obtenerFecha();
-        String horaActual = HoraFechaActual.obtenerHora();
+//        String texto = edTexto.getText().toString();
+//
+//        String fechaActual = HoraFechaActual.obtenerFecha();
+//        String horaActual = HoraFechaActual.obtenerHora();
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
         try {
 
-            String dataInfoQR = String.format("%s ,%s ,%s", horaActual, fechaActual, texto); // QR contiene fecha, hora, Placa
-            BitMatrix bitMatrix = multiFormatWriter.encode(dataInfoQR, BarcodeFormat.QR_CODE, 2000, 2000);
+            //String dataInfoQR = String.format("%s ,%s ,%s", horaActual, fechaActual, texto); // QR contiene fecha, hora, Placa
+            BitMatrix bitMatrix = multiFormatWriter.encode(valores_comprobante, BarcodeFormat.QR_CODE, 2000, 2000);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(bitMatrix);
             ivQRCode.setImageBitmap(bitmap);
@@ -198,12 +202,9 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
         } catch (WriterException e) {
             Log.i("error", e.toString());
         }
-
     }
 
-
     private void solicitarPermiso() {
-
 
         new AlertDialog.Builder(getContext())
                 .setTitle("Autorización")
@@ -213,7 +214,6 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
-
                     }
 
 
@@ -291,15 +291,17 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
 
                         String[] parts_validacion = respuesta_validacion.split("¦");
                         String codigo_respuesta = parts_validacion[0];
-                        if (!codigo_respuesta.equals("0")) {
+                        if (!codigo_respuesta.equals("0")) { //0 error en la validación de negocio
                             descripcion_respuesta = parts_validacion[1];
                         }
 
-                        if (codigo_respuesta.equals("0")) {
+                        if (codigo_respuesta.equals("0")) { //0 regla de negocio Ok
 
                             //Datos que debe imprimirse en el qr
                             String valores_comprobante = parts[1];
                             //TODO Aca debe de mandar a imprimir [valores_comprobante]
+
+                            gerarQRCode(valores_comprobante);
 
                             //Grabarlo en un sharepreferences
                             guardarPreferencia(valores_comprobante);
@@ -354,8 +356,6 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
 
         SharedPreferences pref = getContext().getSharedPreferences("Preferencia_ingreso", 0);
         valores_comprobante_output = pref.getString("valores_comprobante","");
-
-
     }
 
 }

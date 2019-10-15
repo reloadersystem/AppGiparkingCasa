@@ -80,8 +80,6 @@ public class SalidaManualFragment extends Fragment {
         pd.setCancelable(false);
         pd.show();
 
-
-
         MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);
         Call<ResponseBody> responseBodyCall = methodWs.ControlAutoSalidaBusca(bus_criterio, cod_sucursal, cod_movimiento, nro_placa);
         responseBodyCall.enqueue(new Callback<ResponseBody>() {

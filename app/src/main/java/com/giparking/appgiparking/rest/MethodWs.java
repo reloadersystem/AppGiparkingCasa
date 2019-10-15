@@ -39,5 +39,4 @@ public interface MethodWs {
                                             @Query("COD_MOVIMIENTO") String cod_usuario,
                                             @Query("NRO_PLACA") String nro_placa);
 
-
 }
