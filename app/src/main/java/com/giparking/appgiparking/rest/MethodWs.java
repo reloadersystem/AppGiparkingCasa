@@ -57,6 +57,30 @@ public interface MethodWs {
     @GET("COMPROBANTEEmpresaBuscar/")
     Call<ResponseBody> comprobanteEmpresaBuscar(@Query("RUC") String ruc);
 
+    @GET("CONTROLAutoSalidaGrabar/")
+    Call<ResponseBody> controlAutoSalidaGrabar(@Query("COD_CORPEMPRESA") String cod_corpempresa,
+                                               @Query("COD_SUCURSAL") String cod_sucursal,
+                                               @Query("COD_CEFECTIVO") String cod_cefectivo,
+                                               @Query("COD_CAJA") String cod_caja,
+                                               @Query("COD_USUARIO") String cod_usuario,
+                                               @Query("COD_TCOMPROBANTE") String cod_tcomprobante,
+                                               @Query("COD_MOVIMIENTO") String cod_movimiento,
+                                               @Query("COD_TVALIDACION") String cod_tvalidacion,
+                                               @Query("COD_PRODUCTO") String cod_producto,
+                                               @Query("COD_CONVENIO") String cod_convenio,
+                                               @Query("INGRESO_FECHA") String ingresa_fecha,
+                                               @Query("INGRESO_HORA") String ingreso_hora,
+                                               @Query("EMP_RUC") String emp_ruc,
+                                               @Query("NRO_PLACA") String nro_placa,
+                                               @Query("CONVE_CODIGO") String conve_codigo,
+                                               @Query("CONVE_FECHA") String conve_fecha,
+                                               @Query("CONVE_TIPO") String conve_tipo,
+                                               @Query("CONVE_SERIE") String conve_serie,
+                                               @Query("CONVE_NUMERO") String conve_numero,
+                                               @Query("CONVE_MONTO") String conve_monto);
+
+
+
 
 
 }

@@ -207,6 +207,7 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
                 args.putString("hora", txt_Reloj.getText().toString());
                 args.putString("cliente",prodSelec);
                 args.putString("clienteid",prodSelecItem);
+                args.putString("cod_movimiento","0");
 
                 fragment.setArguments(args);
             }
@@ -220,6 +221,7 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
                 args.putString("hora", txt_Reloj.getText().toString());
                 args.putString("cliente",prodSelec);
                 args.putString("clienteid",prodSelecItem);
+                args.putString("cod_movimiento","0");
 
                 fragment.setArguments(args);
             }
@@ -232,6 +234,7 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
                 args.putString("hora", txt_Reloj.getText().toString());
                 args.putString("cliente",prodSelec);
                 args.putString("clienteid",prodSelecItem);
+                args.putString("cod_movimiento","0");
 
                 fragment.setArguments(args);
             }

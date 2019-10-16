@@ -170,6 +170,7 @@ public class SalidaVehiculoFragment extends Fragment {
                 args.putString("hora", edt_hora_ingreso.getText().toString());
                 args.putString("cliente",prodSelec);
                 args.putString("clienteid",prodSelecItem);
+                args.putString("cod_movimiento",cod_movimiento);
 
                 fragment.setArguments(args);
             }
@@ -183,6 +184,7 @@ public class SalidaVehiculoFragment extends Fragment {
                 args.putString("hora", edt_hora_ingreso.getText().toString());
                 args.putString("cliente",prodSelec);
                 args.putString("clienteid",prodSelecItem);
+                args.putString("cod_movimiento",cod_movimiento);
 
                 fragment.setArguments(args);
             }
@@ -195,6 +197,7 @@ public class SalidaVehiculoFragment extends Fragment {
                 args.putString("hora", edt_hora_ingreso.getText().toString());
                 args.putString("cliente",prodSelec);
                 args.putString("clienteid",prodSelecItem);
+                args.putString("cod_movimiento",cod_movimiento);
 
                 fragment.setArguments(args);
             }

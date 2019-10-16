@@ -90,6 +90,8 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
 
     List<Convenio> arrayListProducto;
 
+    String  cod_movimiento_input ="";
+
 
     public ValidacionDetalleValidacionAutoFragment() {
         // Required empty public constructor
@@ -265,6 +267,7 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
             hora = bundle.getString("hora");
             cliente = bundle.getString("cliente");
             clienteid = bundle.getString("clienteid");
+            cod_movimiento_input = bundle.getString("cod_movimiento");
 
             String cadena_respuesta = qrDataRecieve;
             String[] parts = cadena_respuesta.split("\\|");

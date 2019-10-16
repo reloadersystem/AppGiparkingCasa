@@ -85,6 +85,8 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
     SweetAlertDialog pd;
     String descripcion_respuesta ="";
 
+    String  cod_movimiento_input ="";
+
     String convenio,codigo_convenio;
 
 
@@ -339,7 +341,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
             hora = bundle.getString("hora");
             cliente = bundle.getString("cliente");
             clienteid = bundle.getString("clienteid");
-
+            cod_movimiento_input = bundle.getString("cod_movimiento");
 
             tv_placa_validacion_manual.setText(nro_placa);
             tv_fecha_hora_ingreso_validacion_manual.setText(fecha + " " + hora);
