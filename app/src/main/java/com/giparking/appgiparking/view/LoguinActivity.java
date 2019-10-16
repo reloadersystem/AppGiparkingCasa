@@ -147,15 +147,15 @@ public class LoguinActivity extends AppCompatActivity {
 
 
                             String cabecera_ticket = parts_valores_encabezado[0];
-                            String cabecera_comprobante = parts_valores_encabezado[0];
+                            String cabecera_comprobante = parts_valores_encabezado[1];
 
-                            String[] parts_cabecera_ticket = cabecera_ticket.split("|");
+                            String[] parts_cabecera_ticket = cabecera_ticket.split("\\|");
                             a_str_global.setVar_cabecera_t_0(parts_cabecera_ticket[0]);
                             a_str_global.setVar_cabecera_t_1(parts_cabecera_ticket[1]);
                             a_str_global.setVar_cabecera_t_2(parts_cabecera_ticket[2]);
                             a_str_global.setVar_cabecera_t_3(parts_cabecera_ticket[3]);
 
-                            String[] parts_cabecera_comprobante = cabecera_comprobante.split("|");
+                            String[] parts_cabecera_comprobante = cabecera_comprobante.split("\\|");
                             a_str_global.setVar_cabecera_c_0(parts_cabecera_comprobante[0]);
                             a_str_global.setVar_cabecera_c_1(parts_cabecera_comprobante[1]);
                             a_str_global.setVar_cabecera_c_2(parts_cabecera_comprobante[2]);
