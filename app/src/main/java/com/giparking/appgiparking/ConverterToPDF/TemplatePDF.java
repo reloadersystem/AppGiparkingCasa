@@ -7,11 +7,13 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.PagerSnapHelper;
 import android.util.Log;
 
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.util.ConversionTitulo;
 import com.giparking.appgiparking.util.GeneralFragmentManager;
+import com.giparking.appgiparking.util.HoraFechaActual;
 import com.giparking.appgiparking.util.str_global;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -22,6 +24,7 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayOutputStream;
@@ -42,10 +45,10 @@ public class TemplatePDF {
 
     private Paragraph paragraph;
 
-    private Font fTitle = new Font(Font.FontFamily.TIMES_ROMAN, 20, Font.BOLD);
-    private Font fSubtitle = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
-    private Font fText = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
-    private Font fHighText = new Font(Font.FontFamily.TIMES_ROMAN, 15, Font.BOLD, BaseColor.RED);
+    private Font fTitle = new Font(Font.FontFamily.TIMES_ROMAN, 5, Font.NORMAL); //20 .BOLD
+    private Font fSubtitle = new Font(Font.FontFamily.TIMES_ROMAN, 4, Font.NORMAL); //18
+    private Font fText = new Font(Font.FontFamily.TIMES_ROMAN, 6, Font.NORMAL); //12
+    private Font fHighText = new Font(Font.FontFamily.TIMES_ROMAN, 4, Font.NORMAL); //15, BaseColor.RED
 
 
     public TemplatePDF(Context context, Bitmap bitmap) {
@@ -56,33 +59,92 @@ public class TemplatePDF {
     public void openDocument() {
         createFile();
         try {
-            document = new Document(PageSize.A8);
+
+            //tamaño hoja programada
+//            Rectangle pageSize = new Rectangle(200f, 400f); //ancho y alto
+//            Document docu = new Document(pageSize);
+
+            //margenes 72 =1 pulgada
+
+            //document = new Document(PageSize.A8);//calibracion A8
+            document = new Document(PageSize.A8,5,5,5,5);//calibracion A8
+
             pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(pdFile));
             document.open();
 
             conversionTitulo = new ConversionTitulo();
 
             String nombreEmpresa = str_global.getInstance().getEmpresa_nombre();
-            String formatTituloEmpresa = conversionTitulo.obtenerTitulo(nombreEmpresa);
-
-            Paragraph lote = new Paragraph(formatTituloEmpresa,
-                    FontFactory.getFont("arial", 22, Font.BOLD, BaseColor.BLACK));
+            //String formatTituloEmpresa = conversionTitulo.obtenerTitulo(nombreEmpresa);
+            Paragraph lote = new Paragraph(nombreEmpresa,
+                    FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
             lote.setAlignment(Element.ALIGN_CENTER);
             document.add(lote);
 
-            String file_path = Environment.getExternalStorageDirectory() + "/PDFiles/QRImage/qrParquer.png";
 
+            String direccionEmpresa = str_global.getInstance().getSucursal_nombre();
+            Paragraph lote2 = new Paragraph(direccionEmpresa,
+                    FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
+            lote2.setAlignment(Element.ALIGN_CENTER);
+            document.add(lote2);
+
+            String lineSeparator = "_____________________________________________";
+            Paragraph lote3 = new Paragraph(lineSeparator,
+                    FontFactory.getFont("arial", 5, Font.NORMAL, BaseColor.BLACK)); //font.bold
+            lote3.setAlignment(Element.ALIGN_CENTER);
+            document.add(lote3);
+
+            String ticketnum = "Ticket: "+str_global.getInstance().getCod_cefectivo(); //numTicket
+            Paragraph lote4 = new Paragraph(ticketnum,
+                    FontFactory.getFont("arial", 7, Font.NORMAL, BaseColor.BLACK)); //font.bold
+            lote4.setAlignment(Element.ALIGN_CENTER);
+            document.add(lote4);
+
+            String numPlaca = "Placa: "+str_global.getInstance().getCod_usuario(); //numPlaca
+            Paragraph lote5 = new Paragraph(numPlaca,
+                    FontFactory.getFont("arial", 7, Font.NORMAL, BaseColor.BLACK)); //font.bold
+            lote5.setAlignment(Element.ALIGN_CENTER);
+            document.add(lote5);
+
+            String fechaIngreso = "Fecha Ingreso: "+ HoraFechaActual.obtenerFecha(); //fechaIngreso
+            Paragraph lote6 = new Paragraph(fechaIngreso,
+                    FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
+            lote6.setAlignment(Element.ALIGN_CENTER);
+            document.add(lote6);
+
+            String horaIngreso = "Hora Ingreso: " + HoraFechaActual.obtenerHora(); //horaIngreso
+            Paragraph lote7 = new Paragraph(horaIngreso,
+                    FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
+            lote7.setAlignment(Element.ALIGN_CENTER);
+            document.add(lote7);
+
+            String file_path = Environment.getExternalStorageDirectory() + "/PDFiles/QRImage/qrParquer.png";
             File file = new File(file_path);
             FileInputStream fileInputStream = new FileInputStream(file);
             Bitmap bmp = BitmapFactory.decodeStream(fileInputStream);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);//100
             Image image = Image.getInstance(stream.toByteArray());
             //image.setAbsolutePosition(10f, 750f);
 //                image.scaleToFit(850, 78);
-            image.scaleToFit(150, 150);
+            image.scaleToFit(110, 110); //150, 150  | 80,80
             image.setAlignment(Element.ALIGN_CENTER | Element.ALIGN_CENTER);
             document.add(image);
+
+
+            Paragraph lote8 = new Paragraph(lineSeparator,
+                    FontFactory.getFont("arial", 5, Font.NORMAL, BaseColor.BLACK)); //font.bold
+            lote8.setAlignment(Element.ALIGN_CENTER);
+            document.add(lote8);
+
+            String pieImpresion = "Gracias por preferirnos";
+            Paragraph lote9 = new Paragraph(pieImpresion,
+                    FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
+            lote9.setAlignment(Element.ALIGN_CENTER);
+            document.add(lote9);
+
+
+
 
         } catch (Exception e) {
             Log.e("openDocument", e.toString());
@@ -118,7 +180,7 @@ public class TemplatePDF {
             addChildP(new Paragraph(subTitle, fSubtitle));
             addChildP(new Paragraph("Generado: " + date, fHighText));
 
-            paragraph.setSpacingAfter(30);
+            paragraph.setSpacingAfter(1);//30
             document.add(paragraph);
         } catch (Exception e) {
             Log.e("addTitles", e.toString());
@@ -135,8 +197,8 @@ public class TemplatePDF {
 
         try {
             paragraph = new Paragraph(text, fText);
-            paragraph.setSpacingAfter(5);
-            paragraph.setSpacingBefore(5);
+            paragraph.setSpacingAfter(1);//5
+            paragraph.setSpacingBefore(1);//5
             document.add(paragraph);
         } catch (DocumentException e) {
             Log.e("addParagraph", e.toString());
@@ -150,13 +212,5 @@ public class TemplatePDF {
         args.putString("path", pdFile.getAbsolutePath());
 
         GeneralFragmentManager.setFragmentWithReplace(activity, R.id.contenedor, fragment, args);
-
-
-//        Intent intent = new Intent(context, ViewPDF.class);
-//        intent.putExtra("path", pdFile.getAbsolutePath());
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        context.startActivity(intent);
-
-
     }
 }
