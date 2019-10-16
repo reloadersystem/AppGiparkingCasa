@@ -301,7 +301,7 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                         if (codigo_respuesta.equals("0")) { //0 regla de negocio Ok
 
                             //Datos que debe imprimirse en el qr
-                            String valores_comprobante = parts[1];
+                            String valores_comprobante = parts[1]; //TODO ingreso y hora pasar document, placa
                             //TODO Aca debe de mandar a imprimir [valores_comprobante]
 
                             gerarQRCode(valores_comprobante);

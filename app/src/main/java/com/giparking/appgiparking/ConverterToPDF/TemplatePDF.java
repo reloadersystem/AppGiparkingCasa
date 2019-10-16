@@ -14,6 +14,7 @@ import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.util.ConversionTitulo;
 import com.giparking.appgiparking.util.GeneralFragmentManager;
 import com.giparking.appgiparking.util.HoraFechaActual;
+import com.giparking.appgiparking.util.ShareDataRead;
 import com.giparking.appgiparking.util.str_global;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -74,15 +75,14 @@ public class TemplatePDF {
 
             conversionTitulo = new ConversionTitulo();
 
-            String nombreEmpresa = str_global.getInstance().getEmpresa_nombre();
+            String nombreEmpresa = str_global.getInstance().getVar_cabecera_c_0();  // cabecera.0
             //String formatTituloEmpresa = conversionTitulo.obtenerTitulo(nombreEmpresa);
             Paragraph lote = new Paragraph(nombreEmpresa,
                     FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
             lote.setAlignment(Element.ALIGN_CENTER);
             document.add(lote);
 
-
-            String direccionEmpresa = str_global.getInstance().getSucursal_nombre();
+            String direccionEmpresa = str_global.getInstance().getVar_cabecera_t_1() + " \n"+ str_global.getInstance().getVar_cabecera_t_2();
             Paragraph lote2 = new Paragraph(direccionEmpresa,
                     FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
             lote2.setAlignment(Element.ALIGN_CENTER);
@@ -94,27 +94,23 @@ public class TemplatePDF {
             lote3.setAlignment(Element.ALIGN_CENTER);
             document.add(lote3);
 
-            String ticketnum = "Ticket: "+str_global.getInstance().getCod_cefectivo(); //numTicket
-            Paragraph lote4 = new Paragraph(ticketnum,
-                    FontFactory.getFont("arial", 7, Font.NORMAL, BaseColor.BLACK)); //font.bold
-            lote4.setAlignment(Element.ALIGN_CENTER);
-            document.add(lote4);
+            String sharedata= ShareDataRead.obtenerValor(context, "valores_comprobante");
 
-            String numPlaca = "Placa: "+str_global.getInstance().getCod_usuario(); //numPlaca
+            String[] splitPref = sharedata.split("¦");
+            String part1 =splitPref[0];
+            String part2 =splitPref[1];
+            String part3 =splitPref[2];
+            String part4 =splitPref[3];
+
+            String numPlaca = "PLACA: "+part2; //numPlaca
             Paragraph lote5 = new Paragraph(numPlaca,
-                    FontFactory.getFont("arial", 7, Font.NORMAL, BaseColor.BLACK)); //font.bold
+                    FontFactory.getFont("arial", 7, Font.BOLD, BaseColor.BLACK)); //font.bold
             lote5.setAlignment(Element.ALIGN_CENTER);
             document.add(lote5);
 
-            String fechaIngreso = "Fecha Ingreso: "+ HoraFechaActual.obtenerFecha(); //fechaIngreso
-            Paragraph lote6 = new Paragraph(fechaIngreso,
-                    FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
-            lote6.setAlignment(Element.ALIGN_CENTER);
-            document.add(lote6);
-
-            String horaIngreso = "Hora Ingreso: " + HoraFechaActual.obtenerHora(); //horaIngreso
+            String horaIngreso = part3 + " - " + part4; //horaIngreso 15:10/2019  - 21:34
             Paragraph lote7 = new Paragraph(horaIngreso,
-                    FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
+                    FontFactory.getFont("arial", 7, Font.NORMAL, BaseColor.BLACK)); //font.bold
             lote7.setAlignment(Element.ALIGN_CENTER);
             document.add(lote7);
 
@@ -127,7 +123,7 @@ public class TemplatePDF {
             Image image = Image.getInstance(stream.toByteArray());
             //image.setAbsolutePosition(10f, 750f);
 //                image.scaleToFit(850, 78);
-            image.scaleToFit(110, 110); //150, 150  | 80,80
+            image.scaleToFit(130, 130); //150, 150  | 80,80
             image.setAlignment(Element.ALIGN_CENTER | Element.ALIGN_CENTER);
             document.add(image);
 
