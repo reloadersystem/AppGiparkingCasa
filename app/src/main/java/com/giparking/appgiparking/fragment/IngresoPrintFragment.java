@@ -82,8 +82,8 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
     String descripcion_respuesta = "";
     String valores_comprobante_output = "";
 
-    private String shorText = "Hola";
-    private String longText = "iOS Studio";
+    private String shorText = "_____________________";
+    private String longText = "Gracias por preferirnos";
 
     protected Validator validator;
     protected boolean validated;
@@ -162,12 +162,15 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
 
                 VistaPreviaPrintFragment fragmeVistaPrevia = new VistaPreviaPrintFragment();
 
+                String fechaImpresion=HoraFechaActual.obtenerFecha();
+
                 templatePDF = new TemplatePDF(getContext(), bitmap);
+
                 templatePDF.openDocument();
-                templatePDF.addMetadata("Parqueando", "Resembrink", "Libros");
-                templatePDF.addTitles("QR", "QRPrinter", "03/10/2019");
-                templatePDF.addParagraph(shorText);
-                templatePDF.addParagraph(longText);
+                templatePDF.addMetadata("Parqueando", "GOParking", "ParkFacil");
+                //templatePDF.addTitles("QR", "QRPrinter",fechaImpresion );
+                //templatePDF.addParagraph(shorText);
+                //templatePDF.addParagraph(longText);
                 templatePDF.closeDocument();
                 templatePDF.viewPDF(getActivity(), fragmeVistaPrevia);
             }
@@ -187,7 +190,7 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
         try {
 
             //String dataInfoQR = String.format("%s ,%s ,%s", horaActual, fechaActual, texto); // QR contiene fecha, hora, Placa
-            BitMatrix bitMatrix = multiFormatWriter.encode(valores_comprobante, BarcodeFormat.QR_CODE, 2000, 2000);
+            BitMatrix bitMatrix = multiFormatWriter.encode(valores_comprobante, BarcodeFormat.QR_CODE, 1000, 1000);  //2000, 2000
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(bitMatrix);
             ivQRCode.setImageBitmap(bitmap);
