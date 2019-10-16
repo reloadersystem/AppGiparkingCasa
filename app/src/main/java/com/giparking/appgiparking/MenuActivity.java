@@ -19,10 +19,16 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
+import com.giparking.appgiparking.entity.Convenio;
 import com.giparking.appgiparking.fragment.ControlFragment;
 import com.giparking.appgiparking.fragment.IngresoPrintFragment;
 import com.giparking.appgiparking.fragment.ValidacionManualFragment;
+import com.giparking.appgiparking.util.Constantes;
+import com.giparking.appgiparking.util.ContenedorClass;
+import com.giparking.appgiparking.util.str_global;
 import com.giparking.appgiparking.view.LoguinActivity;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,6 +36,9 @@ public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Fragment fragment;
+
+    private str_global a_str_global = str_global.getInstance();
+    String caja;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +60,78 @@ public class MenuActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        caja = a_str_global.getCaja_nombre().toString();
+
         TextView txtMovil = navigationView.getHeaderView(0).findViewById(R.id.txt_movil);
-        txtMovil.setText("CAJA MOVIL 02");
+        txtMovil.setText(caja);
+
+        iniciarMenu(navigationView);
+        List<com.giparking.appgiparking.entity.Menu> arrayListProducto = (List<com.giparking.appgiparking.entity.Menu>) ContenedorClass.getInstance().getList_menu();
+
+        for (int i=0;i<arrayListProducto.size();i++){
+
+            if (arrayListProducto.get(i).getMenu().equals(Constantes.MENU_CONTROL)){
+
+                navigationView.getMenu().findItem(R.id.nav_control).setVisible(true);
+            }
+            if (arrayListProducto.get(i).getMenu().equals(Constantes.MENU_CONTROL_MANUAL)){
+
+                navigationView.getMenu().findItem(R.id.nav_control_manual).setVisible(true);
+            }
+            if (arrayListProducto.get(i).getMenu().equals(Constantes.MENU_ANULACION)){
+
+                navigationView.getMenu().findItem(R.id.nav_anulacion).setVisible(true);
+            }
+            if (arrayListProducto.get(i).getMenu().equals(Constantes.MENU_MOVIMIENTO)){
+
+                navigationView.getMenu().findItem(R.id.nav_movimiento).setVisible(true);
+            }
+            if (arrayListProducto.get(i).getMenu().equals(Constantes.MENU_CIERRE_CAJA)){
+
+                navigationView.getMenu().findItem(R.id.nav_cierre_caja).setVisible(true);
+            }
+        }
+
+        if (arrayListProducto.size()>0){
+
+            String menu = arrayListProducto.get(0).getMenu();
+
+            if (menu.equals(Constantes.MENU_CONTROL)){
+
+                fragment = new ControlFragment();
+                insertarFragmento();
+            }
+            if (menu.equals(Constantes.MENU_CONTROL_MANUAL)){
+
+                fragment = new ValidacionManualFragment ();
+                insertarFragmento();
+            }
+            if (menu.equals(Constantes.MENU_ANULACION)){
+
+
+            }
+            if (menu.equals(Constantes.MENU_MOVIMIENTO)){
+
+
+            }
+            if (menu.equals(Constantes.MENU_CIERRE_CAJA)){
+
+            }
+
+
+        }
+
+    }
+
+    private void iniciarMenu(NavigationView navigationView) {
+
+        navigationView.getMenu().findItem(R.id.nav_control).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_control_manual).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_anulacion).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_movimiento).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_cierre_caja).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_salir).setVisible(true);
+
     }
 
     @Override
@@ -100,22 +179,8 @@ public class MenuActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_control_manual) {
 
-            Fragment fragment = new ValidacionManualFragment();
-            FragmentManager fmanager = this.getSupportFragmentManager();
-            if (fmanager != null) {
-
-                Bundle args = new Bundle();
-                args.putString("ACCESO", "Placa");
-                fragment.setArguments(args);
-
-
-                FragmentTransaction ftransaction = fmanager.beginTransaction();
-                if (ftransaction != null) {
-                    ftransaction.replace(R.id.contenedor, fragment);
-                    ftransaction.addToBackStack("");
-                    ftransaction.commit();
-                }
-            }
+            fragment = new ValidacionManualFragment();
+            insertarFragmento();
 
         } else if (id == R.id.nav_anulacion) {
 

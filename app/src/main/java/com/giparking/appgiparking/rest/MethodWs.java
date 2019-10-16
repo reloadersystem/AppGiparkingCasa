@@ -39,4 +39,24 @@ public interface MethodWs {
                                             @Query("COD_MOVIMIENTO") String cod_usuario,
                                             @Query("NRO_PLACA") String nro_placa);
 
+
+    @GET("CONTROLAutoSalidaCalcular/")
+    Call<ResponseBody> ControlAutoSalidaCalcular(@Query("COD_TVALIDACION") String cod_tvalidacion,
+                                              @Query("COD_SUCURSAL") String cod_sucursal,
+                                              @Query("COD_PRODUCTO") String cod_producto,
+                                              @Query("COD_CONVENIO") String cod_convenio,
+                                              @Query("INGRESO_FECHA") String ingreso_fecha,
+                                              @Query("INGRESO_HORA") String ingreso_hora,
+                                              @Query("CONVE_CODIGO") String conve_codigo,
+                                              @Query("CONVE_FECHA") String conve_fecha,
+                                              @Query("CONVE_TIPO") String conve_tipo,
+                                              @Query("CONVE_SERIE") String conve_serie,
+                                              @Query("CONVE_NUMERO") String conve_numero,
+                                              @Query("CONVE_MONTO") String conve_monto);
+
+    @GET("COMPROBANTEEmpresaBuscar/")
+    Call<ResponseBody> comprobanteEmpresaBuscar(@Query("RUC") String ruc);
+
+
+
 }

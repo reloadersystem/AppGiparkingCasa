@@ -38,7 +38,6 @@
         android:textSize="14dp"
         android:textColor="@color/colorBlack"
         android:padding="8dp"
-        android:text="11"
         android:hint="@string/loguin_activity_llave"
         android:drawablePadding="10dp"
         android:drawableLeft="@drawable/icon_user"/>

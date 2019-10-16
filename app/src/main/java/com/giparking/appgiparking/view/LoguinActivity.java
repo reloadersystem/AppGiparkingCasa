@@ -2,6 +2,7 @@ package com.giparking.appgiparking.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.giparking.appgiparking.entity.Producto;
 import com.giparking.appgiparking.entity.TipoPago;
 import com.giparking.appgiparking.rest.HelperWs;
 import com.giparking.appgiparking.rest.MethodWs;
+import com.giparking.appgiparking.util.Constantes;
 import com.giparking.appgiparking.util.ContenedorClass;
 import com.giparking.appgiparking.util.str_global;
 
@@ -64,7 +66,8 @@ public class LoguinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_loguin);
         ButterKnife.bind(this);
 
-
+        llave = obtenerDatosPreferences();
+        edt_llave.setText(llave);
     }
 
     @OnClick(R.id.btn_ingresar)
@@ -292,6 +295,7 @@ public class LoguinActivity extends AppCompatActivity {
 
     private void irMenuPrincipal() {
 
+        guardarPreferencia();
         Intent i = new Intent(LoguinActivity.this, MenuActivity.class);
         startActivity(i);
     }
@@ -307,6 +311,7 @@ public class LoguinActivity extends AppCompatActivity {
 
         Button btn_aperturar_no =  v.findViewById(R.id.btn_aperturar_no);
         Button btn_aperturar_si =  v.findViewById(R.id.btn_aperturar_si);
+
 
         btn_aperturar_si.setOnClickListener(
                 new View.OnClickListener() {
@@ -429,5 +434,20 @@ public class LoguinActivity extends AppCompatActivity {
         );
 
         return builder.create();
+    }
+
+
+    private void guardarPreferencia() {
+        SharedPreferences.Editor editor = getSharedPreferences(Constantes.PREFERENCIA_USUARIO, 0).edit();
+        editor.putString(Constantes.Empresa, llave);
+        editor.commit();
+        finish();
+    }
+
+    private String obtenerDatosPreferences() {
+        SharedPreferences pref = getSharedPreferences(Constantes.PREFERENCIA_USUARIO, 0);
+        llave = pref.getString(Constantes.Empresa, "");
+
+        return llave;
     }
 }

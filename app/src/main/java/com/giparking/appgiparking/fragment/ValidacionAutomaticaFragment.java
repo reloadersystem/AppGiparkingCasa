@@ -97,7 +97,7 @@ public class ValidacionAutomaticaFragment extends Fragment {
             prodSelec = bundle.getString("ProductoSeleccionado");
         }
 
-        Toast.makeText(getContext(), placaNum + horaSalida + prodSelec, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), placaNum + horaSalida + prodSelec, Toast.LENGTH_SHORT).show();
 
         surface = (SurfaceView) rootview.findViewById(R.id.surfaceView);
 

@@ -56,7 +56,7 @@ public class TemplatePDF {
     public void openDocument() {
         createFile();
         try {
-            document = new Document(PageSize.A4);
+            document = new Document(PageSize.A8);
             pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(pdFile));
             document.open();
 

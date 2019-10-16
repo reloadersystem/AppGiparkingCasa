@@ -51,6 +51,7 @@
                     android:textColor="@color/colorBlack"
                     android:padding="8dp"
                     android:hint="AAA"
+                    android:text="AAA"
                     android:drawablePadding="10dp" />
 
                 <TextView
@@ -72,6 +73,7 @@
                     android:textColor="@color/colorBlack"
                     android:padding="8dp"
                     android:hint="AAAA"
+                    android:text="777"
                     android:drawablePadding="10dp" />
 
 
