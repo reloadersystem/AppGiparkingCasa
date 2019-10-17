@@ -227,8 +227,10 @@ public class ValidacionAutomaticaFragment extends Fragment {
                             String qrDataRecieve = qrResponse;
 
                             String dataReceive = "111019298428¦Xt7568¦14/10/2019¦23:09:32¦Espacios Libres: 90";
+
+
                             //TODO VALORES QUE RECIBE DE UN QR IMPRESO...
-                            String[] parts_valores_usuario = dataReceive.split("¦");
+                            String[] parts_valores_usuario = qrDataRecieve.split("¦");
 
                             String part1 = parts_valores_usuario[0];//valores Movimiento
                             String part2 = parts_valores_usuario[1];//valores Placa
