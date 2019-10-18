@@ -301,6 +301,8 @@ public class LoguinActivity extends AppCompatActivity {
     }
 
     public AlertDialog createLoginDialogo() {
+
+        final AlertDialog alertDialog;
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = getLayoutInflater();
@@ -311,6 +313,8 @@ public class LoguinActivity extends AppCompatActivity {
 
         Button btn_aperturar_no =  v.findViewById(R.id.btn_aperturar_no);
         Button btn_aperturar_si =  v.findViewById(R.id.btn_aperturar_si);
+
+        alertDialog = builder.create();
 
 
         btn_aperturar_si.setOnClickListener(
@@ -427,13 +431,14 @@ public class LoguinActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
+                        alertDialog.dismiss();
 
                     }
                 }
 
         );
 
-        return builder.create();
+        return alertDialog;
     }
 
 
