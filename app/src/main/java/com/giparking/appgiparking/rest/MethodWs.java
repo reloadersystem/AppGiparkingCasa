@@ -79,6 +79,55 @@ public interface MethodWs {
                                                @Query("CONVE_NUMERO") String conve_numero,
                                                @Query("CONVE_MONTO") String conve_monto);
 
+    @GET("COMPROBANTEReImprimirMostrar/")
+    Call<ResponseBody> comprobanteImprimirMostrar(@Query("BUSCRITERIO") String bus_criterio,
+                                                   @Query("COD_SUCURSAL") String cod_sucursal,
+                                                   @Query("COD_CAJA") String cod_caja,
+                                                   @Query("NRO_PLACA") String nro_placa);
+
+    @GET("COMPROBANTEReImprimirItems/")
+    Call<ResponseBody> comprobanteImprimirMostrar(@Query("COD_COMPROBANTE") String cod_comprobante);
+
+    @GET("COMPROBANTEAnulaErrorMostrar/")
+    Call<ResponseBody> comprobanteAnularErrorMostrar(@Query("BUSCRITERIO") String bus_criterio,
+                                                  @Query("COD_SUCURSAL") String cod_sucursal,
+                                                  @Query("COD_CAJA") String cod_caja,
+                                                  @Query("SERIE") String serie,
+                                                  @Query("NUMERO") String numero);
+
+    @GET("COMPROBANTEAnulaErrorGrabar/")
+    Call<ResponseBody> comprobanteAnularErrorGrabar(@Query("COD_COMPROBANTE") String cod_comprobante,
+                                                  @Query("COD_SUCURSAL") String cod_sucursal,
+                                                  @Query("COD_CEFECTIVO") String cod_cefectivo,
+                                                  @Query("COD_CAJA") String cod_caja,
+                                                  @Query("COD_USUARIO") String cod_usuario);
+
+    @GET("CONSULTACajaMovimientos/")
+    Call<ResponseBody> consultaCajaMovimiento(@Query("COD_CEFECTIVO") String cod_cefectivo);
+
+    @GET("USUARIOLoginCierreCajaMostrar/")
+    Call<ResponseBody> cierreCajaMostrar(@Query("COD_CEFECTIVO") String cod_cefectivo);
+
+    @GET("USUARIOLoginCierreCajaGrabar/")
+    Call<ResponseBody> cierreCajaGrabar(@Query("COD_CEFECTIVO") String cod_cefectivo);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

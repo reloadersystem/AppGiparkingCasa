@@ -1,6 +1,7 @@
 package com.giparking.appgiparking.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.giparking.appgiparking.MenuActivity;
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.entity.Convenio;
 import com.giparking.appgiparking.entity.GenericoSpinner;
@@ -24,12 +27,14 @@ import com.giparking.appgiparking.rest.HelperWs;
 import com.giparking.appgiparking.rest.MethodWs;
 import com.giparking.appgiparking.util.ContenedorClass;
 import com.giparking.appgiparking.util.str_global;
+import com.giparking.appgiparking.view.LoguinActivity;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -92,6 +97,7 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
 
     String  cod_movimiento_input ="";
 
+    String ruc_input = "0";
 
     public ValidacionDetalleValidacionAutoFragment() {
         // Required empty public constructor
@@ -195,7 +201,7 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
                                             String cliente = parts[1];
                                             String[] parts_cliente = cliente.split("¦");
 
-                                            String ruc =  parts_cliente[0];
+                                            ruc_input =  parts_cliente[0];
                                             String razon_social = parts_cliente[1];
                                             String ubigeo = parts_cliente[2];
                                             String direccion = parts_cliente[3];
@@ -243,6 +249,8 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
                 linear_grupo_ruc_validacion_auto.setVisibility(View.GONE);
                 edt_ruc_validacion_auto.setText("");
                 edt_resultado_ruc_validacion_auto.setText("");
+
+                ruc_input = "0";
             }
         });
     }
@@ -415,6 +423,114 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
             }
         }
         return li_return;
+    }
+
+    @OnClick(R.id.btn_registrar_pago_validacion_auto)
+    public void registrarPagoValidacionAuto(){
+
+        String tipo;
+
+        String cod_corpempresa = a_str_global.getCod_corpempresa().toString();
+        String cod_sucursal = a_str_global.getCod_sucursal().toString();
+        String cod_cefectivo = a_str_global.getCod_cefectivo().toString();
+        String cod_caja = a_str_global.getCod_caja().toString();;
+        String cod_usuario = a_str_global.getCod_usuario().toString();
+
+        if (rb_factura_validacion_auto.isChecked()){
+            tipo = "1";
+        }else{
+            tipo = "2";
+        }
+        String i_cod_tcomprobante = tipo;
+        String i_cod_movimiento = cod_movimiento_input;
+        String i_cod_tvalidacion = "3";
+        String i_cod_producto = clienteid;
+        String i_cod_convenio = codigo_convenio;
+        String i_ingresa_fecha = fecha;
+        String i_ingreso_hora = hora;
+        String i_emp_ruc = ruc_input;
+
+        String i_nro_placa = nro_placa;
+        String i_conve_codigo = ruc;
+        String i_conve_fecha = fecha_emision;
+        String i_conve_tipo = tipo_documento;
+        String i_conve_serie = serie;
+        String i_conve_numero = numero;
+        String i_conve_monto = total_comprobante;
+
+        pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
+        pd.setContentText("Por favor, espere...");
+        pd.setCancelable(false);
+        pd.show();
+
+
+        MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);
+        Call<ResponseBody> responseBodyCall = methodWs.controlAutoSalidaGrabar(cod_corpempresa,cod_sucursal,
+                cod_cefectivo,cod_caja,cod_usuario,i_cod_tcomprobante,i_cod_movimiento,i_cod_tvalidacion,i_cod_producto,
+                i_cod_convenio,i_ingresa_fecha,i_ingreso_hora,i_emp_ruc,i_nro_placa,i_conve_codigo,i_conve_fecha,
+                i_conve_tipo,i_conve_serie,i_conve_numero,i_conve_monto);
+        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if (response.isSuccessful()) {
+
+                    ResponseBody informacion = response.body();
+                    try {
+
+                        String cadena_respuesta = informacion.string();
+                        String[] parts = cadena_respuesta.split("¬");
+                        String respuesta_validacion = parts[0];
+
+                        String[] parts_validacion = respuesta_validacion.split("¦");
+                        String codigo_respuesta = parts_validacion[0];
+                        if (!codigo_respuesta.equals("0")) { //0 error en la validación de negocio
+                            descripcion_respuesta = parts_validacion[1];
+                        }
+
+                        //0¦¬0¦19:39¦140.00
+
+                        if (codigo_respuesta.equals("0")) {
+
+                            pd.dismiss();
+                            Toast.makeText(getContext(),"Registrado correctamente!!",Toast.LENGTH_LONG).show();
+                            irMenuPrincipal();
+
+
+                        }else{
+
+                            pd.dismiss();
+                            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                            pd.setContentText(descripcion_respuesta);
+                            pd.setCancelable(false);
+                            pd.show();
+                            return;
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        pd.dismiss();
+                    }
+                } else {
+                    pd.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("jledesma", t.getMessage().toString());
+                pd.dismiss();
+            }
+        });
+
+    }
+
+    private void irMenuPrincipal() {
+
+        Intent i = new Intent(getContext(), MenuActivity.class);
+        startActivity(i);
     }
 
 }

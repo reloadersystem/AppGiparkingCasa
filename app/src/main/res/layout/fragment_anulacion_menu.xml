@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.giparking.appgiparking.fragment.AnulacionMenuFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ANULACIONES"
+        android:textSize="20dp"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/btn_anulacion_por_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorGreen"
+        android:text="Por Error"/>
+
+    <Button
+        android:id="@+id/btn_anulacion_por_canje"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorGreen"
+        android:textColor="@color/colorWhite"
+        android:text="Por Canje"/>
+
+
+
+
+</LinearLayout>

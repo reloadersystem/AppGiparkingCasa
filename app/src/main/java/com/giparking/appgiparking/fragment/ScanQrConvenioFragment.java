@@ -51,6 +51,7 @@ public class ScanQrConvenioFragment extends Fragment {
 
     private String qrResponse = "";
     private String qrResponseAnterior = "";
+    String cod_movimiento = "";
 
     String nro_placa, fecha, hora, cliente, clienteid;
 
@@ -93,6 +94,7 @@ public class ScanQrConvenioFragment extends Fragment {
             hora = bundle.getString("hora");
             cliente = bundle.getString("cliente");
             clienteid = bundle.getString("clienteid");
+            cod_movimiento = bundle.getString("cod_movimiento");
 
         }
     }
@@ -153,6 +155,8 @@ public class ScanQrConvenioFragment extends Fragment {
                             args.putString("hora", hora);
                             args.putString("cliente",cliente);
                             args.putString("clienteid",clienteid);
+                            args.putString("cod_movimiento",cod_movimiento);
+
 
                             changeFragment(args);
 

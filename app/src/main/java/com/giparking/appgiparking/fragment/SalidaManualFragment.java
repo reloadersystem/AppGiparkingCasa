@@ -72,7 +72,7 @@ public class SalidaManualFragment extends Fragment {
         String bus_criterio = "PLACA";
         String cod_sucursal = a_str_global.getCod_sucursal().toString();
         String cod_movimiento = "0";
-        String nro_placa = "AAA123";
+        String nro_placa = edt_placa_parte_una.getText().toString()+edt_placa_parte_dos.getText().toString();
 
         pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
         pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));

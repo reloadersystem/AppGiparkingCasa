@@ -1,6 +1,7 @@
 package com.giparking.appgiparking.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.giparking.appgiparking.MenuActivity;
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.entity.Convenio;
 import com.giparking.appgiparking.entity.GenericoSpinner;
@@ -31,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -88,6 +92,8 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
     String  cod_movimiento_input ="";
 
     String convenio,codigo_convenio;
+
+    String ruc_input = "0";
 
 
     public ValidacionDetalleValidacionManualFragment() {
@@ -190,7 +196,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                                             String cliente = parts[1];
                                             String[] parts_cliente = cliente.split("¦");
 
-                                            String ruc =  parts_cliente[0];
+                                            ruc_input =  parts_cliente[0];
                                             String razon_social = parts_cliente[1];
                                             String ubigeo = parts_cliente[2];
                                             String direccion = parts_cliente[3];
@@ -238,6 +244,8 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                 linear_grupo_ruc_validacion_manual.setVisibility(View.GONE);
                 edt_ruc_validacion_manual.setText("");
                 edt_resultado_ruc_validacion_manual.setText("");
+
+                ruc_input = "0";
             }
         });
 
@@ -372,6 +380,109 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //spinner_adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item_custom);
         spinner.setAdapter(spinner_adapter);
+    }
+
+    @OnClick(R.id.btn_registrar_pago_validacion_manual)
+    public void registrarPagoValidacionManual(){
+
+        String tipo;
+
+        String cod_corpempresa = a_str_global.getCod_corpempresa().toString();
+        String cod_sucursal = a_str_global.getCod_sucursal().toString();
+        String cod_cefectivo = a_str_global.getCod_cefectivo().toString();
+        String cod_caja = a_str_global.getCod_caja().toString();;
+        String cod_usuario = a_str_global.getCod_usuario().toString();
+
+        if (rb_factura_validacion_manual.isChecked()){
+            tipo = "1";
+        }else{
+            tipo = "2";
+        }
+        String i_cod_tcomprobante = tipo;
+        String i_cod_movimiento = cod_movimiento_input;
+        String i_cod_tvalidacion = "2";
+        String i_cod_producto = clienteid;
+        String i_cod_convenio = codigo_convenio;
+        String i_ingresa_fecha = fecha;
+        String i_ingreso_hora = hora;
+        String i_emp_ruc = ruc_input;
+
+
+        String i_nro_placa = nro_placa;
+        String i_conve_codigo = "";
+        String i_conve_fecha = "";
+        String i_conve_tipo = "";
+        String i_conve_serie = "";
+        String i_conve_numero = "";
+        String i_conve_monto = "0";
+
+
+        MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);
+        Call<ResponseBody> responseBodyCall = methodWs.controlAutoSalidaGrabar(cod_corpempresa,cod_sucursal,
+                cod_cefectivo,cod_caja,cod_usuario,i_cod_tcomprobante,i_cod_movimiento,i_cod_tvalidacion,i_cod_producto,
+                i_cod_convenio,i_ingresa_fecha,i_ingreso_hora,i_emp_ruc,i_nro_placa,i_conve_codigo,i_conve_fecha,
+                i_conve_tipo,i_conve_serie,i_conve_numero,i_conve_monto);
+        responseBodyCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                if (response.isSuccessful()) {
+
+                    ResponseBody informacion = response.body();
+                    try {
+
+                        String cadena_respuesta = informacion.string();
+                        String[] parts = cadena_respuesta.split("¬");
+                        String respuesta_validacion = parts[0];
+
+                        String[] parts_validacion = respuesta_validacion.split("¦");
+                        String codigo_respuesta = parts_validacion[0];
+                        if (!codigo_respuesta.equals("0")) { //0 error en la validación de negocio
+                            descripcion_respuesta = parts_validacion[1];
+                        }
+
+                        //0¦¬0¦19:39¦140.00
+
+                        if (codigo_respuesta.equals("0")) {
+
+                            pd.dismiss();
+                            Toast.makeText(getContext(),"Registrado correctamente!!",Toast.LENGTH_SHORT).show();
+                            irMenuPrincipal();
+
+
+                        }else{
+
+                            pd.dismiss();
+                            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                            pd.setContentText(descripcion_respuesta);
+                            pd.setCancelable(false);
+                            pd.show();
+                            return;
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        pd.dismiss();
+                    }
+                } else {
+                    pd.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("jledesma", t.getMessage().toString());
+                pd.dismiss();
+            }
+        });
+
+    }
+
+    private void irMenuPrincipal() {
+
+        Intent i = new Intent(getContext(), MenuActivity.class);
+        startActivity(i);
     }
 
 }

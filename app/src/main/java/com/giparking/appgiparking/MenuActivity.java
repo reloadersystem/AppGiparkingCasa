@@ -20,8 +20,12 @@ import android.widget.TextView;
 
 
 import com.giparking.appgiparking.entity.Convenio;
+import com.giparking.appgiparking.fragment.AnulacionMenuFragment;
+import com.giparking.appgiparking.fragment.CerrarCajaFragment;
+import com.giparking.appgiparking.fragment.ComprobantesFragment;
 import com.giparking.appgiparking.fragment.ControlFragment;
 import com.giparking.appgiparking.fragment.IngresoPrintFragment;
+import com.giparking.appgiparking.fragment.MovimientoFragment;
 import com.giparking.appgiparking.fragment.ValidacionManualFragment;
 import com.giparking.appgiparking.util.Constantes;
 import com.giparking.appgiparking.util.ContenedorClass;
@@ -78,6 +82,10 @@ public class MenuActivity extends AppCompatActivity
 
                 navigationView.getMenu().findItem(R.id.nav_control_manual).setVisible(true);
             }
+            if (arrayListProducto.get(i).getMenu().equals(Constantes.MENU_REIMPRIMIR_COMPROBANTE)){
+
+                navigationView.getMenu().findItem(R.id.nav_control_reimprimir).setVisible(true);
+            }
             if (arrayListProducto.get(i).getMenu().equals(Constantes.MENU_ANULACION)){
 
                 navigationView.getMenu().findItem(R.id.nav_anulacion).setVisible(true);
@@ -106,9 +114,15 @@ public class MenuActivity extends AppCompatActivity
                 fragment = new ValidacionManualFragment ();
                 insertarFragmento();
             }
+            if (menu.equals(Constantes.MENU_REIMPRIMIR_COMPROBANTE)){
+                fragment = new ComprobantesFragment ();
+                insertarFragmento();
+
+            }
             if (menu.equals(Constantes.MENU_ANULACION)){
 
-
+                fragment = new AnulacionMenuFragment();
+                insertarFragmento();
             }
             if (menu.equals(Constantes.MENU_MOVIMIENTO)){
 
@@ -127,6 +141,7 @@ public class MenuActivity extends AppCompatActivity
 
         navigationView.getMenu().findItem(R.id.nav_control).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_control_manual).setVisible(false);
+        navigationView.getMenu().findItem(R.id.nav_control_reimprimir).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_anulacion).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_movimiento).setVisible(false);
         navigationView.getMenu().findItem(R.id.nav_cierre_caja).setVisible(false);
@@ -182,11 +197,26 @@ public class MenuActivity extends AppCompatActivity
             fragment = new ValidacionManualFragment();
             insertarFragmento();
 
-        } else if (id == R.id.nav_anulacion) {
+        } else if (id == R.id.nav_control_reimprimir) {
+
+            fragment = new ComprobantesFragment();
+            insertarFragmento();
+
+        }
+        else if (id == R.id.nav_anulacion) {
+
+            fragment = new AnulacionMenuFragment();
+            insertarFragmento();
 
         } else if (id == R.id.nav_movimiento) {
 
+            fragment = new MovimientoFragment();
+            insertarFragmento();
+
         } else if (id == R.id.nav_cierre_caja) {
+
+            fragment = new CerrarCajaFragment();
+            insertarFragmento();
 
         } else if(id == R.id.nav_salir) {
             irLoguin();

@@ -12,6 +12,11 @@
             android:id="@+id/nav_control_manual"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Control Manual" />
+
+        <item
+            android:id="@+id/nav_control_reimprimir"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Reimprimir" />
         <item
             android:id="@+id/nav_anulacion"
             android:icon="@drawable/ic_menu_gallery"

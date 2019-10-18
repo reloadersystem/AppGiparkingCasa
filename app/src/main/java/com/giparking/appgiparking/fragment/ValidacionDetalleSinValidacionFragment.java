@@ -21,6 +21,7 @@ import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.rest.HelperWs;
 import com.giparking.appgiparking.rest.MethodWs;
 import com.giparking.appgiparking.util.str_global;
+import com.giparking.appgiparking.view.LoguinActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -326,6 +327,12 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
         String i_conve_serie = "";
         String i_conve_numero = "";
         String i_conve_monto = "0";
+
+        pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
+        pd.setContentText("Por favor, espere...");
+        pd.setCancelable(false);
+        pd.show();
 
 
         MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);

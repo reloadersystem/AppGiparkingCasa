@@ -85,6 +85,7 @@ public class SalidaVehiculoFragment extends Fragment {
             ingreso_fecha = bundle.getString("ingreso_fecha");
             hora_fecha = bundle.getString("hora_fecha");
 
+
             tv_placa.setText(nro_placa);
             edt_fecha_ingreso.setText(ingreso_fecha);
             edt_hora_ingreso.setText(hora_fecha);

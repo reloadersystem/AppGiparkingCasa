@@ -12,30 +12,50 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-       <RadioButton
-           android:id="@+id/rb_todos"
-           android:layout_width="0dp"
-           android:layout_weight="1"
-           android:checked="true"
-           android:layout_height="wrap_content"
-           android:text="Todos"/>
+        <RadioButton
+            android:id="@+id/rb_todos_anular"
+            android:layout_width="wrap_content"
+            android:checked="true"
+            android:layout_height="wrap_content"
+            android:text="Todos"/>
 
         <RadioButton
-            android:id="@+id/rb_placa"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/rb_comprobante_anular"
+            android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
-            android:text="Placa"/>
+            android:text="Comprobante"/>
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/edt_placa_buscar"
+            android:id="@+id/edt_serie_buscar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:hint="Serie"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:background="@drawable/vector"/>
+
+        <EditText
+            android:id="@+id/edt_numero_buscar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:hint="Numero"
+            android:layout_marginLeft="5dp"
             android:background="@drawable/vector"/>
 
         <Button
-            android:id="@+id/btn_buscar_comprobantes"
+            android:id="@+id/btn_buscar_comprobantes_anular"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="30dp"
@@ -46,12 +66,14 @@
             android:text="Buscar"/>
 
 
-    </RadioGroup>
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_comprobantes"
+        android:id="@+id/recycler_comprobantes_anular"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         tools:listitem="@layout/item_comprobante"/>
 </LinearLayout>
+
