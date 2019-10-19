@@ -299,6 +299,8 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
 
         String tipo;
 
+        //TODO
+
         String cod_corpempresa = a_str_global.getCod_corpempresa().toString();
         String cod_sucursal = a_str_global.getCod_sucursal().toString();
         String cod_cefectivo = a_str_global.getCod_cefectivo().toString();
@@ -364,6 +366,8 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
                         if (codigo_respuesta.equals("0")) {
 
                             pd.dismiss();
+
+                            //TODO IMPRIMIR  MENOS DATOS BOLETA
                             Toast.makeText(getContext(),"Registrado correctamente!!",Toast.LENGTH_SHORT).show();
                             irMenuPrincipal();
 

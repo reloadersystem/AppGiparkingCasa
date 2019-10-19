@@ -10,6 +10,8 @@ public class ConversionTitulo {
 
     public String obtenerTitulo(String string)
     {
+
+        // el titulo se divide  cada 2 espacios para tener el texto centrado y no se largo por la hoja a imprimir
         String[] arrayNombre_2 = string.split(" ",2);
 
         int count = arrayNombre_2.length;
