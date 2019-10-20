@@ -39,7 +39,6 @@ import com.giparking.appgiparking.util.Utils;
 import com.giparking.appgiparking.util.str_global;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -320,6 +319,7 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                             //TODO Aca debe de mandar a imprimir [valores_comprobante]
 
                             FindBluetoothDevice();
+
                             openBluetoothPrinter(valores_comprobante);
 
                             // gerarQRCode(valores_comprobante);

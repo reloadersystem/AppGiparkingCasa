@@ -192,6 +192,7 @@
         android:orientation="vertical">
 
         <RadioGroup
+            android:id="@+id/ra_Comprobante"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
