@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.entity.Comprobante;
+import com.giparking.appgiparking.interfaces.OnPrintListener;
 
 import java.util.ArrayList;
 
@@ -20,6 +22,12 @@ public class ComprobanteAdapter extends RecyclerView.Adapter<ComprobanteAdapter.
 
     Context context;
     ArrayList<Comprobante> list_comprobante;
+    private OnPrintListener onPrintListener;
+
+    public  void setOnPrintListener(OnPrintListener onPrintListener)
+    {
+        this.onPrintListener = onPrintListener;
+    }
 
     public ComprobanteAdapter(Context context, ArrayList<Comprobante> list_comprobante) {
 
@@ -54,6 +62,7 @@ public class ComprobanteAdapter extends RecyclerView.Adapter<ComprobanteAdapter.
     public class ComprobanteAdapterViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_c_fecha,tv_c_numero,tv_c_placa,tv_c_cliente,tv_c_monto,tv_c_tipo;
+        ImageView imageView2;
 
         public ComprobanteAdapterViewHolder(View itemView) {
             super(itemView);
@@ -64,6 +73,23 @@ public class ComprobanteAdapter extends RecyclerView.Adapter<ComprobanteAdapter.
             tv_c_placa = itemView.findViewById(R.id.tv_c_placa);
             tv_c_cliente = itemView.findViewById(R.id.tv_c_cliente);
             tv_c_monto = itemView.findViewById(R.id.tv_c_monto);
+
+            imageView2 = itemView.findViewById(R.id.imageView2);
+
+
+            imageView2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int position = getAdapterPosition();
+
+                    if(position != RecyclerView.NO_POSITION)
+                    {
+                        onPrintListener.onAccionClicked(position);
+                    }
+
+                }
+            });
         }
     }
 }
