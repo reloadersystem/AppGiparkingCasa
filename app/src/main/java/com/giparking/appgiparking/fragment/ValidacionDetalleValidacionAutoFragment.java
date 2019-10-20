@@ -1,7 +1,13 @@
 package com.giparking.appgiparking.fragment;
 
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,11 +32,22 @@ import com.giparking.appgiparking.entity.GenericoSpinner;
 import com.giparking.appgiparking.rest.HelperWs;
 import com.giparking.appgiparking.rest.MethodWs;
 import com.giparking.appgiparking.util.ContenedorClass;
+import com.giparking.appgiparking.util.PrinterCommands;
+import com.giparking.appgiparking.util.Utils;
 import com.giparking.appgiparking.util.str_global;
 import com.giparking.appgiparking.view.LoguinActivity;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +57,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.giparking.appgiparking.fragment.IngresoPrintFragment.PREFS_KEY;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -98,6 +118,30 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
     String  cod_movimiento_input ="";
 
     String ruc_input = "0";
+
+    //Datos
+
+    String boletaNum;
+    String fechaHora;
+    String tarifaGeneral;
+    String usuarioLogin;
+    String opGrabadas;
+    String impuestoT;
+    String totalDoc;
+    String horaIngreso;
+    String horaSalida;
+    String tiempoCalculado;
+    String tipoComp;
+
+    //Impresion
+
+    BluetoothAdapter bluetoothAdapter;
+    BluetoothSocket bluetoothSocket;
+    BluetoothDevice bluetoothDevice;
+    OutputStream outputStream;
+    InputStream inputStream;
+    Bitmap bitmap;
+    volatile boolean stopWorker;
 
     public ValidacionDetalleValidacionAutoFragment() {
         // Required empty public constructor
@@ -277,7 +321,11 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
             clienteid = bundle.getString("clienteid");
             cod_movimiento_input = bundle.getString("cod_movimiento");
 
-            String cadena_respuesta = qrDataRecieve;
+            //String cadena_respuesta = qrDataRecieve; //20102213077|03|BB01|34280|7.63|50.00|20190906|1|46005110|
+           // String cadena_respuesta = qrDataRecieve;
+            String rsptaRecieve = "20102213077|03|BB01|34280|7.63|50.00|20190906|1|46005110|";
+            String cadena_respuesta = rsptaRecieve;
+
             String[] parts = cadena_respuesta.split("\\|");
             ruc = parts[0];
             tipo_documento = parts[1];
@@ -285,7 +333,6 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
             numero = parts[3];
             total_comprobante = parts[5];
             fecha_emision = parts[6];
-
 
             tv_placa_validacion_auto.setText(nro_placa);
             tv_fecha_hora_ingreso_validacion_auto.setText(fecha + " " + hora);
@@ -382,7 +429,6 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
                             pd.dismiss();
 
                         }else{
-
                             pd.dismiss();
                             pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
                             pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
@@ -428,7 +474,7 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
     @OnClick(R.id.btn_registrar_pago_validacion_auto)
     public void registrarPagoValidacionAuto(){
 
-        String tipo;
+        final String tipo;
 
         String cod_corpempresa = a_str_global.getCod_corpempresa().toString();
         String cod_sucursal = a_str_global.getCod_sucursal().toString();
@@ -500,6 +546,42 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
 
                         }else{
 
+                            //..
+                            String valores_comprobante = "2170192100¦BOLETA DE VENTA¦BB07-2100¦14/10/2019 15:59:22¦USER1¦DNI¦00000000¦CLIENTES VARIOS¦-¦2.54¦0.46¦3.00¦\n" +
+                                    "V2W691¦15:20:00¦15:59:22¦00:39¦\n" +
+                                    "TARIFA GENERAL¦3.00¦\n" +
+                                    "20492490718|03|BB07|2100|0.46|3.00|2019-10-14|00|00000000|-¬";
+
+                            String[] partSplit = valores_comprobante.split("¦");
+
+
+                            if (tipo.equals("1")) {
+                                tipoComp = "FACTURA";
+                                boletaNum = edt_ruc_validacion_auto.getText().toString();
+                            }else
+                            {
+                                tipoComp = partSplit[1];
+                                boletaNum = partSplit[2];
+                            }
+
+                            fechaHora = partSplit[3];
+                            usuarioLogin = partSplit[4];
+                            opGrabadas = partSplit[9];
+                            impuestoT = partSplit[10];
+                            totalDoc = partSplit[11];
+                            tarifaGeneral = partSplit[17];
+                            horaIngreso = partSplit[13];
+                            horaSalida = partSplit[14];
+                            tiempoCalculado = partSplit[15];
+
+                            FindBluetoothDevice();
+                            openBluetoothPrinter(valores_comprobante);
+                            try {
+                                disconnectBT();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+
                             pd.dismiss();
                             pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
                             pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
@@ -531,6 +613,212 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
 
         Intent i = new Intent(getContext(), MenuActivity.class);
         startActivity(i);
+    }
+
+
+    private void FindBluetoothDevice() {
+
+        try {
+
+            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (bluetoothAdapter == null) {
+                // lblPrinterName.setText("No Bluetooth Adapter found");
+            }
+            if (bluetoothAdapter.isEnabled()) {
+                Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBT, 0);
+            }
+
+            Set<BluetoothDevice> pairedDevice = bluetoothAdapter.getBondedDevices();
+
+            String printerPortable = obtenerValor(getContext(), "key_printer");
+            if (pairedDevice.size() > 0) {
+                for (BluetoothDevice pairedDev : pairedDevice) {
+
+                    // My Bluetoth printer name is BTP_F09F1A
+                    if (pairedDev.getName().equals(printerPortable)) {
+                        bluetoothDevice = pairedDev;
+                        //  lblPrinterName.setText("Bluetooth Printer Attached: " + pairedDev.getName());
+                        break;
+                    }
+                }
+            }
+
+            //  lblPrinterName.setText("Bluetooth Printer Attached");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    private void openBluetoothPrinter(String msg) throws IOException {
+
+        try {
+
+            //Standard uuid from string //
+
+
+            // beginListenData();
+            try {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                // String msg = "QRPARKING FACIL";
+
+                BitMatrix bitMatrix = multiFormatWriter.encode(msg, BarcodeFormat.QR_CODE, 200, 200);  //2000, 2000
+                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                bitmap = barcodeEncoder.createBitmap(bitMatrix);
+
+                UUID uuidSting = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+                bluetoothSocket = bluetoothDevice.createRfcommSocketToServiceRecord(uuidSting);
+                bluetoothSocket.connect();
+                outputStream = bluetoothSocket.getOutputStream();
+                inputStream = bluetoothSocket.getInputStream();
+
+                String nombreEmpresa = str_global.getInstance().getVar_cabecera_c_0();
+                String direccionEmpresa = str_global.getInstance().getVar_cabecera_t_1() + " \n" + str_global.getInstance().getVar_cabecera_t_2();
+                String cajaNum = str_global.getInstance().getCaja_nombre();
+                byte[] printformat = new byte[]{0x1B, 0x21, 0x03};
+                outputStream.write(printformat);
+                printCustom(nombreEmpresa, 1, 1);
+                printCustom(direccionEmpresa, 0, 1);
+                printNewLine();
+                printCustom(tipoComp +" Nro: " + boletaNum, 0, 1);
+                printCustom("Fecha Hora: " + fechaHora, 0, 1);
+                printCustom("Cajero: " + cajaNum, 0, 1);
+                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
+                printCustom("Nro Placa:" + nro_placa, 0, 0);
+                printCustom("Hora de Ingreso: " + horaIngreso, 0, 0);
+                printCustom("Hora de Salida: " + horaSalida, 0, 0);
+                printCustom("Tiempo Calculado: " + tiempoCalculado, 0, 0);
+                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
+                printCustom("Descripcion #1    Importe", 0, 1);
+                printCustom("TARIFA GENERAL      " + tarifaGeneral, 0, 1);
+                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
+                printCustom("Op. Grava:" + opGrabadas, 0, 2);
+                printCustom("IGV:" + impuestoT, 0, 2);
+                printCustom("Importe Total:" + totalDoc, 0, 2);
+                printPhoto(bitmap);
+                printNewLine();
+                printCustom("Gracias por su Preferencia!", 0, 1);
+                printNewLine();
+                printNewLine();
+                outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception ex) {
+
+        }
+    }
+
+    public void printPhoto(Bitmap bitImage) {
+        try {
+//            Bitmap bmp = BitmapFactory.decodeResource(getResources(),
+//                    img);
+
+            Bitmap bmp = bitImage;
+            if (bmp != null) {
+                byte[] command = Utils.decodeBitmap(bmp);
+                outputStream.write(PrinterCommands.ESC_ALIGN_CENTER);
+                printText(command);
+            } else {
+                Log.e("Print Photo error", "the file isn't exists");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("PrintTools", "the file isn't exists");
+        }
+    }
+
+    private void printText(byte[] msg) {
+        try {
+            // Print normal text
+            outputStream.write(msg);
+            printNewLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void printCustom(String msg, int size, int align) {
+        //Print config "mode"
+        byte[] cc = new byte[]{0x1B, 0x21, 0x03};  // 0- normal size text
+        //byte[] cc1 = new byte[]{0x1B,0x21,0x00};  // 0- normal size text
+        byte[] bb = new byte[]{0x1B, 0x21, 0x08};  // 1- only bold text
+        byte[] bb2 = new byte[]{0x1B, 0x21, 0x20}; // 2- bold with medium text
+        byte[] bb3 = new byte[]{0x1B, 0x21, 0x10}; // 3- bold with large text
+        try {
+            switch (size) {
+                case 0:
+                    outputStream.write(cc);
+                    break;
+                case 1:
+                    outputStream.write(bb);
+                    break;
+                case 2:
+                    outputStream.write(bb2);
+                    break;
+                case 3:
+                    outputStream.write(bb3);
+                    break;
+            }
+
+            switch (align) {
+                case 0:
+                    //left align
+                    outputStream.write(PrinterCommands.ESC_ALIGN_LEFT);
+                    break;
+                case 1:
+                    //center align
+                    outputStream.write(PrinterCommands.ESC_ALIGN_CENTER);
+                    break;
+                case 2:
+                    //right align
+                    outputStream.write(PrinterCommands.ESC_ALIGN_RIGHT);
+                    break;
+            }
+            outputStream.write(msg.getBytes());
+            outputStream.write(PrinterCommands.LF);
+            //outputStream.write(cc);
+            //printNewLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void printNewLine() {
+        try {
+            outputStream.write(PrinterCommands.FEED_LINE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String obtenerValor(Context context, String keyPref) {
+
+        SharedPreferences preferences = context.getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
+        return preferences.getString(keyPref, "");
+
+    }
+
+    void disconnectBT() throws IOException {
+        try {
+            stopWorker = true;
+            outputStream.close();
+            inputStream.close();
+            bluetoothSocket.close();
+            //lblPrinterName.setText("Printer Disconnected.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 }

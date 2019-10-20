@@ -515,6 +515,8 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
         }
     }
 
+    //Bluetooh Conexion y DATA
+
     private void FindBluetoothDevice() {
 
         try {

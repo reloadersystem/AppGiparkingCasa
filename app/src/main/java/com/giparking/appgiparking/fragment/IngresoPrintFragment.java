@@ -535,7 +535,7 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                 //String msg = "QRPARKING FACIL";
 
-                BitMatrix bitMatrix = multiFormatWriter.encode(valores_comprobante, BarcodeFormat.QR_CODE, 200, 200);  //2000, 2000
+                BitMatrix bitMatrix = multiFormatWriter.encode(valores_comprobante, BarcodeFormat.QR_CODE, 200, 200);  //2000, 2000//200,200
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
