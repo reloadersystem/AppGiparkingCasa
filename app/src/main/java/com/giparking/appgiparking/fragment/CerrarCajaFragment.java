@@ -88,10 +88,6 @@ public class CerrarCajaFragment extends Fragment {
     Bitmap bitmap;
     volatile boolean stopWorker;
 
-    String numero0, valor0, numero1, valor1, numero2, valor2, numero3, valor3, numero4, valor4,numero5,valor5;
-
-    String numeroRes0, valorRes0, numeroRes1, valorRes1, numeroRes2, valorRes2, numeroRes3, valorRes3;
-
 
     public CerrarCajaFragment() {
         // Required empty public constructor
@@ -154,24 +150,6 @@ public class CerrarCajaFragment extends Fragment {
                                 list_movimiento_datos.add(movimiento);
                             }
 
-                            numero0 = list_movimiento_datos.get(0).getTitulo();
-                            valor0 = list_movimiento_datos.get(0).getValor();
-
-                            numero1 = list_movimiento_datos.get(1).getTitulo();
-                            valor1 = list_movimiento_datos.get(1).getValor();
-
-                            numero2 = list_movimiento_datos.get(2).getTitulo();
-                            valor2 = list_movimiento_datos.get(2).getValor();
-
-                            numero3 = list_movimiento_datos.get(3).getTitulo();
-                            valor3 = list_movimiento_datos.get(3).getValor();
-
-                            numero4 = list_movimiento_datos.get(4).getTitulo();
-                            valor4 = list_movimiento_datos.get(4).getValor();
-
-                            numero5 = list_movimiento_datos.get(5).getTitulo();
-                            valor5 = list_movimiento_datos.get(5).getValor();
-
 
                             //Extraemos valores resumen
                             String valores_resumen = parts[2];
@@ -190,54 +168,49 @@ public class CerrarCajaFragment extends Fragment {
                                 list_movimiento_resumen.add(movimiento);
                             }
 
-                            numeroRes0 = list_movimiento_resumen.get(0).getTitulo();
-                            valorRes0 = list_movimiento_resumen.get(0).getValor();
-
-                            numeroRes1 = list_movimiento_resumen.get(1).getTitulo();
-                            valorRes1 = list_movimiento_resumen.get(1).getValor();
-
-                            numeroRes2 = list_movimiento_resumen.get(2).getTitulo();
-                            valorRes2 = list_movimiento_resumen.get(2).getValor();
-
-                            numeroRes3 = list_movimiento_resumen.get(3).getTitulo();
-                            valorRes3 = list_movimiento_resumen.get(3).getValor();
+                            if (parts.length > 3) {
 
 
+                                // Extraemos valores movimiento  :
+                                String valores_movimiento = parts[3];
 
+                                String[] parts_valores_movimiento = valores_movimiento.split("¬");
 
-                            //Extraemos valores movimiento  : error
-//                            String valores_movimiento = parts[3];  //java.lang.IndexOutOfBoundsException : Invalid array range: 3 to 3
-//                            String[] parts_valores_movimiento = valores_movimiento.split("¬");
-//
-//                            for (int i = 0; i < parts_valores_movimiento.length; i++) {
-//
-//                                String linea = parts_valores_movimiento[i];
-//
-//                                //Extraemos valores de cada dato
-//                                String[] parts_valores_movimiento_detalle = linea.split("¦");
-//
-//                                Movimiento movimiento = new Movimiento();
-//                                movimiento.setTitulo(parts_valores_movimiento_detalle[0]);
-//                                movimiento.setValor(parts_valores_movimiento_detalle[1]);
-//                                list_movimiento_movimiento.add(movimiento);
-//                            }
+                                for (int i = 0; i < parts_valores_movimiento.length; i++) {
 
-                            //Extraemos valores comprobante
-//                            String valores_comprobante = parts[4];
-//                            String[] parts_valores_comprobante = valores_comprobante.split("¬");
+                                    String linea = parts_valores_movimiento[i];
+
+                                    //Extraemos valores de cada dato
+                                    String[] parts_valores_movimiento_detalle = linea.split("¦");
+
+                                    Movimiento movimiento = new Movimiento();
+                                    movimiento.setTitulo(parts_valores_movimiento_detalle[0]);
+                                    movimiento.setValor(parts_valores_movimiento_detalle[1]);
+                                    list_movimiento_movimiento.add(movimiento);
+                                }
+                            }
+
 //
-//                            for (int i = 0; i < parts_valores_comprobante.length; i++) {
-//
-//                                String linea = parts_valores_comprobante[i];
-//
-//                                //Extraemos valores de cada dato
-//                                String[] parts_valores_comprobante_detalle = linea.split("¦");
-//
-//                                Movimiento movimiento = new Movimiento();
-//                                movimiento.setTitulo(parts_valores_comprobante_detalle[0]);
-//                                movimiento.setValor(parts_valores_comprobante_detalle[1]);
-//                                list_movimiento_comprobantes.add(movimiento);
-//                            }
+
+                            if (parts.length > 4) {
+
+                                // Extraemos valores comprobante
+                                String valores_comprobante = parts[4];
+                                String[] parts_valores_comprobante = valores_comprobante.split("¬");
+
+                                for (int i = 0; i < parts_valores_comprobante.length; i++) {
+
+                                    String linea = parts_valores_comprobante[i];
+
+                                    //Extraemos valores de cada dato
+                                    String[] parts_valores_comprobante_detalle = linea.split("¦");
+
+                                    Movimiento movimiento = new Movimiento();
+                                    movimiento.setTitulo(parts_valores_comprobante_detalle[0]);
+                                    movimiento.setValor(parts_valores_comprobante_detalle[1]);
+                                    list_movimiento_comprobantes.add(movimiento);
+                                }
+                            }
 
                             configurarAdapter(list_movimiento_datos, list_movimiento_resumen, list_movimiento_movimiento, list_movimiento_comprobantes);
                             pd.dismiss();
@@ -288,26 +261,6 @@ public class CerrarCajaFragment extends Fragment {
         recycler_resumen.setLayoutManager(new LinearLayoutManager(getContext()));
         recycler_movimiento.setLayoutManager(new LinearLayoutManager(getContext()));
         recycler_compro.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-//        fechaComp = list_movimiento_resumen.get(1).getTitulo();
-//        tipoComp = list_movimiento_datos.get(1).getValor();
-//        numComp = list_movimiento_movimiento.get(1).getTitulo();
-//        placaComp = list_comprobante.get(position).getPlaca();
-//        clienteComp = list_comprobante.get(position).getCliente();
-//        montoComp = list_comprobante.get(position).getMonto();
-
-        try {
-            FindBluetoothDevice();
-            openBluetoothPrinter();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            disconnectBT();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
 
     }
 
@@ -363,6 +316,18 @@ public class CerrarCajaFragment extends Fragment {
                                 if (codigo_respuesta.equals("0")) {
 
                                     pd.dismiss();
+
+                                    try {
+                                        FindBluetoothDevice();
+                                        openBluetoothPrinter();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    try {
+                                        disconnectBT();
+                                    } catch (Exception ex) {
+                                        ex.printStackTrace();
+                                    }
                                     Toast.makeText(getContext(), "Caja cerrada!!", Toast.LENGTH_LONG).show();
                                     irLoguin();
 
@@ -486,22 +451,36 @@ public class CerrarCajaFragment extends Fragment {
                 printCustom(nombreEmpresa, 1, 1);
                 printCustom(direccionEmpresa, 0, 1);
                 printNewLine();
-                printCustom("Cierre de Caja:        " , 1, 0);// 30 caracteres
+                printCustom("Cierre de Caja:        ", 1, 0);// 30 caracteres
                 printNewLine();
-                printCustom(numero0 + ":               " + valor0, 0, 0);
-                printCustom(numero1 + ":                  " + valor1, 0, 0);
-                printCustom(numero2 + ":               " + valor2, 0, 0);
-                printCustom(numero3 + ":                       " + valor3, 0, 0);
-                printCustom(numero4 + ": " + valor4, 0, 0);
-                printCustom(numero5 + ": " + valor5, 0, 0);
-                printNewLine();
+
+
+                for (int a = 0; a < list_movimiento_datos.size(); a++) {
+                    printCustom(list_movimiento_datos.get(a).getTitulo() + ": " + list_movimiento_datos.get(a).getValor(), 0, 0);
+                }
+
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
-                printCustom("Datos del Resumen:        " , 1, 0);
+                printCustom("Datos del Resumen:        ", 1, 0);
                 printNewLine();
-                printCustom(numeroRes0 + ":     " + valorRes0, 0, 0);
-                printCustom(numeroRes1 + ":       " + valorRes1, 0, 0);
-                printCustom(numeroRes2 + ":        " + valorRes2, 0, 0);
-                printCustom(numeroRes3 + ":   " + valorRes3, 0, 0);
+                for (int b = 0; b < list_movimiento_datos.size(); b++) {
+                    printCustom(list_movimiento_resumen.get(b).getTitulo() + ": " + list_movimiento_resumen.get(b).getValor(), 0, 0);
+                }
+
+                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
+                printCustom("Datos del Movimiento:        ", 1, 0);
+                printNewLine();
+
+                for (int c = 0; c < list_movimiento_movimiento.size(); c++) {
+                    printCustom(list_movimiento_movimiento.get(c).getTitulo() + ": " + list_movimiento_movimiento.get(c).getValor(), 0, 0);
+                }
+
+                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
+                printCustom("Datos del Comprobante:        ", 1, 0);
+                printNewLine();
+
+                for (int d = 0; d < list_movimiento_comprobantes.size(); d++) {
+                    printCustom(list_movimiento_comprobantes.get(d).getTitulo() + ": " + list_movimiento_comprobantes.get(d).getValor(), 0, 0);
+                }
                 printNewLine();
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
                 outputStream.flush();
