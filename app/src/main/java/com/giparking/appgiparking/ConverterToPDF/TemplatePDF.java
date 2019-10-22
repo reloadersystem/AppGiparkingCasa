@@ -6,14 +6,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintManager;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.PagerSnapHelper;
 import android.util.Log;
 
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.util.ConversionTitulo;
 import com.giparking.appgiparking.util.GeneralFragmentManager;
-import com.giparking.appgiparking.util.HoraFechaActual;
 import com.giparking.appgiparking.util.ShareDataRead;
 import com.giparking.appgiparking.util.str_global;
 import com.itextpdf.text.BaseColor;
@@ -25,7 +26,6 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.ByteArrayOutputStream;
@@ -68,7 +68,7 @@ public class TemplatePDF {
             //margenes 72 =1 pulgada
 
             //document = new Document(PageSize.A8);//calibracion A8
-            document = new Document(PageSize.A8,5,5,5,5);//calibracion A8
+            document = new Document(PageSize.A8, 5, 5, 5, 5);//calibracion A8
 
             pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(pdFile));
             document.open();
@@ -78,11 +78,11 @@ public class TemplatePDF {
             String nombreEmpresa = str_global.getInstance().getVar_cabecera_c_0();  // cabecera.0
             //String formatTituloEmpresa = conversionTitulo.obtenerTitulo(nombreEmpresa);
             Paragraph lote = new Paragraph(nombreEmpresa,
-                    FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
+                    FontFactory.getFont("arial", 8, Font.NORMAL, BaseColor.BLACK)); //font.bold
             lote.setAlignment(Element.ALIGN_CENTER);
             document.add(lote);
 
-            String direccionEmpresa = str_global.getInstance().getVar_cabecera_t_1() + " \n"+ str_global.getInstance().getVar_cabecera_t_2();
+            String direccionEmpresa = str_global.getInstance().getVar_cabecera_t_1() + " \n" + str_global.getInstance().getVar_cabecera_t_2();
             Paragraph lote2 = new Paragraph(direccionEmpresa,
                     FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
             lote2.setAlignment(Element.ALIGN_CENTER);
@@ -94,15 +94,15 @@ public class TemplatePDF {
             lote3.setAlignment(Element.ALIGN_CENTER);
             document.add(lote3);
 
-            String sharedata= ShareDataRead.obtenerValor(context, "valores_comprobante");
+            String sharedata = ShareDataRead.obtenerValor(context, "valores_comprobante");
 
             String[] splitPref = sharedata.split("¦");
-            String part1 =splitPref[0];
-            String part2 =splitPref[1];
-            String part3 =splitPref[2];
-            String part4 =splitPref[3];
+            String part1 = splitPref[0];
+            String part2 = splitPref[1];
+            String part3 = splitPref[2];
+            String part4 = splitPref[3];
 
-            String numPlaca = "PLACA: "+part2; //numPlaca
+            String numPlaca = "PLACA: " + part2; //numPlaca
             Paragraph lote5 = new Paragraph(numPlaca,
                     FontFactory.getFont("arial", 7, Font.BOLD, BaseColor.BLACK)); //font.bold
             lote5.setAlignment(Element.ALIGN_CENTER);
@@ -123,7 +123,7 @@ public class TemplatePDF {
             Image image = Image.getInstance(stream.toByteArray());
             //image.setAbsolutePosition(10f, 750f);
 //                image.scaleToFit(850, 78);
-            image.scaleToFit(130, 130); //150, 150  | 80,80
+            image.scaleToFit(80, 80); //150, 150  | 80,80
             image.setAlignment(Element.ALIGN_CENTER | Element.ALIGN_CENTER);
             document.add(image);
 
@@ -135,11 +135,9 @@ public class TemplatePDF {
 
             String pieImpresion = "Gracias por preferirnos";
             Paragraph lote9 = new Paragraph(pieImpresion,
-                    FontFactory.getFont("arial", 6, Font.NORMAL, BaseColor.BLACK)); //font.bold
+                    FontFactory.getFont("arial", 4, Font.NORMAL, BaseColor.BLACK)); //font.bold
             lote9.setAlignment(Element.ALIGN_CENTER);
             document.add(lote9);
-
-
 
 
         } catch (Exception e) {
@@ -202,11 +200,29 @@ public class TemplatePDF {
     }
 
 
-    public void viewPDF(Activity activity, Fragment fragment) {
+    //    public void viewPDF(Activity activity, Fragment fragment) {
+//
+//        Bundle args = new Bundle();
+//        args.putString("path", pdFile.getAbsolutePath());
+//
+//        GeneralFragmentManager.setFragmentWithReplace(activity, R.id.contenedor, fragment, args);
+//    }
+    public void viewPDF(Activity activity) {
 
-        Bundle args = new Bundle();
-        args.putString("path", pdFile.getAbsolutePath());
+        File file;
 
-        GeneralFragmentManager.setFragmentWithReplace(activity, R.id.contenedor, fragment, args);
+        String rutapdf = pdFile.getAbsolutePath();
+        file = new File(rutapdf, "");
+
+        PrintManager printManager = (PrintManager) activity.getSystemService(Context.PRINT_SERVICE);
+        {
+
+            //Environment.getExternalStorageDirectory() + "/PDFiles/", "Template.pdf"
+            //String printpdf = Environment.getExternalStorageDirectory() + "/PDFiles/Template.pdf";
+            PrintDocumentAdapter printAdapter = new PdfDocumentAdapter(context, String.valueOf(file));
+            printManager.print("Historial", printAdapter, new PrintAttributes.Builder().build());
+        }
+
+
     }
 }

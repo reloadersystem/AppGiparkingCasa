@@ -150,13 +150,12 @@ public class ScanQrConvenioFragment extends Fragment {
                             fragment = new ValidacionDetalleValidacionAutoFragment();
                             Bundle args = new Bundle();
                             args.putString("qrDataRecieve", qrDataRecieve);
-                            args.putString("placa", nro_placa);
-                            args.putString("fecha", fecha);
-                            args.putString("hora", hora);
+                            args.putString("placa", nro_placa);//
+                            args.putString("fecha", fecha);//
+                            args.putString("hora", hora);//
                             args.putString("cliente",cliente);
                             args.putString("clienteid",clienteid);
-                            args.putString("cod_movimiento",cod_movimiento);
-
+                            args.putString("cod_movimiento",cod_movimiento);//
 
                             changeFragment(args);
 

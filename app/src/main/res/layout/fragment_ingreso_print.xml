@@ -72,6 +72,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textAllCaps="false"
+                android:layout_marginBottom="10dp"
                 android:text="Imprimir Ticket"/>
 
             <TextView
@@ -81,6 +82,7 @@
                 android:layout_gravity="end"
                 android:layout_marginTop="10dp"
                 android:enabled="false"
+                android:visibility="gone"
                 android:text="Vista Previa" />
 
         </LinearLayout>

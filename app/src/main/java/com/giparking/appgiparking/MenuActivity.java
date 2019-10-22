@@ -26,6 +26,7 @@ import com.giparking.appgiparking.fragment.ComprobantesFragment;
 import com.giparking.appgiparking.fragment.ControlFragment;
 import com.giparking.appgiparking.fragment.IngresoPrintFragment;
 import com.giparking.appgiparking.fragment.MovimientoFragment;
+import com.giparking.appgiparking.fragment.SettingsFragment;
 import com.giparking.appgiparking.fragment.ValidacionManualFragment;
 import com.giparking.appgiparking.util.Constantes;
 import com.giparking.appgiparking.util.ContenedorClass;
@@ -175,7 +176,22 @@ public class MenuActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            fragment = new SettingsFragment();
+            FragmentManager fmanager = this.getSupportFragmentManager();
+            if (fmanager != null) {
+
+                Bundle args = new Bundle();
+                args.putString("ACCESO", "Placa");
+                fragment.setArguments(args);
+
+                FragmentTransaction ftransaction = fmanager.beginTransaction();
+                if (ftransaction != null) {
+                    ftransaction.replace(R.id.contenedor, fragment);
+                    ftransaction.addToBackStack("");
+                    ftransaction.commit();
+                }
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
