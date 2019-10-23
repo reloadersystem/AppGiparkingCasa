@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -182,6 +183,8 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
         txtVistaPrevia = rootview.findViewById(R.id.txtPreview);
 
         edTexto.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(edTexto, InputMethodManager.SHOW_IMPLICIT);
 
 
         int verificarPermisoWrite = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);

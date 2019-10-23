@@ -30,6 +30,7 @@ import com.giparking.appgiparking.rest.MethodWs;
 import com.giparking.appgiparking.util.PrinterCommands;
 import com.giparking.appgiparking.util.Utils;
 import com.giparking.appgiparking.util.str_global;
+import com.giparking.appgiparking.view.LoguinActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -135,7 +136,7 @@ public class ComprobantesFragment extends Fragment {
             nro_placa = edt_placa_buscar.getText().toString();
             bus_criterio_input = "PLACA";
 
-            if (edt_placa_buscar.getText().toString().length() < 6){
+            if (edt_placa_buscar.getText().toString().length() < 6) {
 
                 pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
                 pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
@@ -150,7 +151,6 @@ public class ComprobantesFragment extends Fragment {
         pd.setContentText("Por favor, espere...");
         pd.setCancelable(false);
         pd.show();
-
 
 
         String bus_criterio = bus_criterio_input; //"PLACA";
@@ -172,7 +172,7 @@ public class ComprobantesFragment extends Fragment {
                     ResponseBody informacion = response.body();
                     try {
 
-                         cadena_respuesta = informacion.string();
+                        cadena_respuesta = informacion.string();
 
                         if (cadena_respuesta.equals("")) {
 
@@ -251,36 +251,117 @@ public class ComprobantesFragment extends Fragment {
 
     public void configurarAdapter(final ArrayList<Comprobante> list_comprobante) {
 
+
         recycler_comprobantes.setHasFixedSize(true);
         recycler_comprobantes.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter = new ComprobanteAdapter(getContext(), list_comprobante);
 
-        ((ComprobanteAdapter) adapter).setOnPrintListener(new OnPrintListener() {
+        ((ComprobanteAdapter) adapter).setOnPrintListener(new ComprobanteAdapter.OnItemClickListener() {
             @Override
-            public void onAccionClicked(int position) {
+            public void onItemClick(Comprobante comprobante) {
 
-                fechaComp = list_comprobante.get(position).getFecha();
-                tipoComp = list_comprobante.get(position).getTipo();
-                numComp = list_comprobante.get(position).getCod_comprobante();
-                placaComp = list_comprobante.get(position).getPlaca();
-                clienteComp = list_comprobante.get(position).getCliente();
-                montoComp = list_comprobante.get(position).getMonto();
+                String cod_comprobante = comprobante.getCod_comprobante().toString();
 
-                try {
-                    FindBluetoothDevice();
-                    //imagen suma de los datos...
-                    openBluetoothPrinter(cadena_respuesta);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    disconnectBT();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);
+                Call<ResponseBody> responseBodyCall = methodWs.comprobanteImprimirItems(cod_comprobante);
+                responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                        if (response.isSuccessful()) {
+
+                            ResponseBody informacion = response.body();
+                            try {
+                                String cadena_respuesta = informacion.string();
+
+                                if (cadena_respuesta.equals("")){
+
+                                    pd.dismiss();
+                                    pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                                    pd.setContentText("No se encuentra el documento!!");
+                                    pd.setCancelable(false);
+                                    pd.show();
+                                    return;
+                                }
+
+                                String[] parts = cadena_respuesta.split("¦");
+
+                                String cod_comprobante = parts[0];
+                                String comprobante_tipo = parts[1];
+                                String comprobante_numero = parts[2];
+                                String comprobante_fecha = parts[3];
+                                String comprobante_usuario_loguin = parts[4];
+                                String cliente_tipo = parts[5];
+                                String cliente_documento = parts[6];
+                                String cliente_nombre = parts[7];
+                                String documento_referencial = parts[8];
+                                String comprobamte_total_operacion_gravadas = parts[9];
+                                String comprobamte_total_impuesto = parts[10];
+                                String comprobamte_total_documento = parts[11];
+
+                                String movimiento_nro_placa = parts[12];
+                                String movimiento_hora_ingreso = parts[13];
+                                String movimiento_hora_salida = parts[14];
+                                String movimiento_tiempo_calculado = parts[15];
+                                String detalle_producto_nombre = parts[16];
+                                String detalle_importe = parts[17];
+                                String datos_qr = parts[18];
+
+                                /* fechaComp = list_comprobante.get(position).getFecha();
+                                     tipoComp = list_comprobante.get(position).getTipo();
+                                     numComp = list_comprobante.get(position).getCod_comprobante();
+                                     placaComp = list_comprobante.get(position).getPlaca();
+                                     clienteComp = list_comprobante.get(position).getCliente();
+                                     montoComp = list_comprobante.get(position).getMonto();
+
+        try {
+            FindBluetoothDevice();
+            //imagen suma de los datos...
+            openBluetoothPrinter(cadena_respuesta);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            disconnectBT();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }*/
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                pd.dismiss();
+                                pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                                pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                                pd.setContentText(e.getMessage().toString());
+                                pd.setCancelable(false);
+                                pd.show();
+                                return;
+                            }
+                        } else {
+                            //ERROR
+                            pd.dismiss();
+                            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                            pd.setContentText("Hubo un problema al conectar: " + response.code());
+                            pd.setCancelable(false);
+                            pd.show();
+                            return;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d("jledesma", t.getMessage().toString());
+                        pd.dismiss();
+                    }
+                });
+
             }
         });
+
+
         recycler_comprobantes.setAdapter(adapter);
 
         //recycler_comprobantes.setAdapter(new ComprobanteAdapter(getContext(), list_comprobante));

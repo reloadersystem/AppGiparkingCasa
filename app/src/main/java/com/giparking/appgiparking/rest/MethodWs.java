@@ -86,7 +86,7 @@ public interface MethodWs {
                                                    @Query("NRO_PLACA") String nro_placa);
 
     @GET("COMPROBANTEReImprimirItems/")
-    Call<ResponseBody> comprobanteImprimirMostrar(@Query("COD_COMPROBANTE") String cod_comprobante);
+    Call<ResponseBody> comprobanteImprimirItems(@Query("COD_COMPROBANTE") String cod_comprobante);
 
     @GET("COMPROBANTEAnulaErrorMostrar/")
     Call<ResponseBody> comprobanteAnularErrorMostrar(@Query("BUSCRITERIO") String bus_criterio,

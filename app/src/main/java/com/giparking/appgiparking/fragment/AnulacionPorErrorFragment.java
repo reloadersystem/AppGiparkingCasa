@@ -64,6 +64,7 @@ public class AnulacionPorErrorFragment extends Fragment {
     RecyclerView recycler_comprobantes_anular;
 
     SweetAlertDialog pd;
+    SweetAlertDialog pd2;
 
     String descripcion_respuesta = "";
 
@@ -170,9 +171,7 @@ public class AnulacionPorErrorFragment extends Fragment {
 
                                 if (codigo_respuesta.equals("0")) {
 
-
-
-                                    new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                                  /*  new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
                                             .setTitleText("Informativo")
                                             .setContentText("Comprobante Anulado!")
                                             .setConfirmText("Continuar")
@@ -184,17 +183,19 @@ public class AnulacionPorErrorFragment extends Fragment {
                                                     adapter.notifyDataSetChanged();
 
                                                 }
-                                            }).show();
+                                            }).show();*/
 
-                                   /* pd.dismiss();
-                                    pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
-                                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
-                                    pd.setContentText("Comprobante anulado!!");
-                                    pd.setCancelable(false);
-                                    pd.show();
-                                    return;*/
+                                    pd.dismiss();
+                                    pd2 = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                                    pd2.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                                    pd2.setContentText("Comprobante anulado!!");
+                                    pd2.setCancelable(false);
+                                    pd2.show();
 
+                                    callApiRestImprimirMostrar();
+                                    adapter.notifyDataSetChanged();
 
+                                    return;
 
 
                                 } else {
@@ -342,6 +343,7 @@ public class AnulacionPorErrorFragment extends Fragment {
 
                             configurarAdapter(list_comprobante);
                             pd.dismiss();
+                            return;
                         }
 
                         String[] parts_valores = cadena_respuesta.split("¬");

@@ -22,11 +22,11 @@ public class ComprobanteAdapter extends RecyclerView.Adapter<ComprobanteAdapter.
 
     Context context;
     ArrayList<Comprobante> list_comprobante;
-    private OnPrintListener onPrintListener;
+    OnItemClickListener listener;
 
-    public  void setOnPrintListener(OnPrintListener onPrintListener)
+    public  void setOnPrintListener(OnItemClickListener listener)
     {
-        this.onPrintListener = onPrintListener;
+        this.listener = listener;
     }
 
     public ComprobanteAdapter(Context context, ArrayList<Comprobante> list_comprobante) {
@@ -83,13 +83,23 @@ public class ComprobanteAdapter extends RecyclerView.Adapter<ComprobanteAdapter.
 
                     int position = getAdapterPosition();
 
-                    if(position != RecyclerView.NO_POSITION)
+                    if(listener != null && position != RecyclerView.NO_POSITION)
                     {
-                        onPrintListener.onAccionClicked(position);
+                        listener.onItemClick(list_comprobante.get(position));
                     }
 
                 }
             });
+
+
         }
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(Comprobante comprobante);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 }
