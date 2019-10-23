@@ -604,16 +604,45 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
                             }
 
                             pd.dismiss();
-                            Toast.makeText(getContext(),"Registrado correctamente!!",Toast.LENGTH_LONG).show();
-                            irMenuPrincipal();
+
+                            new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                                    .setTitleText("Informativo")
+                                    .setContentText("Registrado correctamente!!")
+                                    .setConfirmText("Continuar")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                            irMenuPrincipal();
+                                        }
+                                    }).show();
+
+
+                            // Toast.makeText(getContext(),"Registrado correctamente!!",Toast.LENGTH_LONG).show();
+                            // irMenuPrincipal();
+
 
                         }else if(codigo_respuesta.equals("99")){
 
 
-                            Toast.makeText(getContext(),descripcion_respuesta,Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getContext(),descripcion_respuesta,Toast.LENGTH_LONG).show();
 
                             pd.dismiss();
-                            irMenuPrincipal();
+                            new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                                    .setTitleText("Informativo")
+                                    .setContentText("Registrado correctamente!!")
+                                    .setConfirmText("Continuar")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                            irMenuPrincipal();
+                                        }
+                                    }).show();
+
+
+
+                           // irMenuPrincipal();
 
                         }else{
 

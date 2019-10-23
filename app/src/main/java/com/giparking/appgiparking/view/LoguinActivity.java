@@ -193,7 +193,7 @@ public class LoguinActivity extends AppCompatActivity {
     @OnClick(R.id.btn_ingresar)
     public void ingresar() {
 
-        //imei = "11";
+        imei = "11";
 
          if (imei.equals("")){
              solicitarPermiso();

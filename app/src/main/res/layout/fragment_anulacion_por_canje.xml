@@ -76,4 +76,3 @@
         android:layout_marginTop="10dp"
         tools:listitem="@layout/item_anulacion_por_error"/>
 </LinearLayout>
-

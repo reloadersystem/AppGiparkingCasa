@@ -195,7 +195,114 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
         btnGerar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validator.validate();
+                //validator.validate();
+                if (edTexto.length() < 6){
+
+                    pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                    pd.setContentText("Placa debe tener 6 digitos");
+                    pd.setCancelable(false);
+                    pd.show();
+                    return;
+                }
+
+                String cod_corpempresa = a_str_global.getCod_corpempresa().toString();
+                String cod_sucursal = a_str_global.getCod_sucursal().toString();
+                String cod_usuario = a_str_global.getCod_usuario().toString();
+                String cod_cefectivo = a_str_global.getCod_cefectivo().toString();
+                String nro_placa = edTexto.getText().toString();
+
+                pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
+                pd.setContentText("Por favor, espere...");
+                pd.setCancelable(false);
+                pd.show();
+
+
+                MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);
+                Call<ResponseBody> responseBodyCall = methodWs.controlIngresoGrabar(cod_corpempresa, cod_sucursal, cod_usuario, cod_cefectivo, nro_placa);
+                responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                        if (response.isSuccessful()) {
+
+                            ResponseBody informacion = response.body();
+                            try {
+                                String cadena_respuesta = informacion.string();
+                                String[] parts = cadena_respuesta.split("¬");
+                                String respuesta_validacion = parts[0];
+
+                                String[] parts_validacion = respuesta_validacion.split("¦");
+                                String codigo_respuesta = parts_validacion[0];
+                                if (!codigo_respuesta.equals("0")) { //0 error en la validación de negocio
+                                    descripcion_respuesta = parts_validacion[1];
+                                }
+
+                                if (codigo_respuesta.equals("0")) { //0 regla de negocio Ok
+
+
+
+                                    //Datos que debe imprimirse en el qr
+                                    String valores_comprobante = parts[1]; //TODO ingreso y hora pasar document, placa
+                                    //TODO Aca debe de mandar a imprimir [valores_comprobante]
+
+                                    FindBluetoothDevice();
+
+                                    openBluetoothPrinter(valores_comprobante);
+
+                                    // gerarQRCode(valores_comprobante);
+
+                                    //Grabarlo en un sharepreferences
+                                    guardarPreferencia(valores_comprobante);
+                                    cardview_grupo_reimprimir.setVisibility(View.VISIBLE);
+                                    tv_informacion_vehiculo.setText(valores_comprobante);
+
+                                    edTexto.setText("");
+                                    //gerarQRCode();
+                                    pd.dismiss();
+                                    pd = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
+                                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                                    pd.setContentText("Ingreso correcto!!");
+                                    // pd.setCancelable(false);
+                                    pd.show();
+
+                                    try {
+                                        disconnectBT();
+                                    } catch (Exception ex) {
+                                        ex.printStackTrace();
+                                    }
+
+
+                                    return;
+
+                                } else {
+
+                                    pd.dismiss();
+                                    pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                                    pd.setContentText(descripcion_respuesta);
+                                    pd.setCancelable(false);
+                                    pd.show();
+                                    return;
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                pd.dismiss();
+                            }
+                        } else {
+                            //ERROR
+                            pd.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d("jledesma", t.getMessage().toString());
+                        pd.dismiss();
+                    }
+                });
             }
         });
 

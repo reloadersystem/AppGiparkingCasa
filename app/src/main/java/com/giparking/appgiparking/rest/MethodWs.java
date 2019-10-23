@@ -95,12 +95,32 @@ public interface MethodWs {
                                                   @Query("SERIE") String serie,
                                                   @Query("NUMERO") String numero);
 
+    @GET("COMPROBANTEAnulaCanjeMostrar/")
+    Call<ResponseBody> comprobanteAnularCanjeMostrar(@Query("BUSCRITERIO") String bus_criterio,
+                                                     @Query("COD_SUCURSAL") String cod_sucursal,
+                                                     @Query("COD_CAJA") String cod_caja,
+                                                     @Query("SERIE") String serie,
+                                                     @Query("NUMERO") String numero);
+
+
+
     @GET("COMPROBANTEAnulaErrorGrabar/")
     Call<ResponseBody> comprobanteAnularErrorGrabar(@Query("COD_COMPROBANTE") String cod_comprobante,
                                                   @Query("COD_SUCURSAL") String cod_sucursal,
                                                   @Query("COD_CEFECTIVO") String cod_cefectivo,
                                                   @Query("COD_CAJA") String cod_caja,
                                                   @Query("COD_USUARIO") String cod_usuario);
+
+    @GET("COMPROBANTEAnulaCanjeGrabar/")
+    Call<ResponseBody> comprobanteAnularCanjeGrabar(@Query("COD_COMPROBANTE") String cod_comprobante,
+                                                    @Query("COD_CORPEMPRESA") String cod_corpempresa,
+
+                                                    @Query("COD_SUCURSAL") String cod_sucursal,
+                                                    @Query("COD_CEFECTIVO") String cod_cefectivo,
+                                                    @Query("COD_CAJA") String cod_caja,
+                                                    @Query("COD_USUARIO") String cod_usuario,
+                                                    @Query("EMP_RUC") String emp_ruc);
+
 
     @GET("CONSULTACajaMovimientos/")
     Call<ResponseBody> consultaCajaMovimiento(@Query("COD_CEFECTIVO") String cod_cefectivo);
