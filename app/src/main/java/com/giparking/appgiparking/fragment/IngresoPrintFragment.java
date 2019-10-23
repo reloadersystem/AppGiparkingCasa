@@ -37,6 +37,7 @@ import com.giparking.appgiparking.util.PrinterCommands;
 import com.giparking.appgiparking.util.ShareDataRead;
 import com.giparking.appgiparking.util.Utils;
 import com.giparking.appgiparking.util.str_global;
+import com.giparking.appgiparking.view.LoguinActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -122,7 +123,7 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
         rootview = inflater.inflate(R.layout.fragment_ingreso_print, container, false);
         ButterKnife.bind(this, rootview);
 
-        getActivity().setTitle("ParkFácil");
+        getActivity().setTitle("Ingreso");
 
         //Verificar si existe una preferencia
         recuperarPreferencias();
@@ -135,40 +136,42 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
 
             cardview_grupo_reimprimir.setVisibility(View.VISIBLE);
             tv_informacion_vehiculo.setText(valores_comprobante_output);
-            btn_reimprimir.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    //TODO Reimprimir
-
-                    String shareGetPreference = ShareDataRead.obtenerValor(getContext(), "valores_comprobante");
-                    //111019298425¦xtjlfhl¦14/10/2019¦19:45:44¦Espacios Libres: 93
-
-
-
-                    try {
-                        FindBluetoothDevice();
-                        openBluetoothPrinter(shareGetPreference);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    pd = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
-                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
-                    pd.setContentText("Re Impresion correcto!!");
-                    // pd.setCancelable(false);
-                    pd.show();
-
-                    try {
-                        disconnectBT();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-
-
-                }
-            });
         }
+
+        btn_reimprimir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //TODO Reimprimir
+
+                String shareGetPreference = ShareDataRead.obtenerValor(getContext(), "valores_comprobante");
+                //111019298425¦xtjlfhl¦14/10/2019¦19:45:44¦Espacios Libres: 93
+
+
+                try {
+                    FindBluetoothDevice();
+                    openBluetoothPrinter(shareGetPreference);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                pd = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
+                pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                pd.setContentText("Re Impresion correcto!!");
+                // pd.setCancelable(false);
+                pd.show();
+
+                try {
+                    disconnectBT();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+
+            }
+        });
+
+
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -178,7 +181,7 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
         ivQRCode = rootview.findViewById(R.id.ivQRCode);
         txtVistaPrevia = rootview.findViewById(R.id.txtPreview);
 
-
+        edTexto.requestFocus();
 
 
         int verificarPermisoWrite = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -279,6 +282,16 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
     public void onValidationSucceeded() {
         validated = true;
 
+        if (edTexto.length() < 6){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Placa debe tener 6 digitos");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
         String cod_corpempresa = a_str_global.getCod_corpempresa().toString();
         String cod_sucursal = a_str_global.getCod_sucursal().toString();
         String cod_usuario = a_str_global.getCod_usuario().toString();
@@ -314,6 +327,8 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
 
                         if (codigo_respuesta.equals("0")) { //0 regla de negocio Ok
 
+
+
                             //Datos que debe imprimirse en el qr
                             String valores_comprobante = parts[1]; //TODO ingreso y hora pasar document, placa
                             //TODO Aca debe de mandar a imprimir [valores_comprobante]
@@ -326,6 +341,8 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
 
                             //Grabarlo en un sharepreferences
                             guardarPreferencia(valores_comprobante);
+                            cardview_grupo_reimprimir.setVisibility(View.VISIBLE);
+                            tv_informacion_vehiculo.setText(valores_comprobante);
 
                             //gerarQRCode();
                             pd.dismiss();

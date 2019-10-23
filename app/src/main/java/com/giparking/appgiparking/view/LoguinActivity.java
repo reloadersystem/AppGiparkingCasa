@@ -1,6 +1,7 @@
 package com.giparking.appgiparking.view;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,12 +10,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -59,7 +63,7 @@ public class LoguinActivity extends AppCompatActivity {
 
     SweetAlertDialog pd;
     String descripcion_respuesta = "";
-    String usuario,contrasenia,llave,terminal;
+    String usuario, contrasenia, llave, terminal;
 
     private str_global a_str_global = str_global.getInstance();
     private ContenedorClass contenedorClass = ContenedorClass.getInstance();
@@ -68,6 +72,7 @@ public class LoguinActivity extends AppCompatActivity {
     List<TipoPago> list_tipopago = new ArrayList<>();
     List<Menu> list_menu = new ArrayList<>();
     String myIMEI = "";
+    String imei = "";
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
@@ -78,40 +83,96 @@ public class LoguinActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         llave = obtenerDatosPreferences();
-        edt_llave.setText(llave);
+        if (!llave.equals("")) {
+            edt_usuario.requestFocus();
+            edt_llave.setText(llave);
+        }
 
-        //solicitarPermiso();
+        imei = obtenerDatosPreferencesImei();
+
+        if (imei.equals("")) {
+            solicitarPermiso();
+        }
+
+        configurarEventos();
+
     }
 
-    public void solicitarPermiso(){
+    private void configurarEventos() {
+
+        edt_llave.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    //aqui iria tu codigo al presionar el boton enter o done
+                    Toast.makeText(LoguinActivity.this, "Ok", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        edt_usuario.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    //aqui iria tu codigo al presionar el boton enter o done
+                    Toast.makeText(LoguinActivity.this, "Ok2", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void solicitarPermiso() {
 
 
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
                 // mis rutinas
-            }else{
-                ActivityCompat.requestPermissions(LoguinActivity.this,new String[]{Manifest.permission.READ_PHONE_STATE},REQUEST_CODE_ASK_PERMISSIONS);
+            } else {
+                ActivityCompat.requestPermissions(LoguinActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE_ASK_PERMISSIONS);
                 return;
             }
-        }else{
+        } else {
             // mis rutinas;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_CODE_ASK_PERMISSIONS:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
                     // Rutina que se ejecuta al aceptar
+
+                    final TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+                    //myIMEI = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    imei = telephonyManager.getImei();
+                    if (imei == null){
+                        guardarPreferenciaImei("");
+                    }else{
+                        guardarPreferenciaImei(imei);
+                    }
+
                     pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.WARNING_TYPE);
                     pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
                     pd.setContentText("Permiso concedido!!");
                     pd.setCancelable(false);
                     pd.show();
-                    myIMEI = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+
+                    //Toast.makeText(LoguinActivity.this, "Imei : " +imei,Toast.LENGTH_LONG).show();
                     return;
                 }else{
                     // Permission Denied
@@ -132,16 +193,48 @@ public class LoguinActivity extends AppCompatActivity {
     @OnClick(R.id.btn_ingresar)
     public void ingresar() {
 
-        // if (myIMEI.equals("")){
-          //   solicitarPermiso();
-            // return;
-        // }
+        //imei = "11";
+
+         if (imei.equals("")){
+             solicitarPermiso();
+             return;
+         }
 
         usuario = edt_usuario.getText().toString();
         contrasenia = edt_contrasenia.getText().toString();
         llave = edt_llave.getText().toString();
-        terminal = "863558030455649";
+        terminal = imei;
        // terminal = myIMEI;
+
+        if (edt_llave.equals("")){
+
+            pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la llave");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (usuario.equals("")){
+
+            pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar el usuario");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (contrasenia.equals("")){
+
+            pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la clave");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
 
         pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.PROGRESS_TYPE);
         pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
@@ -341,19 +434,51 @@ public class LoguinActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                         pd.dismiss();
+                        pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.WARNING_TYPE);
+                        pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                        pd.setContentText(e.getMessage().toString());
+                        pd.setCancelable(false);
+                        pd.show();
+                        return;
                     }
                 }
                 else{
                     //ERROR
                     pd.dismiss();
+                    pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.WARNING_TYPE);
+                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                    pd.setContentText("Hubo un problema al conectar: " + response.code());
+                    pd.setCancelable(false);
+                    pd.show();
+                    return;
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                Log.d("jledesma", t.getMessage().toString());
                 pd.dismiss();
+                if (t instanceof IOException){
+
+                    Log.d("jledesma", t.getMessage().toString());
+                    pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.WARNING_TYPE);
+                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                    pd.setContentText("No tiene conexion a Internet");
+                    pd.setCancelable(false);
+                    pd.show();
+                    return;
+                }
+                else{
+                    Log.d("jledesma", t.getMessage().toString());
+                    pd = new SweetAlertDialog(LoguinActivity.this, SweetAlertDialog.WARNING_TYPE);
+                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                    pd.setContentText(t.getMessage().toString());
+                    pd.setCancelable(false);
+                    pd.show();
+                    return;
+                }
+
+
             }
         });
     }
@@ -511,7 +636,14 @@ public class LoguinActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(Constantes.PREFERENCIA_USUARIO, 0).edit();
         editor.putString(Constantes.Empresa, llave);
         editor.commit();
-        finish();
+        //finish();
+    }
+
+    private void guardarPreferenciaImei(String imei) {
+        SharedPreferences.Editor editor = getSharedPreferences(Constantes.PREFERENCIA_TELEFONO, 0).edit();
+        editor.putString(Constantes.IMEI, imei);
+        editor.commit();
+        //finish();
     }
 
     private String obtenerDatosPreferences() {
@@ -519,5 +651,12 @@ public class LoguinActivity extends AppCompatActivity {
         llave = pref.getString(Constantes.Empresa, "");
 
         return llave;
+    }
+
+    private String obtenerDatosPreferencesImei() {
+        SharedPreferences pref = getSharedPreferences(Constantes.PREFERENCIA_TELEFONO, 0);
+        imei = pref.getString(Constantes.IMEI, "");
+
+        return imei ;
     }
 }

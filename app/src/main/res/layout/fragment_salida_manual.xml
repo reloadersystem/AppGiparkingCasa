@@ -41,40 +41,24 @@
                     android:text="Nro Placa" />
 
                 <EditText
-                    android:id="@+id/edt_placa_parte_una"
+                    android:id="@+id/edt_placa_partes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:background="@drawable/vector"
                     android:textSize="14dp"
+                    android:maxLength="6"
+                    android:singleLine="true"
+                    android:inputType="textCapCharacters"
                     android:gravity="center"
                     android:textColor="@color/colorBlack"
                     android:padding="8dp"
-                    android:hint="AAA"
-                    android:text="AAA"
+                    android:hint="Ingrese la placa"
                     android:drawablePadding="10dp" />
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorBlack"
-                    android:text="-" />
 
-                <EditText
-                    android:id="@+id/edt_placa_parte_dos"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:background="@drawable/vector"
-                    android:textSize="14dp"
-                    android:gravity="center"
-                    android:textColor="@color/colorBlack"
-                    android:padding="8dp"
-                    android:hint="AAAA"
-                    android:text="777"
-                    android:drawablePadding="10dp" />
+
+
 
 
 
@@ -90,7 +74,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textAllCaps="false"
-                android:text="SALIDA"/>
+                android:text="VALIDAR"/>
 
 
 

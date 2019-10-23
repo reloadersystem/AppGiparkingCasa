@@ -46,11 +46,14 @@ public class SalidaVehiculoFragment extends Fragment {
 
     View rootview;
     CardView crd_valAutomatica;
+    CardView crd_valManual;
+    CardView crd_valSinValidacion;
     Fragment fragment;
     TextView horaIngreso, horaSalida;
     Spinner sp_producto;
     String prodSelec = " ";
     String prodSelecItem = " ";
+    String convenio = " ";
 
     String cod_movimiento = "";
     String nro_placa = "";
@@ -73,6 +76,13 @@ public class SalidaVehiculoFragment extends Fragment {
         getActivity().setTitle("Salida Vehículo");
 
         crd_valAutomatica = rootview.findViewById(R.id.crd_valAutomatica);
+        crd_valManual = rootview.findViewById(R.id.crd_valManual);
+        crd_valSinValidacion = rootview.findViewById(R.id.crd_valSinValidacion);
+
+        crd_valAutomatica.setVisibility(View.GONE);
+        crd_valManual.setVisibility(View.GONE);
+        crd_valSinValidacion.setVisibility(View.GONE);
+
         horaIngreso = rootview.findViewById(R.id.tv_hora_ingreso);
         horaSalida = rootview.findViewById(R.id.tv_hora_salida);
         sp_producto = rootview.findViewById(R.id.sp_producto);
@@ -118,6 +128,21 @@ public class SalidaVehiculoFragment extends Fragment {
 
                prodSelec = ((GenericoSpinner) parent.getItemAtPosition(position)).name;
                prodSelecItem = ((GenericoSpinner) parent.getItemAtPosition(position)).id;
+               convenio = ((GenericoSpinner) parent.getItemAtPosition(position)).convenio;
+
+
+               if (convenio.equals("1")){
+
+                   crd_valAutomatica.setVisibility(View.VISIBLE);
+                   crd_valManual.setVisibility(View.VISIBLE);
+                   crd_valSinValidacion.setVisibility(View.VISIBLE);
+
+               }else{
+
+                   crd_valAutomatica.setVisibility(View.GONE);
+                   crd_valManual.setVisibility(View.GONE);
+                   crd_valSinValidacion.setVisibility(View.VISIBLE);
+               }
 
            }
 

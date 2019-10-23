@@ -36,11 +36,9 @@ import retrofit2.Response;
  */
 public class SalidaManualFragment extends Fragment {
 
-    @BindView(R.id.edt_placa_parte_una)
-    EditText edt_placa_parte_una;
+    @BindView(R.id.edt_placa_partes)
+    EditText edt_placa_partes;
 
-    @BindView(R.id.edt_placa_parte_dos)
-    EditText edt_placa_parte_dos;
 
     SweetAlertDialog pd;
     String descripcion_respuesta = "";
@@ -61,6 +59,11 @@ public class SalidaManualFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_salida_manual, container, false);
         ButterKnife.bind(this, view);
 
+        getActivity().setTitle("Salida con Placa");
+        edt_placa_partes.setText("");
+        edt_placa_partes.requestFocus();
+
+
 
         return view;
     }
@@ -69,10 +72,21 @@ public class SalidaManualFragment extends Fragment {
     public void DarSalidaManual() {
 
 
+        if (edt_placa_partes.getText().length() < 6){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Placa debe tener 6 digitos");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+
         String bus_criterio = "PLACA";
         String cod_sucursal = a_str_global.getCod_sucursal().toString();
         String cod_movimiento = "0";
-        String nro_placa = edt_placa_parte_una.getText().toString()+edt_placa_parte_dos.getText().toString();
+        String nro_placa = edt_placa_partes.getText().toString();
 
         pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
         pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));

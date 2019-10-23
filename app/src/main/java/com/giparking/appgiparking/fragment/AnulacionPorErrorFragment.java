@@ -2,6 +2,7 @@ package com.giparking.appgiparking.fragment;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -88,6 +89,8 @@ public class AnulacionPorErrorFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_anulacion_por_error, container, false);
         ButterKnife.bind(this, view);
 
+        getActivity().setTitle("Anulacion");
+
         init();
         configurarEventos();
         callApiRestImprimirMostrar();
@@ -167,13 +170,32 @@ public class AnulacionPorErrorFragment extends Fragment {
 
                                 if (codigo_respuesta.equals("0")) {
 
-                                    pd.dismiss();
+
+
+                                    new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE)
+                                            .setTitleText("Informativo")
+                                            .setContentText("Comprobante Anulado!")
+                                            .setConfirmText("Continuar")
+                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                                    callApiRestImprimirMostrar();
+                                                    adapter.notifyDataSetChanged();
+
+                                                }
+                                            }).show();
+
+                                   /* pd.dismiss();
                                     pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
                                     pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
                                     pd.setContentText("Comprobante anulado!!");
                                     pd.setCancelable(false);
                                     pd.show();
-                                    return;
+                                    return;*/
+
+
+
 
                                 } else {
 
@@ -255,7 +277,7 @@ public class AnulacionPorErrorFragment extends Fragment {
         callApiRestImprimirMostrar();
     }
 
-    private void callApiRestImprimirMostrar() {
+    public void callApiRestImprimirMostrar() {
 
         pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
         pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
@@ -266,6 +288,25 @@ public class AnulacionPorErrorFragment extends Fragment {
         if (rb_comprobante_anular.isChecked()) {
             //  nro_placa = edt_placa_buscar.getText().toString();
             bus_criterio_input = "DOCUMENTO";
+
+            if ( edt_serie_buscar.getText().toString().equals("")){
+
+                pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
+                pd.setContentText("Debe ingresar la serie");
+                pd.setCancelable(false);
+                pd.show();
+            }
+
+            if ( edt_numero_buscar.getText().toString().equals("")){
+
+                pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
+                pd.setContentText("Debe ingresar el numero");
+                pd.setCancelable(false);
+                pd.show();
+            }
+
         }
 
         String bus_criterio = bus_criterio_input;

@@ -50,9 +50,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/vector"
                 android:textColor="@color/colorBlack"
+                android:textSize="14dp"
+                android:maxLength="6"
                 android:gravity="center"
-                android:textSize="15dp"
-                android:hint="Ejem: ABC123" />
+                android:singleLine="true"
+                android:inputType="textCapCharacters"
+                android:hint="Ingrese la placa" />
 
         </LinearLayout>
 
@@ -74,7 +77,7 @@
                 android:layout_below="@+id/edt_numPlaca"
                 android:layout_weight="0.7"
                 android:textColor="@color/colorBlack"
-                android:text="Fecha: " />
+                android:text="Fecha : " />
 
             <TextView
                 android:id="@+id/txt_Fecha"
@@ -121,7 +124,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Seleccione Producto"
+        android:text="Seleccione Tarifario"
         android:textSize="14dp"
         android:layout_marginTop="10dp"
         android:textColor="@color/colorBlack"

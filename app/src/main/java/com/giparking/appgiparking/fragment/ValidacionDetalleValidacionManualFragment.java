@@ -199,85 +199,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                 edt_ruc_validacion_manual.setText("");
                 edt_resultado_ruc_validacion_manual.setText("");
 
-                btn_validar_validacion_manual.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
 
-                        String ruc = edt_ruc_validacion_manual.getText().toString();
-
-                        pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
-                        pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
-                        pd.setContentText("Por favor, espere...");
-                        pd.setCancelable(false);
-                        pd.show();
-
-
-                        MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);
-                        Call<ResponseBody> responseBodyCall = methodWs.comprobanteEmpresaBuscar(ruc);
-                        responseBodyCall.enqueue(new Callback<ResponseBody>() {
-                            @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                                if (response.isSuccessful()) {
-
-                                    ResponseBody informacion = response.body();
-                                    try {
-
-                                        String cadena_respuesta = informacion.string();
-                                        String[] parts = cadena_respuesta.split("¬");
-                                        String respuesta_validacion = parts[0];
-
-                                        String[] parts_validacion = respuesta_validacion.split("¦");
-                                        String codigo_respuesta = parts_validacion[0];
-                                        if (!codigo_respuesta.equals("0")) { //0 error en la validación de negocio
-                                            descripcion_respuesta = parts_validacion[1];
-                                        }
-
-                                        //0¦¬10421586255¦ARANDA ROSALES JAIME JESUS¦150118¦AV. LIMA NORTE CHOSICA Nro.230
-
-                                        if (codigo_respuesta.equals("0")) {
-
-                                            String cliente = parts[1];
-                                            String[] parts_cliente = cliente.split("¦");
-
-                                            ruc_input =  parts_cliente[0];
-                                            String razon_social = parts_cliente[1];
-                                            String ubigeo = parts_cliente[2];
-                                            String direccion = parts_cliente[3];
-
-                                            edt_resultado_ruc_validacion_manual.setText(razon_social);
-
-                                            pd.dismiss();
-
-                                        }else{
-
-                                            pd.dismiss();
-                                            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
-                                            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
-                                            pd.setContentText(descripcion_respuesta);
-                                            pd.setCancelable(false);
-                                            pd.show();
-                                            return;
-                                        }
-
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        pd.dismiss();
-                                    }
-                                } else {
-                                    pd.dismiss();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                Log.d("jledesma", t.getMessage().toString());
-                                pd.dismiss();
-                            }
-                        });
-
-                    }
-                });
             }
         });
 
@@ -290,6 +212,96 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                 edt_resultado_ruc_validacion_manual.setText("");
 
                 ruc_input = "0";
+            }
+        });
+
+        btn_validar_validacion_manual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String ruc = edt_ruc_validacion_manual.getText().toString();
+
+                if (ruc.length() < 11){
+
+                    pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                    pd.setContentText("Ingrese un numero de RUC correcto");
+                    pd.setCancelable(false);
+                    pd.show();
+                    return;
+                }
+
+                pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
+                pd.setContentText("Por favor, espere...");
+                pd.setCancelable(false);
+                pd.show();
+
+
+                MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);
+                Call<ResponseBody> responseBodyCall = methodWs.comprobanteEmpresaBuscar(ruc);
+                responseBodyCall.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                        if (response.isSuccessful()) {
+
+                            ResponseBody informacion = response.body();
+                            try {
+
+                                String cadena_respuesta = informacion.string();
+                                String[] parts = cadena_respuesta.split("¬");
+                                String respuesta_validacion = parts[0];
+
+                                String[] parts_validacion = respuesta_validacion.split("¦");
+                                String codigo_respuesta = parts_validacion[0];
+                                if (!codigo_respuesta.equals("0")) { //0 error en la validación de negocio
+                                    descripcion_respuesta = parts_validacion[1];
+                                }
+
+                                //0¦¬10421586255¦ARANDA ROSALES JAIME JESUS¦150118¦AV. LIMA NORTE CHOSICA Nro.230
+
+                                if (codigo_respuesta.equals("0")) {
+
+                                    String cliente = parts[1];
+                                    String[] parts_cliente = cliente.split("¦");
+
+                                    ruc_input =  parts_cliente[0];
+                                    String razon_social = parts_cliente[1];
+                                    String ubigeo = parts_cliente[2];
+                                    String direccion = parts_cliente[3];
+
+                                    edt_resultado_ruc_validacion_manual.setText(razon_social);
+
+                                    pd.dismiss();
+
+                                }else{
+                                    edt_resultado_ruc_validacion_manual.setText("");
+                                    pd.dismiss();
+                                    pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                                    pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                                    pd.setContentText(descripcion_respuesta);
+                                    pd.setCancelable(false);
+                                    pd.show();
+                                    return;
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                pd.dismiss();
+                            }
+                        } else {
+                            pd.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d("jledesma", t.getMessage().toString());
+                        pd.dismiss();
+                    }
+                });
+
             }
         });
 
@@ -442,6 +454,33 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
         }else{
             tipo = "2";
         }
+
+        if (codigo_convenio.equals("-1")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe seleccionar un convenio");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (tipo.equals("1")){
+
+            String ruc_input = edt_ruc_validacion_manual.getText().toString();
+
+            if (ruc_input.length() < 11){
+
+                pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+                pd.setContentText("Ingrese un numero de RUC correcto");
+                pd.setCancelable(false);
+                pd.show();
+                return;
+            }
+        }
+
+
         String i_cod_tcomprobante = tipo;
         String i_cod_movimiento = cod_movimiento_input;
         String i_cod_tvalidacion = "2";
@@ -489,15 +528,9 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
 
                         if (codigo_respuesta.equals("0")) {
 
-                            pd.dismiss();
-                            Toast.makeText(getContext(),"Registrado correctamente!!",Toast.LENGTH_SHORT).show();
-                            irMenuPrincipal();
-
-
-                        }else{
-
+                            //IMPRIMIR
                             String valores_comprobante = "2170192100¦BOLETA DE VENTA¦BB07-2100¦14/10/2019 15:59:22¦USER1¦DNI¦00000000¦CLIENTES VARIOS¦-¦2.54¦0.46¦3.00¦\n" +
-                            "V2W691¦15:20:00¦15:59:22¦00:39¦\n" +
+                                    "V2W691¦15:20:00¦15:59:22¦00:39¦\n" +
                                     "TARIFA GENERAL¦3.00¦\n" +
                                     "20492490718|03|BB07|2100|0.46|3.00|2019-10-14|00|00000000|-¬";
 
@@ -530,6 +563,22 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                             } catch (Exception ex) {
                                 ex.printStackTrace();
                             }
+
+                            pd.dismiss();
+                            Toast.makeText(getContext(),"Registrado correctamente!!",Toast.LENGTH_SHORT).show();
+                            irMenuPrincipal();
+
+                        }else if(codigo_respuesta.equals("99")){
+
+
+                            Toast.makeText(getContext(),descripcion_respuesta,Toast.LENGTH_LONG).show();
+
+                            pd.dismiss();
+                            irMenuPrincipal();
+
+                        }else{
+
+
 
 
                             pd.dismiss();

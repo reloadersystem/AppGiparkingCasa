@@ -114,6 +114,8 @@ public class ComprobantesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_comprobantes, container, false);
         ButterKnife.bind(this, view);
 
+        getActivity().setTitle("Reimprimir");
+
         init();
         configurarEventos();
         callApiRestImprimirMostrar();
@@ -128,16 +130,28 @@ public class ComprobantesFragment extends Fragment {
 
     private void callApiRestImprimirMostrar() {
 
+
+        if (rb_placa.isChecked()) {
+            nro_placa = edt_placa_buscar.getText().toString();
+            bus_criterio_input = "PLACA";
+
+            if (edt_placa_buscar.getText().toString().length() < 6){
+
+                pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
+                pd.setContentText("Numero de placa debe tener 6 digitos");
+                pd.setCancelable(false);
+                pd.show();
+            }
+        }
+
         pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
         pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
         pd.setContentText("Por favor, espere...");
         pd.setCancelable(false);
         pd.show();
 
-        if (rb_placa.isChecked()) {
-            nro_placa = edt_placa_buscar.getText().toString();
-            bus_criterio_input = "PLACA";
-        }
+
 
         String bus_criterio = bus_criterio_input; //"PLACA";
         String cod_sucursal = a_str_global.getCod_sucursal(); //"217"; //

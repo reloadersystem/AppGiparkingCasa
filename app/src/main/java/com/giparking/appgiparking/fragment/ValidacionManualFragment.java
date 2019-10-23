@@ -27,6 +27,7 @@ import com.giparking.appgiparking.entity.GenericoSpinner;
 import com.giparking.appgiparking.entity.Producto;
 import com.giparking.appgiparking.util.ContenedorClass;
 import com.giparking.appgiparking.util.TimePickerDialogFragment;
+import com.google.android.gms.flags.IFlagProvider;
 
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -54,6 +55,22 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
     String prodSelec = " ";
     String prodSelecItem = " ";
 
+    CardView crd_valAutomatica;
+    CardView crd_valManual;
+    CardView crd_valSinValidacion;
+    String convenio = " ";
+
+    private static final String CERO = "0";
+    private static final String BARRA = "/";
+
+    //Calendario para obtener fecha & hora
+    public final Calendar c = Calendar.getInstance();
+
+    //Variables para obtener la fecha
+    final int mes = c.get(Calendar.MONTH);
+    final int dia = c.get(Calendar.DAY_OF_MONTH);
+    final int anio = c.get(Calendar.YEAR);
+
     View rootview;
 
 
@@ -72,6 +89,31 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
 
         txt_Reloj = rootview.findViewById(R.id.txt_Reloj);
         txt_Fecha = rootview.findViewById(R.id.txt_Fecha);
+
+        crd_valAutomatica = rootview.findViewById(R.id.cardview_v_automatica);
+        crd_valManual = rootview.findViewById(R.id.cardview_v_manual);
+        crd_valSinValidacion = rootview.findViewById(R.id.cardview_sin_validacion);
+
+        String dia_formateado;
+        String mes_formateado;
+
+        if (String.valueOf(dia).length()==1){
+            dia_formateado = "0" + dia;
+        }
+        else{
+            dia_formateado = String.valueOf(dia);
+        }
+
+        if (String.valueOf(mes).length()==1){
+            mes_formateado = "0" + mes;
+        }
+        else{
+            mes_formateado = String.valueOf(mes);
+        }
+
+
+
+        txt_Fecha.setText(dia_formateado + BARRA + mes_formateado + BARRA + anio);
 
         List<Producto> arrayListProducto = (List<Producto>) ContenedorClass.getInstance().getList_producto();
 
@@ -100,6 +142,21 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
 
                 prodSelec = ((GenericoSpinner) parent.getItemAtPosition(position)).name;
                 prodSelecItem = ((GenericoSpinner) parent.getItemAtPosition(position)).id;
+                convenio = ((GenericoSpinner) parent.getItemAtPosition(position)).convenio;
+
+
+                if (convenio.equals("1")){
+
+                    crd_valAutomatica.setVisibility(View.VISIBLE);
+                    crd_valManual.setVisibility(View.VISIBLE);
+                    crd_valSinValidacion.setVisibility(View.VISIBLE);
+
+                }else{
+
+                    crd_valAutomatica.setVisibility(View.GONE);
+                    crd_valManual.setVisibility(View.GONE);
+                    crd_valSinValidacion.setVisibility(View.VISIBLE);
+                }
 
             }
 
@@ -113,7 +170,8 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
         txt_Fecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                llamarCalendario();
+                //llamarCalendario();
+                obtenerFecha();
             }
         });
 
@@ -159,15 +217,53 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
         newFragment.show(getChildFragmentManager(), "timePicker");
     }
 
+    private void obtenerFecha() {
+        DatePickerDialog recogerFecha = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                //Esta variable lo que realiza es aumentar en uno el mes ya que comienza desde 0 = enero
+                final int mesActual = month + 1;
+                //Formateo el día obtenido: antepone el 0 si son menores de 10
+                String diaFormateado = (dayOfMonth < 10) ? CERO + String.valueOf(dayOfMonth) : String.valueOf(dayOfMonth);
+                //Formateo el mes obtenido: antepone el 0 si son menores de 10
+                String mesFormateado = (mesActual < 10) ? CERO + String.valueOf(mesActual) : String.valueOf(mesActual);
+                //Muestro la fecha con el formato deseado
+                txt_Fecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
+
+            }
+
+
+            //Estos valores deben ir en ese orden, de lo contrario no mostrara la fecha actual
+            /**
+             *También puede cargar los valores que usted desee
+             */
+        }, anio, mes, dia);
+        //Muestro el widget
+        recogerFecha.show();
+
+    }
+
     @Override
     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
         String AM_PM;
-        if(hourOfDay < 12) {
-            AM_PM = "a.m.";
-        } else {
-            AM_PM = "p.m.";
+
+        String hourOfDay_input,minute_input;
+
+        if (String.valueOf(hourOfDay).length() == 1){
+            hourOfDay_input = "0"+String.valueOf(hourOfDay);
+
+        }else{
+            hourOfDay_input = String.valueOf(hourOfDay);
         }
-        txt_Reloj.setText(hourOfDay + ":" + minute +" " + AM_PM);
+
+        if (String.valueOf(minute).length() == 1){
+            minute_input = "0"+String.valueOf(minute);
+
+        }else{
+            minute_input = String.valueOf(minute);
+        }
+
+        txt_Reloj.setText("");
     }
 
     @OnClick(R.id.cardview_v_automatica)

@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:singleLine="true"
         android:orientation="vertical">
 
     <EditText
@@ -38,6 +39,7 @@
         android:textSize="14dp"
         android:textColor="@color/colorBlack"
         android:padding="8dp"
+        android:singleLine="true"
         android:hint="@string/loguin_activity_llave"
         android:drawablePadding="10dp"
         android:drawableLeft="@drawable/icon_user"/>
@@ -48,10 +50,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/vector"
         android:textSize="14dp"
+        android:singleLine="true"
         android:textColor="@color/colorBlack"
         android:padding="8dp"
         android:layout_marginTop="10dp"
-        android:text="carlos"
         android:hint="@string/loguin_activity_usuario"
         android:drawablePadding="10dp"
         android:drawableLeft="@drawable/icon_user"/>
@@ -65,7 +67,8 @@
         android:textColor="@color/colorBlack"
         android:layout_marginTop="10dp"
         android:padding="8dp"
-        android:text="carlos"
+        android:singleLine="true"
+        android:inputType="textPassword"
         android:hint="@string/loguin_activity_contrasenia"
         android:drawablePadding="10dp"
         android:drawableLeft="@drawable/icon_user"/>

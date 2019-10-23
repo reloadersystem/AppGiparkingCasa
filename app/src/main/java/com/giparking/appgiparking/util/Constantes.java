@@ -11,7 +11,9 @@ public class Constantes {
     public static final String URL_BASE = "http://148.102.120.248/GiParkingServicioMovil/Sistema/";
 
     public static final String PREFERENCIA_USUARIO = "preferencia_usuario";
+    public static final String PREFERENCIA_TELEFONO = "preferencia_telefono";
     public static final String Empresa = "empresa";
+    public static final String IMEI = "imei";
 
     public static final String MENU_CONTROL = "Control";
     public static final String MENU_CONTROL_MANUAL = "Control Manual";
