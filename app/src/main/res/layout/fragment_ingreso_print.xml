@@ -135,6 +135,15 @@
                 android:textColor="@color/colorBlack"
                 android:text="[InfoVehiculo]" />
 
+            <TextView
+                android:id="@+id/tv_informacion_asientos"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="@color/colorBlack"
+                android:text="" />
+
             <Button
                 android:id="@+id/btn_reimprimir"
                 android:layout_width="match_parent"

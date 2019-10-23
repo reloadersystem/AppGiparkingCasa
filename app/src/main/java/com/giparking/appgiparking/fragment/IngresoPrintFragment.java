@@ -86,6 +86,9 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
     @BindView(R.id.btn_reimprimir)
     Button btn_reimprimir;
 
+    @BindView(R.id.tv_informacion_asientos)
+    TextView tv_informacion_asientos;
+
     @Length(max = 10, min = 6)
     EditText edTexto;
 
@@ -136,7 +139,16 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
         } else {
 
             cardview_grupo_reimprimir.setVisibility(View.VISIBLE);
+            tv_informacion_vehiculo.setVisibility(View.INVISIBLE);
             tv_informacion_vehiculo.setText(valores_comprobante_output);
+            String[] parts_validacion = valores_comprobante_output.split("¦");
+
+            String part1 = parts_validacion[1];
+            String part2 = parts_validacion[2];
+            String part4 = parts_validacion[4];
+
+            btn_reimprimir.setText("Reimprimir: " + part1 + " " + part2);
+            //tv_informacion_asientos.setText(part4);
         }
 
         btn_reimprimir.setOnClickListener(new View.OnClickListener() {
@@ -259,7 +271,19 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                                     //Grabarlo en un sharepreferences
                                     guardarPreferencia(valores_comprobante);
                                     cardview_grupo_reimprimir.setVisibility(View.VISIBLE);
+                                    tv_informacion_vehiculo.setVisibility(View.INVISIBLE);
                                     tv_informacion_vehiculo.setText(valores_comprobante);
+
+
+                                    String[] parts_res = valores_comprobante.split("¦");
+
+                                    String part1 = parts_res[1];
+                                    String part2 = parts_res[2];
+                                    String part4 = parts_res[4];
+
+                                    btn_reimprimir.setText("Reimprimir: " + part1 + " " + part2);
+                                    tv_informacion_asientos.setText(part4);
+
 
                                     edTexto.setText("");
                                     //gerarQRCode();
