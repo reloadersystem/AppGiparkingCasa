@@ -133,6 +133,28 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
     String tiempoCalculado;
     String tipoComp;
 
+    //data print
+    String cod_comprobanteComp;
+    String comprobante_tipo;
+    String comprobante_numero;
+    String comprobante_fecha;
+    String comprobante_usuario_loguin;
+    String cliente_tipo;
+    String cliente_documento;
+    String cliente_nombre;
+    String documento_referencial;
+    String comprobamte_total_operacion_gravadas;
+    String comprobamte_total_impuesto;
+    String comprobamte_total_documento;
+
+    String movimiento_nro_placa;
+    String movimiento_hora_ingreso;
+    String movimiento_hora_salida;
+    String movimiento_tiempo_calculado;
+    String detalle_producto_nombre;
+    String detalle_importe;
+    String datos_qr;
+
     //Impresion
 
     BluetoothAdapter bluetoothAdapter;
@@ -568,35 +590,37 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
                         if (codigo_respuesta.equals("0")) {
 
                             //IMPRIMIR
-                            String valores_comprobante = "2170192100¦BOLETA DE VENTA¦BB07-2100¦14/10/2019 15:59:22¦USER1¦DNI¦00000000¦CLIENTES VARIOS¦-¦2.54¦0.46¦3.00¦\n" +
-                                    "V2W691¦15:20:00¦15:59:22¦00:39¦\n" +
-                                    "TARIFA GENERAL¦3.00¦\n" +
-                                    "20492490718|03|BB07|2100|0.46|3.00|2019-10-14|00|00000000|-¬";
+                            //String valores_comprobante = "2170192100¦BOLETA DE VENTA¦BB07-2100¦14/10/2019 15:59:22¦USER1¦DNI¦00000000¦CLIENTES VARIOS¦-¦2.54¦0.46¦3.00¦\n" +
+                              //      "V2W691¦15:20:00¦15:59:22¦00:39¦\n" +
+                                //    "TARIFA GENERAL¦3.00¦\n" +
+                                  //  "20492490718|03|BB07|2100|0.46|3.00|2019-10-14|00|00000000|-¬";
 
-                            String[] partSplit = valores_comprobante.split("¦");
+                            String respuesta_imprimir = parts[1];
+                            String[] partSplit = respuesta_imprimir.split("¦");
 
+                            cod_comprobanteComp = partSplit[0];
+                            comprobante_tipo = partSplit[1];
+                            comprobante_numero = partSplit[2];
+                            comprobante_fecha = partSplit[3];
+                            comprobante_usuario_loguin = partSplit[4];
+                            cliente_tipo = partSplit[5];
+                            cliente_documento = partSplit[6];
+                            cliente_nombre = partSplit[7];
+                            documento_referencial = partSplit[8];
+                            comprobamte_total_operacion_gravadas = partSplit[9];
+                            comprobamte_total_impuesto = partSplit[10];
+                            comprobamte_total_documento = partSplit[11];
 
-                            if (tipo.equals("1")) {
-                                tipoComp = "FACTURA";
-                                boletaNum = edt_ruc_validacion_auto.getText().toString();
-                            }else
-                            {
-                                tipoComp = partSplit[1];
-                                boletaNum = partSplit[2];
-                            }
-
-                            fechaHora = partSplit[3];
-                            usuarioLogin = partSplit[4];
-                            opGrabadas = partSplit[9];
-                            impuestoT = partSplit[10];
-                            totalDoc = partSplit[11];
-                            tarifaGeneral = partSplit[17];
-                            horaIngreso = partSplit[13];
-                            horaSalida = partSplit[14];
-                            tiempoCalculado = partSplit[15];
+                            movimiento_nro_placa = partSplit[12];
+                            movimiento_hora_ingreso = partSplit[13];
+                            movimiento_hora_salida = partSplit[14];
+                            movimiento_tiempo_calculado = partSplit[15];
+                            detalle_producto_nombre = partSplit[16];
+                            detalle_importe = partSplit[17];
+                            datos_qr = partSplit[18];
 
                             FindBluetoothDevice();
-                            openBluetoothPrinter(valores_comprobante);
+                            openBluetoothPrinter(datos_qr);
                             try {
                                 disconnectBT();
                             } catch (Exception ex) {
@@ -751,22 +775,25 @@ public class ValidacionDetalleValidacionAutoFragment extends Fragment {
                 printCustom(nombreEmpresa, 1, 1);
                 printCustom(direccionEmpresa, 0, 1);
                 printNewLine();
-                printCustom(tipoComp +" Nro: " + boletaNum, 0, 1);
-                printCustom("Fecha Hora: " + fechaHora, 0, 1);
+                printCustom(comprobante_tipo + " Nro:", 0, 0);
+                printCustom(comprobante_numero, 0, 2);
+                printCustom("Fecha Hora: " + comprobante_fecha, 0, 1);
                 printCustom("Cajero: " + cajaNum, 0, 1);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
-                printCustom("Nro Placa:" + nro_placa, 0, 0);
-                printCustom("Hora de Ingreso: " + horaIngreso, 0, 0);
-                printCustom("Hora de Salida: " + horaSalida, 0, 0);
-                printCustom("Tiempo Calculado: " + tiempoCalculado, 0, 0);
+                printCustom("Nro Placa: " + movimiento_nro_placa, 0, 0);
+                printCustom("Hora Ingreso: " + movimiento_hora_ingreso, 0, 0);
+                printCustom("Hora Salida: " + movimiento_hora_salida, 0, 0);
+                printCustom("Tiempo Calculado: " + movimiento_tiempo_calculado, 0, 0);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
-                printCustom("Descripcion #1    Importe", 0, 1);
-                printCustom("TARIFA GENERAL      " + tarifaGeneral, 0, 1);
-                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
-                printCustom("Op. Grava:" + opGrabadas, 0, 2);
-                printCustom("IGV:" + impuestoT, 0, 2);
-                printCustom("Importe Total:" + totalDoc, 0, 2);
                 printPhoto(bitmap);
+                printNewLine();
+                printCustom("Descripcion:            Importe ", 0, 0);
+                printCustom("TARIFA GENERAL:          " + detalle_importe, 0, 0);
+                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
+                printNewLine();
+                printCustom("Op. Grava:" + comprobamte_total_operacion_gravadas, 0, 2);
+                printCustom("IGV:" + comprobamte_total_impuesto, 0, 2);
+                printCustom("Importe Total:" + comprobamte_total_documento, 0, 2);
                 printNewLine();
                 printCustom("Gracias por su Preferencia!", 0, 1);
                 printNewLine();

@@ -97,6 +97,8 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
         String dia_formateado;
         String mes_formateado;
 
+        int mes_uno = mes+1;
+
         if (String.valueOf(dia).length()==1){
             dia_formateado = "0" + dia;
         }
@@ -104,11 +106,11 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
             dia_formateado = String.valueOf(dia);
         }
 
-        if (String.valueOf(mes).length()==1){
-            mes_formateado = "0" + mes;
+        if (String.valueOf(mes_uno).length()==1){
+            mes_formateado = "0" + mes_uno;
         }
         else{
-            mes_formateado = String.valueOf(mes);
+            mes_formateado = String.valueOf(mes_uno);
         }
 
 
@@ -156,6 +158,8 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
                     crd_valAutomatica.setVisibility(View.GONE);
                     crd_valManual.setVisibility(View.GONE);
                     crd_valSinValidacion.setVisibility(View.VISIBLE);
+                    fragment = new ValidacionDetalleSinValidacionFragment();
+                    changeFragment(3);
                 }
 
             }
@@ -217,6 +221,8 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
         newFragment.show(getChildFragmentManager(), "timePicker");
     }
 
+
+
     private void obtenerFecha() {
         DatePickerDialog recogerFecha = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -263,7 +269,7 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
             minute_input = String.valueOf(minute);
         }
 
-        txt_Reloj.setText("");
+        txt_Reloj.setText(hourOfDay_input+":"+minute_input);
     }
 
     @OnClick(R.id.cardview_v_automatica)

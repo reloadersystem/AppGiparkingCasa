@@ -110,7 +110,7 @@
                 android:textColor="@color/colorBlack"
                 android:layout_weight="0.7"
                 android:gravity="center"
-                android:text="22:02:00" />
+                android:text="" />
             </LinearLayout>
 
 
