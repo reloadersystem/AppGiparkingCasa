@@ -23,13 +23,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.giparking.appgiparking.MenuActivity;
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.entity.Convenio;
 import com.giparking.appgiparking.entity.GenericoSpinner;
-import com.giparking.appgiparking.entity.Producto;
 import com.giparking.appgiparking.rest.HelperWs;
 import com.giparking.appgiparking.rest.MethodWs;
 import com.giparking.appgiparking.util.ContenedorClass;
@@ -107,11 +105,11 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
     private str_global a_str_global = str_global.getInstance();
 
     SweetAlertDialog pd;
-    String descripcion_respuesta ="";
+    String descripcion_respuesta = "";
 
-    String  cod_movimiento_input ="";
+    String cod_movimiento_input = "";
 
-    String convenio,codigo_convenio;
+    String convenio, codigo_convenio;
 
     String ruc_input = "0";
 
@@ -139,6 +137,28 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
     String tiempoCalculado;
     String tipoComp;
 
+    //data print
+    String cod_comprobanteComp;
+    String comprobante_tipo;
+    String comprobante_numero;
+    String comprobante_fecha;
+    String comprobante_usuario_loguin;
+    String cliente_tipo;
+    String cliente_documento;
+    String cliente_nombre;
+    String documento_referencial;
+    String comprobamte_total_operacion_gravadas;
+    String comprobamte_total_impuesto;
+    String comprobamte_total_documento;
+
+    String movimiento_nro_placa;
+    String movimiento_hora_ingreso;
+    String movimiento_hora_salida;
+    String movimiento_tiempo_calculado;
+    String detalle_producto_nombre;
+    String detalle_importe;
+    String datos_qr;
+
 
     public ValidacionDetalleValidacionManualFragment() {
         // Required empty public constructor
@@ -150,7 +170,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_validacion_detalle_validacion_manual, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         init();
         configurarEventos();
@@ -171,16 +191,14 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                 convenio = ((GenericoSpinner) parent.getItemAtPosition(position)).name;
                 codigo_convenio = ((GenericoSpinner) parent.getItemAtPosition(position)).id;
 
-                if (codigo_convenio.equals("-1")){
+                if (codigo_convenio.equals("-1")) {
 
                     tv_tiempo_validacion_manual.setText("");
                     tv_monto_validacion_manual.setText("");
-                }
-                else{
+                } else {
 
                     callApiRestControlAutoSalida();
                 }
-
 
 
             }
@@ -221,7 +239,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
 
                 String ruc = edt_ruc_validacion_manual.getText().toString();
 
-                if (ruc.length() < 11){
+                if (ruc.length() < 11) {
 
                     pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
                     pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
@@ -266,7 +284,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                                     String cliente = parts[1];
                                     String[] parts_cliente = cliente.split("¦");
 
-                                    ruc_input =  parts_cliente[0];
+                                    ruc_input = parts_cliente[0];
                                     String razon_social = parts_cliente[1];
                                     String ubigeo = parts_cliente[2];
                                     String direccion = parts_cliente[3];
@@ -275,7 +293,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
 
                                     pd.dismiss();
 
-                                }else{
+                                } else {
                                     edt_resultado_ruc_validacion_manual.setText("");
                                     pd.dismiss();
                                     pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
@@ -351,7 +369,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
 
                             String respuesta = parts[1];
                             String[] parts_respuesta = respuesta.split("¦");
-                            String cod_convenio =  parts_respuesta[0];
+                            String cod_convenio = parts_respuesta[0];
                             String tiempo = parts_respuesta[1];
                             String monto = parts_respuesta[2];
 
@@ -360,7 +378,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
 
                             pd.dismiss();
 
-                        }else{
+                        } else {
 
                             pd.dismiss();
                             pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
@@ -395,7 +413,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
 
         List<Convenio> arrayListProducto = (List<Convenio>) ContenedorClass.getInstance().getList_convenio();
 
-        processOnResponse(arrayListProducto,sp_convenio_validacion_manual,"Seleccione un convenio");
+        processOnResponse(arrayListProducto, sp_convenio_validacion_manual, "Seleccione un convenio");
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -439,23 +457,24 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
     }
 
     @OnClick(R.id.btn_registrar_pago_validacion_manual)
-    public void registrarPagoValidacionManual(){
+    public void registrarPagoValidacionManual() {
 
         final String tipo;
 
         String cod_corpempresa = a_str_global.getCod_corpempresa().toString();
         String cod_sucursal = a_str_global.getCod_sucursal().toString();
         String cod_cefectivo = a_str_global.getCod_cefectivo().toString();
-        String cod_caja = a_str_global.getCod_caja().toString();;
+        String cod_caja = a_str_global.getCod_caja().toString();
+        ;
         String cod_usuario = a_str_global.getCod_usuario().toString();
 
-        if (rb_factura_validacion_manual.isChecked()){
+        if (rb_factura_validacion_manual.isChecked()) {
             tipo = "1";
-        }else{
+        } else {
             tipo = "2";
         }
 
-        if (codigo_convenio.equals("-1")){
+        if (codigo_convenio.equals("-1")) {
 
             pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
             pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
@@ -465,11 +484,11 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
             return;
         }
 
-        if (tipo.equals("1")){
+        if (tipo.equals("1")) {
 
             String ruc_input = edt_ruc_validacion_manual.getText().toString();
 
-            if (ruc_input.length() < 11){
+            if (ruc_input.length() < 11) {
 
                 pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
                 pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
@@ -501,10 +520,10 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
 
 
         MethodWs methodWs = HelperWs.getConfiguration().create(MethodWs.class);
-        Call<ResponseBody> responseBodyCall = methodWs.controlAutoSalidaGrabar(cod_corpempresa,cod_sucursal,
-                cod_cefectivo,cod_caja,cod_usuario,i_cod_tcomprobante,i_cod_movimiento,i_cod_tvalidacion,i_cod_producto,
-                i_cod_convenio,i_ingresa_fecha,i_ingreso_hora,i_emp_ruc,i_nro_placa,i_conve_codigo,i_conve_fecha,
-                i_conve_tipo,i_conve_serie,i_conve_numero,i_conve_monto);
+        Call<ResponseBody> responseBodyCall = methodWs.controlAutoSalidaGrabar(cod_corpempresa, cod_sucursal,
+                cod_cefectivo, cod_caja, cod_usuario, i_cod_tcomprobante, i_cod_movimiento, i_cod_tvalidacion, i_cod_producto,
+                i_cod_convenio, i_ingresa_fecha, i_ingreso_hora, i_emp_ruc, i_nro_placa, i_conve_codigo, i_conve_fecha,
+                i_conve_tipo, i_conve_serie, i_conve_numero, i_conve_monto);
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -529,35 +548,37 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                         if (codigo_respuesta.equals("0")) {
 
                             //IMPRIMIR
-                            String valores_comprobante = "2170192100¦BOLETA DE VENTA¦BB07-2100¦14/10/2019 15:59:22¦USER1¦DNI¦00000000¦CLIENTES VARIOS¦-¦2.54¦0.46¦3.00¦\n" +
+                           /* String valores_comprobante = "2170192100¦BOLETA DE VENTA¦BB07-2100¦14/10/2019 15:59:22¦USER1¦DNI¦00000000¦CLIENTES VARIOS¦-¦2.54¦0.46¦3.00¦\n" +
                                     "V2W691¦15:20:00¦15:59:22¦00:39¦\n" +
                                     "TARIFA GENERAL¦3.00¦\n" +
-                                    "20492490718|03|BB07|2100|0.46|3.00|2019-10-14|00|00000000|-¬";
+                                    "20492490718|03|BB07|2100|0.46|3.00|2019-10-14|00|00000000|-¬";*/
 
-                            String[] partSplit = valores_comprobante.split("¦");
+                            String respuesta_imprimir = parts[1];
+                            String[] partSplit = respuesta_imprimir.split("¦");
 
+                            cod_comprobanteComp = partSplit[0];
+                            comprobante_tipo = partSplit[1];
+                            comprobante_numero = partSplit[2];
+                            comprobante_fecha = partSplit[3];
+                            comprobante_usuario_loguin = partSplit[4];
+                            cliente_tipo = partSplit[5];
+                            cliente_documento = partSplit[6];
+                            cliente_nombre = partSplit[7];
+                            documento_referencial = partSplit[8];
+                            comprobamte_total_operacion_gravadas = partSplit[9];
+                            comprobamte_total_impuesto = partSplit[10];
+                            comprobamte_total_documento = partSplit[11];
 
-                            if (tipo.equals("1")) {
-                                tipoComp = "FACTURA";
-                                boletaNum = edt_ruc_validacion_manual.getText().toString();
-                            }else
-                            {
-                                tipoComp = partSplit[1];
-                                boletaNum = partSplit[2];
-                            }
-
-                            fechaHora = partSplit[3];
-                            usuarioLogin = partSplit[4];
-                            opGrabadas = partSplit[9];
-                            impuestoT = partSplit[10];
-                            totalDoc = partSplit[11];
-                            tarifaGeneral = partSplit[17];
-                            horaIngreso = partSplit[13];
-                            horaSalida = partSplit[14];
-                            tiempoCalculado = partSplit[15];
+                            movimiento_nro_placa = partSplit[12];
+                            movimiento_hora_ingreso = partSplit[13];
+                            movimiento_hora_salida = partSplit[14];
+                            movimiento_tiempo_calculado = partSplit[15];
+                            detalle_producto_nombre = partSplit[16];
+                            detalle_importe = partSplit[17];
+                            datos_qr = partSplit[18];
 
                             FindBluetoothDevice();
-                            openBluetoothPrinter(valores_comprobante);
+                            openBluetoothPrinter(datos_qr);
                             try {
                                 disconnectBT();
                             } catch (Exception ex) {
@@ -583,7 +604,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                             // irMenuPrincipal();
 
 
-                        }else if(codigo_respuesta.equals("99")){
+                        } else if (codigo_respuesta.equals("99")) {
 
 
                             //Toast.makeText(getContext(),descripcion_respuesta,Toast.LENGTH_LONG).show();
@@ -606,9 +627,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                             // irMenuPrincipal();
                             //irMenuPrincipal();
 
-                        }else{
-
-
+                        } else {
 
 
                             pd.dismiss();
@@ -645,7 +664,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
     }
 
 
-//QR CALL
+    //QR CALL
     private void FindBluetoothDevice() {
 
         try {
@@ -717,22 +736,25 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
                 printCustom(nombreEmpresa, 1, 1);
                 printCustom(direccionEmpresa, 0, 1);
                 printNewLine();
-                printCustom(tipoComp +" Nro: " + boletaNum, 0, 1);
-                printCustom("Fecha Hora: " + fechaHora, 0, 1);
+                printCustom(comprobante_tipo + " Nro:", 0, 0);
+                printCustom(comprobante_numero, 0, 2);
+                printCustom("Fecha Hora: " + comprobante_fecha, 0, 1);
                 printCustom("Cajero: " + cajaNum, 0, 1);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
-                printCustom("Nro Placa:" + nro_placa, 0, 0);
-                printCustom("Hora de Ingreso: " + horaIngreso, 0, 0);
-                printCustom("Hora de Salida: " + horaSalida, 0, 0);
-                printCustom("Tiempo Calculado: " + tiempoCalculado, 0, 0);
+                printCustom("Nro Placa: " + movimiento_nro_placa, 0, 0);
+                printCustom("Hora Ingreso: " + movimiento_hora_ingreso, 0, 0);
+                printCustom("Hora Salida: " + movimiento_hora_salida, 0, 0);
+                printCustom("Tiempo Calculado: " + movimiento_tiempo_calculado, 0, 0);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
-                printCustom("Descripcion #1    Importe", 0, 1);
-                printCustom("TARIFA GENERAL      " + tarifaGeneral, 0, 1);
-                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
-                printCustom("Op. Grava:" + opGrabadas, 0, 2);
-                printCustom("IGV:" + impuestoT, 0, 2);
-                printCustom("Importe Total:" + totalDoc, 0, 2);
                 printPhoto(bitmap);
+                printNewLine();
+                printCustom("Descripcion:            Importe ", 0, 0);
+                printCustom("TARIFA GENERAL:          " + detalle_importe, 0, 0);
+                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
+                printNewLine();
+                printCustom("Op. Grava:" + comprobamte_total_operacion_gravadas, 0, 2);
+                printCustom("IGV:" + comprobamte_total_impuesto, 0, 2);
+                printCustom("Importe Total:" + comprobamte_total_documento, 0, 2);
                 printNewLine();
                 printCustom("Gracias por su Preferencia!", 0, 1);
                 printNewLine();
@@ -746,6 +768,7 @@ public class ValidacionDetalleValidacionManualFragment extends Fragment {
 
         }
     }
+
     public void printPhoto(Bitmap bitImage) {
         try {
 //            Bitmap bmp = BitmapFactory.decodeResource(getResources(),

@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AppGiparkingCasa.iml" filepath="$PROJECT_DIR$/AppGiparkingCasa.iml" />
+      <module fileurl="file://C:\Users\Academia Moviles\AndroidStudioProjects\AppGiparkingCasa\AppGiparkingCasa.iml" filepath="C:\Users\Academia Moviles\AndroidStudioProjects\AppGiparkingCasa\AppGiparkingCasa.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Academia Moviles\AndroidStudioProjects\AppGiparkingCasa\app\app.iml" filepath="C:\Users\Academia Moviles\AndroidStudioProjects\AppGiparkingCasa\app\app.iml" />
     </modules>
   </component>
 </project>

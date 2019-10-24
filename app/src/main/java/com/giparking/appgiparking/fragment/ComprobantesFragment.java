@@ -24,13 +24,11 @@ import android.widget.RadioButton;
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.adapter.ComprobanteAdapter;
 import com.giparking.appgiparking.entity.Comprobante;
-import com.giparking.appgiparking.interfaces.OnPrintListener;
 import com.giparking.appgiparking.rest.HelperWs;
 import com.giparking.appgiparking.rest.MethodWs;
 import com.giparking.appgiparking.util.PrinterCommands;
 import com.giparking.appgiparking.util.Utils;
 import com.giparking.appgiparking.util.str_global;
-import com.giparking.appgiparking.view.LoguinActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -99,8 +97,27 @@ public class ComprobantesFragment extends Fragment {
     Bitmap bitmap;
     volatile boolean stopWorker;
 
-    //data
-    String fechaComp, tipoComp, numComp, placaComp, clienteComp, montoComp;
+//data print
+    String cod_comprobanteComp;
+    String comprobante_tipo;
+    String comprobante_numero;
+    String comprobante_fecha;
+    String comprobante_usuario_loguin;
+    String cliente_tipo;
+    String cliente_documento;
+    String cliente_nombre;
+    String documento_referencial;
+    String comprobamte_total_operacion_gravadas;
+    String comprobamte_total_impuesto;
+    String comprobamte_total_documento;
+
+    String movimiento_nro_placa;
+    String movimiento_hora_ingreso;
+    String movimiento_hora_salida;
+    String movimiento_tiempo_calculado;
+    String detalle_producto_nombre;
+    String detalle_importe;
+    String datos_qr;
 
 
     public ComprobantesFragment() {
@@ -275,7 +292,7 @@ public class ComprobantesFragment extends Fragment {
                             try {
                                 String cadena_respuesta = informacion.string();
 
-                                if (cadena_respuesta.equals("")){
+                                if (cadena_respuesta.equals("")) {
 
                                     pd.dismiss();
                                     pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
@@ -288,46 +305,39 @@ public class ComprobantesFragment extends Fragment {
 
                                 String[] parts = cadena_respuesta.split("¦");
 
-                                String cod_comprobante = parts[0];
-                                String comprobante_tipo = parts[1];
-                                String comprobante_numero = parts[2];
-                                String comprobante_fecha = parts[3];
-                                String comprobante_usuario_loguin = parts[4];
-                                String cliente_tipo = parts[5];
-                                String cliente_documento = parts[6];
-                                String cliente_nombre = parts[7];
-                                String documento_referencial = parts[8];
-                                String comprobamte_total_operacion_gravadas = parts[9];
-                                String comprobamte_total_impuesto = parts[10];
-                                String comprobamte_total_documento = parts[11];
+                                cod_comprobanteComp = parts[0];
+                                comprobante_tipo = parts[1];
+                                comprobante_numero = parts[2];
+                                comprobante_fecha = parts[3];
+                                comprobante_usuario_loguin = parts[4];
+                                cliente_tipo = parts[5];
+                                cliente_documento = parts[6];
+                                cliente_nombre = parts[7];
+                                documento_referencial = parts[8];
+                                comprobamte_total_operacion_gravadas = parts[9];
+                                comprobamte_total_impuesto = parts[10];
+                                comprobamte_total_documento = parts[11];
 
-                                String movimiento_nro_placa = parts[12];
-                                String movimiento_hora_ingreso = parts[13];
-                                String movimiento_hora_salida = parts[14];
-                                String movimiento_tiempo_calculado = parts[15];
-                                String detalle_producto_nombre = parts[16];
-                                String detalle_importe = parts[17];
-                                String datos_qr = parts[18];
+                                movimiento_nro_placa = parts[12];
+                                movimiento_hora_ingreso = parts[13];
+                                movimiento_hora_salida = parts[14];
+                                movimiento_tiempo_calculado = parts[15];
+                                detalle_producto_nombre = parts[16];
+                                detalle_importe = parts[17];
+                                datos_qr = parts[18];
 
-                                /* fechaComp = list_comprobante.get(position).getFecha();
-                                     tipoComp = list_comprobante.get(position).getTipo();
-                                     numComp = list_comprobante.get(position).getCod_comprobante();
-                                     placaComp = list_comprobante.get(position).getPlaca();
-                                     clienteComp = list_comprobante.get(position).getCliente();
-                                     montoComp = list_comprobante.get(position).getMonto();
+                                try {
+                                    FindBluetoothDevice();
+                                    openBluetoothPrinter(datos_qr);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
 
-        try {
-            FindBluetoothDevice();
-            //imagen suma de los datos...
-            openBluetoothPrinter(cadena_respuesta);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            disconnectBT();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }*/
+                                try {
+                                    disconnectBT();
+                                } catch (Exception ex) {
+                                    ex.printStackTrace();
+                                }
 
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -363,6 +373,7 @@ public class ComprobantesFragment extends Fragment {
 
 
         recycler_comprobantes.setAdapter(adapter);
+
 
         //recycler_comprobantes.setAdapter(new ComprobanteAdapter(getContext(), list_comprobante));
 
@@ -441,7 +452,6 @@ public class ComprobantesFragment extends Fragment {
                 bluetoothSocket.connect();
                 outputStream = bluetoothSocket.getOutputStream();
                 inputStream = bluetoothSocket.getInputStream();
-
                 String nombreEmpresa = str_global.getInstance().getVar_cabecera_c_0();
                 String direccionEmpresa = str_global.getInstance().getVar_cabecera_t_1() + " \n" + str_global.getInstance().getVar_cabecera_t_2();
                 String cajaNum = str_global.getInstance().getCaja_nombre();
@@ -450,15 +460,25 @@ public class ComprobantesFragment extends Fragment {
                 printCustom(nombreEmpresa, 1, 1);
                 printCustom(direccionEmpresa, 0, 1);
                 printNewLine();
-
-                printCustom(tipoComp + " Nro:" + numComp, 0, 1);
-                printCustom("Fecha Hora: " + fechaComp, 0, 1);
+                printCustom(comprobante_tipo + " Nro:", 0, 0);
+                printCustom(comprobante_numero, 0, 1);
+                printCustom("Fecha Hora: " + comprobante_fecha, 0, 1);
                 printCustom("Cajero: " + cajaNum, 0, 1);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
-                printCustom("Nro Placa:" + placaComp, 0, 0);
-                printCustom("Cliente: " + clienteComp, 0, 0);
+                printCustom("Nro Placa: " + movimiento_nro_placa, 0, 0);
+                printCustom("Hora Ingreso: " + movimiento_hora_ingreso, 0, 0);
+                printCustom("Hora Salida: " + movimiento_hora_salida, 0, 0);
+                printCustom("Tiempo Calculado: " + movimiento_tiempo_calculado, 0, 0);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
                 printPhoto(bitmap);
+                printNewLine();
+                printCustom("Descripcion:            Importe ", 0, 0);
+                printCustom("TARIFA GENERAL:          " + detalle_importe, 0, 0);
+                printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
+                printNewLine();
+                printCustom("Op. Grava:" + comprobamte_total_operacion_gravadas, 0, 2);
+                printCustom("IGV:" + comprobamte_total_impuesto, 0, 2);
+                printCustom("Importe Total:" + comprobamte_total_documento, 0, 2);
                 printNewLine();
                 printCustom("Gracias por su Preferencia!", 0, 1);
                 printNewLine();

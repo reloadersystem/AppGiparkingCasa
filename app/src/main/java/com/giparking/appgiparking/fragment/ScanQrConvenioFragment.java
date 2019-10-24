@@ -119,7 +119,9 @@ public class ScanQrConvenioFragment extends Fragment {
                 .setBarcodeFormats(Barcode.QR_CODE)
                 .build();
 
-        final CameraSource camara = new CameraSource.Builder(getContext(), bar).build();
+        final CameraSource camara = new CameraSource.Builder(getContext(), bar)
+                .setAutoFocusEnabled(true)
+                .build();
 
         bar.setProcessor(new Detector.Processor<Barcode>() {
             @Override

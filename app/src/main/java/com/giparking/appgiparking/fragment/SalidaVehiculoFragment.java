@@ -247,8 +247,6 @@ public class SalidaVehiculoFragment extends Fragment {
     public void processOnResponse(List<Producto> result, Spinner spinner, String label) {
         LinkedList locations = new LinkedList();
 
-
-
         for (Producto itemLocation : result) {
             GenericoSpinner locationSpinner = new GenericoSpinner();
             locationSpinner.name = itemLocation.getNombre_producto();
