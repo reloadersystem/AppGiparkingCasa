@@ -38,7 +38,6 @@ import com.giparking.appgiparking.util.PrinterCommands;
 import com.giparking.appgiparking.util.ShareDataRead;
 import com.giparking.appgiparking.util.Utils;
 import com.giparking.appgiparking.util.str_global;
-import com.giparking.appgiparking.view.LoguinActivity;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -110,6 +109,7 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
     protected boolean validated;
     volatile boolean stopWorker;
 
+
     int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1;
 
     private str_global a_str_global = str_global.getInstance();
@@ -155,7 +155,6 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
             @Override
             public void onClick(View view) {
 
-                //TODO Reimprimir
 
                 String shareGetPreference = ShareDataRead.obtenerValor(getContext(), "valores_comprobante");
                 //111019298425¦xtjlfhl¦14/10/2019¦19:45:44¦Espacios Libres: 93
@@ -700,8 +699,8 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                 String direccionEmpresa = str_global.getInstance().getVar_cabecera_t_1() + " \n" + str_global.getInstance().getVar_cabecera_t_2();
                 String [] splitValores_comprobante = valores_comprobante.split("¦");
                 String part1 =splitValores_comprobante[1];
+                String part0 = splitValores_comprobante[0];
                 String fechaHora = splitValores_comprobante[2] + " " + splitValores_comprobante[3];
-
 
                 byte[] printformat = new byte[]{0x1B,0x21,0x03};
                 outputStream.write(printformat);
@@ -712,6 +711,7 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                 printPhoto(bitmap);
                 printCustom("PLACA: " + part1,0,1);
                 printCustom(fechaHora,0,1);
+                printCustom(part0,0,1);
                 printNewLine();
                 printCustom(new String(new char[32]).replace("\0", "."),0,1);
                 printCustom("Gracias por su Preferencia",0,1);

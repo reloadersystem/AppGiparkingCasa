@@ -472,7 +472,6 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
                             comprobamte_total_operacion_gravadas = partSplit[9];
                             comprobamte_total_impuesto = partSplit[10];
                             comprobamte_total_documento = partSplit[11];
-
                             movimiento_nro_placa = partSplit[12];
                             movimiento_hora_ingreso = partSplit[13];
                             movimiento_hora_salida = partSplit[14];
@@ -667,8 +666,15 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
                 printNewLine();
                 printCustom(comprobante_tipo + " Nro:", 0, 0);
                 printCustom(comprobante_numero, 0, 1);
+                printCustom(cliente_tipo+" :" + cliente_documento, 0, 0);
+                printCustom(cliente_nombre, 0, 0);
+                printCustom(comprobante_numero, 0, 1);
                 printCustom("Fecha Hora: " + comprobante_fecha, 0, 1);
                 printCustom("Cajero: " + cajaNum, 0, 1);
+                if (!documento_referencial.equalsIgnoreCase("-"))
+                {
+                    printCustom(documento_referencial, 0, 1);
+                }
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
                 printCustom("Nro Placa: " + movimiento_nro_placa, 0, 0);
                 printCustom("Hora Ingreso: " + movimiento_hora_ingreso, 0, 0);
