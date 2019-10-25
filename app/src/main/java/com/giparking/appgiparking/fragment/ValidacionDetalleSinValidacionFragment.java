@@ -666,7 +666,7 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
                 printCustom(direccionEmpresa, 0, 1);
                 printNewLine();
                 printCustom(comprobante_tipo + " Nro:", 0, 0);
-                printCustom(comprobante_numero, 0, 2);
+                printCustom(comprobante_numero, 0, 1);
                 printCustom("Fecha Hora: " + comprobante_fecha, 0, 1);
                 printCustom("Cajero: " + cajaNum, 0, 1);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
@@ -676,7 +676,6 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
                 printCustom("Tiempo Calculado: " + movimiento_tiempo_calculado, 0, 0);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
                 printPhoto(bitmap);
-                printNewLine();
                 printCustom("Descripcion:            Importe ", 0, 0);
                 printCustom("TARIFA GENERAL:          " + detalle_importe, 0, 0);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
