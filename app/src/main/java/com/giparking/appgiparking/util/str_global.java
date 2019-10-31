@@ -33,16 +33,34 @@ public class str_global {
     String var_cabecera_t_1 = "";
     String var_cabecera_t_2 = "";
     String var_cabecera_t_3 = "";
+    String var_cabecera_ticket = "";
 
     //Cabecera comprobante
     String var_cabecera_c_0 = "";
     String var_cabecera_c_1 = "";
     String var_cabecera_c_2 = "";
     String var_cabecera_c_3 = "";
+    String var_cabecera_comprobante = "";
 
     //Codigo apertura de caja
     String cod_cefectivo = "";
 
+
+    public String getVar_cabecera_ticket() {
+        return var_cabecera_ticket;
+    }
+
+    public void setVar_cabecera_ticket(String var_cabecera_ticket) {
+        this.var_cabecera_ticket = var_cabecera_ticket;
+    }
+
+    public String getVar_cabecera_comprobante() {
+        return var_cabecera_comprobante;
+    }
+
+    public void setVar_cabecera_comprobante(String var_cabecera_comprobante) {
+        this.var_cabecera_comprobante = var_cabecera_comprobante;
+    }
 
     public String getCod_cefectivo() {
         return cod_cefectivo;

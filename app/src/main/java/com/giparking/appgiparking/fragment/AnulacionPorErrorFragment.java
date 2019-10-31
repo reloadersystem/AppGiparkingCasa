@@ -388,13 +388,26 @@ public class AnulacionPorErrorFragment extends Fragment {
                 outputStream = bluetoothSocket.getOutputStream();
                 inputStream = bluetoothSocket.getInputStream();
 
+                //Ahora
+                String cabecera_comprobante = str_global.getInstance().getVar_cabecera_comprobante();
+                String[] parts_cabecera_comprobante = cabecera_comprobante.split("\\|");
+
                 String nombreEmpresa = str_global.getInstance().getVar_cabecera_c_0();
-                String direccionEmpresa = str_global.getInstance().getVar_cabecera_t_1() + " \n" + str_global.getInstance().getVar_cabecera_t_2();
+                String direccionEmpresa = str_global.getInstance().getVar_cabecera_c_1() + " \n" + str_global.getInstance().getVar_cabecera_c_2();
                 String cajaNum = str_global.getInstance().getCaja_nombre();
                 byte[] printformat = new byte[]{0x1B, 0x21, 0x03};
                 outputStream.write(printformat);
-                printCustom(nombreEmpresa, 1, 1);
-                printCustom(direccionEmpresa, 0, 1);
+                //printCustom(nombreEmpresa, 1, 1);
+                //printCustom(direccionEmpresa, 0, 1);
+
+                if (parts_cabecera_comprobante.length>0){
+
+                    for (int i=0;i<parts_cabecera_comprobante.length;i++){
+
+                        printCustom(parts_cabecera_comprobante[i], 0, 1);
+                    }
+                }
+
                 printNewLine();
                 printCustom(comprobante_tipo + " Nro:", 0, 0);
                 printCustom(comprobante_numero, 0, 1);

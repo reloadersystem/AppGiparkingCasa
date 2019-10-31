@@ -3,6 +3,7 @@ package com.giparking.appgiparking.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import com.giparking.appgiparking.entity.GenericoSpinner;
 import com.giparking.appgiparking.entity.Producto;
 import com.giparking.appgiparking.util.ContenedorClass;
 import com.giparking.appgiparking.util.TimePickerDialogFragment;
+import com.giparking.appgiparking.view.LoguinActivity;
 import com.google.android.gms.flags.IFlagProvider;
 
 import java.util.Calendar;
@@ -36,6 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +73,8 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
     final int mes = c.get(Calendar.MONTH);
     final int dia = c.get(Calendar.DAY_OF_MONTH);
     final int anio = c.get(Calendar.YEAR);
+
+    SweetAlertDialog pd;
 
     View rootview;
 
@@ -158,8 +163,8 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
                     crd_valAutomatica.setVisibility(View.GONE);
                     crd_valManual.setVisibility(View.GONE);
                     crd_valSinValidacion.setVisibility(View.VISIBLE);
-                    fragment = new ValidacionDetalleSinValidacionFragment();
-                    changeFragment(3);
+                    //fragment = new ValidacionDetalleSinValidacionFragment();
+                    //changeFragment(3);
                 }
 
             }
@@ -275,6 +280,46 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
     @OnClick(R.id.cardview_v_automatica)
     public void irPantallaValidacionAutomatica(){
 
+        if (edt_numPlaca.getText().toString().equals("")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la placa");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (edt_numPlaca.getText().length() < 6){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("La placa debe tener 6 digitos");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (txt_Fecha.getText().toString().equals("")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la fecha");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (txt_Reloj.getText().toString().equals("")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la hora");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
 
         fragment = new ScanQrConvenioFragment();
         changeFragment(1);
@@ -283,6 +328,46 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
     @OnClick(R.id.cardview_v_manual)
     public void irPantallaValidacionManual(){
 
+        if (edt_numPlaca.getText().toString().equals("")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la placa");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (edt_numPlaca.getText().length() < 6){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("La placa debe tener 6 digitos");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (txt_Fecha.getText().toString().equals("")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la fecha");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (txt_Reloj.getText().toString().equals("")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la hora");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
 
         fragment = new ValidacionDetalleValidacionManualFragment();
         changeFragment(2);
@@ -290,6 +375,46 @@ public class ValidacionManualFragment extends Fragment implements TimePickerDial
 
     @OnClick(R.id.cardview_sin_validacion)
     public void irPantallaSinValidacion(){
+
+        if (edt_numPlaca.getText().toString().equals("")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la placa");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (edt_numPlaca.getText().length() < 6){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("La placa debe tener 6 digitos");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (txt_Fecha.getText().toString().equals("")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la fecha");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
+
+        if (txt_Reloj.getText().toString().equals("")){
+
+            pd = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+            pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
+            pd.setContentText("Debe Ingresar la hora");
+            pd.setCancelable(false);
+            pd.show();
+            return;
+        }
 
 
         fragment = new ValidacionDetalleSinValidacionFragment();

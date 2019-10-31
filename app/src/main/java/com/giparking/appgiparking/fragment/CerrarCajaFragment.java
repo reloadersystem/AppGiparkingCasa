@@ -101,6 +101,8 @@ public class CerrarCajaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cerrar_caja, container, false);
         ButterKnife.bind(this, view);
 
+        getActivity().setTitle("Cierre de Caja");
+
 
         pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
         pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
@@ -451,7 +453,7 @@ public class CerrarCajaFragment extends Fragment {
                 printCustom(nombreEmpresa, 1, 1);
                 printCustom(direccionEmpresa, 0, 1);
                 printNewLine();
-                printCustom("Cierre de Caja:        ", 1, 0);// 30 caracteres
+                printCustom("Datos de la Caja:        ", 1, 0);// 30 caracteres
                 printNewLine();
 
 

@@ -193,7 +193,7 @@ public class LoguinActivity extends AppCompatActivity {
     @OnClick(R.id.btn_ingresar)
     public void ingresar() {
 
-        imei = "11";
+        //imei = "11";
 
          if (imei.equals("")){
              solicitarPermiso();
@@ -312,12 +312,14 @@ public class LoguinActivity extends AppCompatActivity {
                             a_str_global.setVar_cabecera_t_1(parts_cabecera_ticket[1]);
                             a_str_global.setVar_cabecera_t_2(parts_cabecera_ticket[2]);
                             a_str_global.setVar_cabecera_t_3(parts_cabecera_ticket[3]);
+                            a_str_global.setVar_cabecera_ticket(cabecera_ticket);
 
                             String[] parts_cabecera_comprobante = cabecera_comprobante.split("\\|");
                             a_str_global.setVar_cabecera_c_0(parts_cabecera_comprobante[0]);
                             a_str_global.setVar_cabecera_c_1(parts_cabecera_comprobante[1]);
                             a_str_global.setVar_cabecera_c_2(parts_cabecera_comprobante[2]);
                             a_str_global.setVar_cabecera_c_3(parts_cabecera_comprobante[3]);
+                            a_str_global.setVar_cabecera_comprobante(cabecera_comprobante);
 
                             //Extraemos valores productos
                             String valores_productos = parts[4];

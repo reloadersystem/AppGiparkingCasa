@@ -142,8 +142,8 @@ public class SalidaVehiculoFragment extends Fragment {
                    crd_valAutomatica.setVisibility(View.GONE);
                    crd_valManual.setVisibility(View.GONE);
                    crd_valSinValidacion.setVisibility(View.VISIBLE);
-                   fragment = new ValidacionDetalleSinValidacionFragment();
-                   changeFragment(3);
+                   //fragment = new ValidacionDetalleSinValidacionFragment();
+                   //changeFragment(3);
                }
 
            }
@@ -163,7 +163,6 @@ public class SalidaVehiculoFragment extends Fragment {
 
     @OnClick(R.id.crd_valAutomatica)
     public void irPantallaValidacionAutomatica(){
-
 
         fragment = new ScanQrConvenioFragment();
         changeFragment(1);

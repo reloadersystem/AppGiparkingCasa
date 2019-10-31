@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.giparking.appgiparking.R;
 import com.giparking.appgiparking.adapter.ComprobanteAdapter;
 import com.giparking.appgiparking.adapter.MovimientoAdapter;
+import com.giparking.appgiparking.adapter.MovimientoResumenAdapter;
 import com.giparking.appgiparking.entity.Comprobante;
 import com.giparking.appgiparking.entity.Movimiento;
 import com.giparking.appgiparking.entity.TipoPago;
@@ -72,6 +73,7 @@ public class MovimientoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movimiento, container, false);
         ButterKnife.bind(this,view);
 
+        getActivity().setTitle("Movimiento");
 
 
         pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
@@ -217,7 +219,9 @@ public class MovimientoFragment extends Fragment {
                                   ArrayList<Movimiento> list_movimiento_movimiento,ArrayList<Movimiento> list_movimiento_comprobantes) {
 
         recycler_cierre.setAdapter(new MovimientoAdapter(getContext(), list_movimiento_datos));
-        recycler_resumen.setAdapter(new MovimientoAdapter(getContext(), list_movimiento_resumen));
+        //recycler_resumen.setAdapter(new MovimientoAdapter(getContext(), list_movimiento_resumen));
+        recycler_resumen.setAdapter(new MovimientoResumenAdapter(getContext(), list_movimiento_resumen));
+
         recycler_movimiento.setAdapter(new MovimientoAdapter(getContext(), list_movimiento_movimiento));
         recycler_compro.setAdapter(new MovimientoAdapter(getContext(), list_movimiento_comprobantes));
 

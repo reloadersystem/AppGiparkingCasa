@@ -460,6 +460,7 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
                             String respuesta_imprimir = parts[1];
                             String[] partSplit = respuesta_imprimir.split("¦");
 
+
                             cod_comprobanteComp = partSplit[0];
                             comprobante_tipo = partSplit[1];
                             comprobante_numero = partSplit[2];
@@ -656,19 +657,35 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
                 outputStream = bluetoothSocket.getOutputStream();
                 inputStream = bluetoothSocket.getInputStream();
 
+                //Ahora
+                String cabecera_comprobante = str_global.getInstance().getVar_cabecera_comprobante();
+                String[] parts_cabecera_comprobante = cabecera_comprobante.split("\\|");
+
                 String nombreEmpresa = str_global.getInstance().getVar_cabecera_c_0();
-                String direccionEmpresa = str_global.getInstance().getVar_cabecera_t_1() + " \n" + str_global.getInstance().getVar_cabecera_t_2();
+                String direccionEmpresa = str_global.getInstance().getVar_cabecera_c_1() + " \n" + str_global.getInstance().getVar_cabecera_c_2();
                 String cajaNum = str_global.getInstance().getCaja_nombre();
                 byte[] printformat = new byte[]{0x1B, 0x21, 0x03};
                 outputStream.write(printformat);
-                printCustom(nombreEmpresa, 1, 1);
-                printCustom(direccionEmpresa, 0, 1);
+
+                //printCustom(nombreEmpresa, 1, 1);
+                //printCustom(direccionEmpresa, 0, 1);
+
+                if (parts_cabecera_comprobante.length>0){
+
+                    for (int i=0;i<parts_cabecera_comprobante.length;i++){
+
+                        printCustom(parts_cabecera_comprobante[i], 0, 1);
+                    }
+                }
+
+
+
                 printNewLine();
-                printCustom(comprobante_tipo + " Nro:", 0, 0);
+                printCustom(comprobante_tipo, 0, 1);
                 printCustom(comprobante_numero, 0, 1);
                 printCustom(cliente_tipo+" :" + cliente_documento, 0, 0);
                 printCustom(cliente_nombre, 0, 0);
-                printCustom(comprobante_numero, 0, 1);
+                //printCustom(comprobante_numero, 0, 1);
                 printCustom("Fecha Hora: " + comprobante_fecha, 0, 1);
                 printCustom("Cajero: " + cajaNum, 0, 1);
                 if (!documento_referencial.equalsIgnoreCase("-"))
@@ -681,7 +698,7 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
                 printCustom("Hora Salida: " + movimiento_hora_salida, 0, 0);
                 printCustom("Tiempo Calculado: " + movimiento_tiempo_calculado, 0, 0);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
-                printPhoto(bitmap);
+                //printPhoto(bitmap);
                 printCustom("Descripcion:            Importe ", 0, 0);
                 printCustom("TARIFA GENERAL:          " + detalle_importe, 0, 0);
                 printCustom(new String(new char[32]).replace("\0", "."), 0, 1);
@@ -689,6 +706,7 @@ public class ValidacionDetalleSinValidacionFragment extends Fragment {
                 printCustom("Op. Grava:" + comprobamte_total_operacion_gravadas, 0, 2);
                 printCustom("IGV:" + comprobamte_total_impuesto, 0, 2);
                 printCustom("Importe Total:" + comprobamte_total_documento, 0, 2);
+                printPhoto(bitmap);
                 printNewLine();
                 printCustom("Gracias por su Preferencia!", 0, 1);
                 printNewLine();

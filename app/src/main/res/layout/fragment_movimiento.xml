@@ -27,7 +27,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Cierre de Caja"
+                    android:text="Datos de la Caja"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
 
@@ -70,7 +70,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="Datos del Resumen"
+                    android:text="Vehiculo en el Estacionamiento"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
 

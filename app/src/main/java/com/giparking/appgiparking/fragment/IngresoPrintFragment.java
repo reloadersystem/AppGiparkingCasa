@@ -155,6 +155,12 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
             @Override
             public void onClick(View view) {
 
+                pd = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+                pd.getProgressHelper().setBarColor(Color.parseColor("#102670"));
+                pd.setContentText("Por favor, espere...");
+                pd.setCancelable(false);
+                pd.show();
+
 
                 String shareGetPreference = ShareDataRead.obtenerValor(getContext(), "valores_comprobante");
                 //111019298425¦xtjlfhl¦14/10/2019¦19:45:44¦Espacios Libres: 93
@@ -166,6 +172,8 @@ public class IngresoPrintFragment extends Fragment implements Validator.Validati
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
+                pd.dismiss();
 
                 pd = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
                 pd.getProgressHelper().setBarColor(Color.parseColor("#03A9F4"));
